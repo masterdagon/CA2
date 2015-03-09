@@ -63,7 +63,7 @@ public class Facade {
         EntityManager em = null;
         try {
             em = getEntityManager();
-            TypedQuery<Person> q = em.createQuery("select p from InfoEntity p", Person.class);
+            TypedQuery<Person> q = em.createQuery("select p from Person p", Person.class);
             return q.getResultList();
         } finally {
             if (em != null) {
@@ -93,7 +93,8 @@ public class Facade {
         EntityManager em = null;
         try {
             em = getEntityManager();
-            TypedQuery<Company> q = em.createQuery("select c from InfoEntity c", Company.class);
+            TypedQuery<Company> q = em.createQuery("select c from Company c", Company.class);
+//            q.setParameter("p", "Company");
             return q.getResultList();
         } finally {
             if (em != null) {

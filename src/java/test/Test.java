@@ -27,7 +27,7 @@ public class Test {
         
         facade.createCompany("Hansens Hardware", "Billigt hardware og andet",221866, 23, 500000,"hh@hh.dk");
         List<Company> listC = facade.getAllCompanies();
-        System.out.println(listC.get(1).getName());
+        System.out.println(listC.get(0).getName());
         Company c = facade.getCompany(2);
         System.out.println(c.getDescription());
     }
