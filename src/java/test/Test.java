@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author Muggi
  */
-public class Tester {
+public class Test {
     
     public static void main(String[] args) {
         Facade facade = new Facade();
@@ -27,7 +27,7 @@ public class Tester {
         
         facade.createCompany("Hansens Hardware", "Billigt hardware og andet",221866, 23, 500000,"hh@hh.dk");
         List<Company> listC = facade.getAllCompanies();
-        System.out.println(listC.get(0).getName());
+        System.out.println(listC.get(1).getName());
         Company c = facade.getCompany(2);
         System.out.println(c.getDescription());
     }
