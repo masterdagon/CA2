@@ -27,6 +27,7 @@ public class Address implements Serializable {
     private Integer id;
     private String Street;
     private String Additionalinfo;
+    
     @OneToMany(mappedBy = "address")
     private List<InfoEntity> infoEntitys;
     

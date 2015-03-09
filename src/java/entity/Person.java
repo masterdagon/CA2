@@ -6,53 +6,65 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 /**
  *
  * @author Muggi
  */
 @Entity
-public class Person implements Serializable {
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    public Long getId() {
-        return id;
+public class Person extends InfoEntity implements Serializable {
+    
+    private String firstName;
+    private String lastName;
+    @ManyToMany
+    private List<Hobby> hobbies = new ArrayList();
+    
+    public Person (String fName, String lName){
+        firstName = fName;
+        lastName = lName;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Person() {
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
+    public List<Hobby> getHobbies(){
+        return hobbies;
+    }
+    
+    public void addHobby(Hobby hobby){
+        hobbies.add(hobby);
+    }
+    
+    public void removeHobby(Hobby hobby){
+        hobbies.remove(hobby);
+    }
+    
+    public String getFirstName() {
+        return firstName;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Person)) {
-            return false;
-        }
-        Person other = (Person) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    @Override
-    public String toString() {
-        return "entity.Person[ id=" + id + " ]";
+    public String getLastName() {
+        return lastName;
     }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+    
+    
+
+    
+
+    
+
+    
     
 }
