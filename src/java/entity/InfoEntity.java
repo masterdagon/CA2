@@ -32,16 +32,6 @@ public class InfoEntity implements Serializable {
     @ManyToOne
     private Address address;
 
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-    
-    
-
     public InfoEntity() {
         this.phones = new ArrayList();
     }
@@ -49,6 +39,14 @@ public class InfoEntity implements Serializable {
     public InfoEntity(String email) {
         this.phones = new ArrayList();
         this.email = email;
+    }
+    
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
     
     public List<Phone> getPhones(){
