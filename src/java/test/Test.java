@@ -53,16 +53,16 @@ public class Test {
         System.out.println("------------------------------------------");
         System.out.println("");
         
-        System.out.println(facade.deletePerson(1));
-        
-        System.out.println("");
-        System.out.println("------------------------------------------");
-        System.out.println("");
+        System.out.println(facade.deletePerson(p.getId()));
         List<Person> pers = facade.getAllPersons();
-        System.out.println("Persons size ="+pers.size());
+        System.out.println("Persons size after delete ="+pers.size());
         for (Person per : pers) {
             System.out.println("         "+per.getLastName());
         }
+        System.out.println("");
+        System.out.println("------------------------------------------");
+        System.out.println("");
+        
     }
     
 }
