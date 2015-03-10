@@ -5,8 +5,13 @@
  */
 package facade;
 
+import entity.Address;
+import entity.CityInfo;
 import entity.Company;
+import entity.Hobby;
+import entity.InfoEntity;
 import entity.Person;
+import entity.Phone;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -29,8 +34,86 @@ public class Facade {
         return emf.createEntityManager();
     }
 
-    public Person createPerson(String fName, String lName, String email) {
+    public Person getPersonFromPhone(int PhoneNumber) {
         EntityManager em = null;
+        try {
+            em = getEntityManager();
+            Person p = em.find(Person.class, PhoneNumber);
+            return p;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+
+    public Company getCompanyFromPhone(int PhoneNumber) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            Company c = em.find(Company.class, PhoneNumber);
+            return c;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+
+    public Company getCompanyFromcvr(int CVR) {
+                EntityManager em = null;
+        try {
+            em = getEntityManager();
+            Company c = em.find(Company.class, CVR);
+            return c;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+
+    public List<Person> getAllPersonsWithHobby(Hobby hobby) {//not ready
+                EntityManager em = null;
+        try {
+            em = getEntityManager();
+            TypedQuery<Person> q = em.createQuery("select p from Person p", Person.class);
+            return q.getResultList();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+
+    public List<Person> getAllPersonsInCity(String zipcode) {
+        return null;
+    }
+
+    public int getCountOfPeopleWithHobby(Hobby hobby) {
+        return 0;
+    }
+
+    public List<CityInfo> getListOfZipCodes() {
+        return null;
+    }
+
+    public List<Company> getListOfCompaniesWithXEmployes(int EmpCount) {//not ready
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            TypedQuery<Company> q = em.createQuery("select c from Company c", Company.class);
+            q.setParameter("p", "Company");
+            return q.getResultList();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+
+    public Person CreatePerson(String fName, String lName, String email) {
+         EntityManager em = null; 
         try {
             em = getEntityManager();
             Person p = new Person(fName,lName);
@@ -46,32 +129,6 @@ public class Facade {
         }
     }
 
-    public Person getPerson(int id) {
-        EntityManager em = null;
-        try {
-            em = getEntityManager();
-            Person p = em.find(Person.class, id);
-            return p;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
-    }
-    
-    public List<Person> getAllPersons() {
-        EntityManager em = null;
-        try {
-            em = getEntityManager();
-            TypedQuery<Person> q = em.createQuery("select p from Person p", Person.class);
-            return q.getResultList();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
-    }
-    
     public Company createCompany(String name, String description, int cvr, int NumEmployees, int marketValue, String email) {
         EntityManager em = null;
         try {
@@ -88,13 +145,90 @@ public class Facade {
             }
         }
     }
+
+    public Person addPhonePerson(Person person, String description, String number) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            Phone phone = new Phone(person, number, description);
+            person.addPhone(phone);
+            em.getTransaction().begin();
+            em.persist(person);
+            em.getTransaction().commit();
+            return person;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+    
+    public Company addPhoneCompany(Company company, String description, String number) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            Phone phone = new Phone(company, number, description);
+            company.addPhone(phone);
+            em.getTransaction().begin();
+            em.persist(company);
+            em.getTransaction().commit();
+            return company;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+
+    public Address createAddress() {
+        return null;
+    }
+
+    public Hobby createHobbies() {
+        return null;
+    }
+
+    public void deletePerson(int PersonId) {
+    }
+
+    public void deleteCompany(int CompanyId) {
+    }
+
+    public void deletePhone(int PhoneNumber) {
+    }
+
+    public void removeAddress(int addressId) {
+    }
+
+    public void deleteAddress(int addressId) {
+    }
+
+    public void removeHobbies(int hobbyId) {
+    }
+
+    public void deleteHobbies(int hobbyId) {
+    }
+
+
+    public List<Person> getAllPersons() {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            TypedQuery<Person> q = em.createQuery("select p from Person p", Person.class);
+            return q.getResultList();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
     
     public List<Company> getAllCompanies() {
         EntityManager em = null;
         try {
             em = getEntityManager();
             TypedQuery<Company> q = em.createQuery("select c from Company c", Company.class);
-//            q.setParameter("p", "Company");
+            q.setParameter("p", "Company");
             return q.getResultList();
         } finally {
             if (em != null) {
@@ -115,5 +249,4 @@ public class Facade {
             }
         }
     }
-
 }

@@ -26,11 +26,16 @@ public class Phone implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-
     public Phone() {
     }
 
-    public Phone(InfoEntity infoEntity, String number, String description) {
+    public Phone(Person person, String number, String description) {
+        this.infoEntity = infoEntity;
+        this.number = number;
+        this.description = description;
+    }
+    
+    public Phone(Company company, String number, String description) {
         this.infoEntity = infoEntity;
         this.number = number;
         this.description = description;
