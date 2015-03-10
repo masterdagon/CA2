@@ -21,12 +21,13 @@ public class Test {
         Facade facade = new Facade();
         
         Person p = facade.CreatePerson("Muggi","Dagon","666@gmail.com");
-        System.out.println(p.getId());
+        System.out.println("CreatePerson : Person ID = " + p.getId());
         List<Person> listP = facade.getAllPersons();
-        System.out.println(listP.get(0).getLastName());
+        System.out.println("getAllPersons: Person last name = " + listP.get(0).getLastName());
         p = facade.addPhonePerson(p,"home", 12345678);
+        System.out.println("addPhonePerson : PhoneList = " + p.getPhones().size());
         p = facade.getPersonFromPhone(12345678);
-        System.out.println("Phone number: " + p.getPhones().get(0).getNumber());
+        System.out.println("getPersonFromPhone : Person number = " + p.getPhones().get(0).getNumber());
         
         System.out.println("");
         System.out.println("------------------------------------------");
@@ -35,11 +36,11 @@ public class Test {
         Company c = facade.createCompany("Hansens Hardware", "Billigt hardware og andet",221866, 23, 500000,"hh@hh.dk");
         c = facade.addPhoneCompany(c, "home", 87654321);
         c = facade.getCompanyFromPhone(87654321);
-        System.out.println("should be Hanses Harware = "+c.getName());
+        System.out.println("addPhoneCompany + get CompanyFromPhone : should be Hanses Harware = "+c.getName());
         List<Company> listC = facade.getAllCompanies();
-        System.out.println("All companies below");
-        for (int i = 0; i < args.length; i++) {
-            System.out.println(listC.get(i).getName());
+        System.out.println("getAllCompanies: All companies below");
+        for (int i = 0; i < listC.size(); i++) {
+            System.out.println("       " + listC.get(i).getName());
         }
     }
     
