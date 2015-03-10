@@ -75,13 +75,20 @@ public class Facade {
         }
     }
 
-    public List<Person> getAllPersonsWithHobby(Hobby hobby) {//not ready
+    public List<Person> getAllPersonsWithHobby(Hobby hobby) {//kind of strange, since the hobby parameter should already contain the list of persons. oh well :P
         EntityManager em = null;
         try {
             em = getEntityManager();
             TypedQuery<Hobby> q = em.createQuery("select p from Hobby p", Hobby.class);
+            List<Hobby> hobbies = q.getResultList();
+            List<Person> listP = null;
+            for (Hobby h : hobbies) {
+                if (h == hobby) {
+                    listP = h.getPersons();
+                }
+            }
+            return listP;
 
-            return null;
         } finally {
             if (em != null) {
                 em.close();
@@ -109,7 +116,17 @@ public class Facade {
     }
 
     public int getCountOfPeopleWithHobby(Hobby hobby) {
-        return 0;
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            Hobby h = em.find(Hobby.class, hobby.getId());
+            return h.getPersons().size();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+
     }
 
     public List<CityInfo> getListOfZipCodes() {
@@ -238,8 +255,20 @@ public class Facade {
         }
     }
 
-    public Hobby createHobbies() {
-        return null;
+    public Hobby createHobbies(String name, String description) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            Hobby hobby = new Hobby(name, description);
+            em.getTransaction().begin();
+            em.persist(hobby);
+            em.getTransaction().commit();
+            return hobby;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
     }
 
     public boolean deletePerson(int personId) {
@@ -299,10 +328,8 @@ public class Facade {
         try {
             em = getEntityManager();
             Company c = em.find(Company.class, companyId);
-            System.out.println("sker det her 1");
             System.out.println(c.getPhones().isEmpty());
             List<Phone> phones = c.getPhones();
-            System.out.println("Sker det her 2");
             if (c.getAddress() != null) {
                 if (c.getAddress().getCompanies().isEmpty()) {
                     System.out.println("addres empty");
@@ -312,7 +339,6 @@ public class Facade {
                     }
                 }
             }
-            System.out.println("Sker det her 3?");
             em.getTransaction().begin();
 
             System.out.println(phones.size());
@@ -389,10 +415,46 @@ public class Facade {
     public void deleteAddress(int addressId) {
     }
 
-    public void removeHobbies(int hobbyId) {
+    public boolean removeHobbyFromPerson(Hobby hobby, Person person) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            person.removeHobby(hobby);
+            em.merge(person);
+            em.getTransaction().commit();
+            return true;
+        } catch (Exception e) {
+            return false;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
     }
 
-    public void deleteHobbies(int hobbyId) {
+    public boolean deleteHobbyFromDB(int hobbyId) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            Hobby hobby = em.find(Hobby.class, hobbyId);
+
+            em.getTransaction().begin();
+            for (Person p : hobby.getPersons()) {
+                p.removeHobby(hobby);
+                em.merge(p);
+            }
+            hobby.getPersons().clear();
+            em.merge(hobby);
+            em.remove(hobby);
+            em.getTransaction().commit();
+            return true;
+        }catch(Exception e){
+            return false;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
     }
 
     //--------------------Andre metoder------------------------------------//
