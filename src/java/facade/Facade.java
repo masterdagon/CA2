@@ -201,6 +201,25 @@ public class Facade {
             }
         }
     }
+    
+    public Company createAddressForPerson(Company c, String street, String info) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            Address address = new Address(street,info);
+            c.setAddress(address);
+            address.addCompany(c);
+            em.getTransaction().begin();
+            em.persist(address);
+            em.merge(c);
+            em.getTransaction().commit();
+            return c;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
 
     public Hobby createHobbies() {
         return null;

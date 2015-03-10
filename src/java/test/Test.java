@@ -25,6 +25,7 @@ public class Test {
         List<Person> listP = facade.getAllPersons();
         System.out.println(listP.get(0).getLastName());
         p = facade.addPhonePerson(p,"home", 12345678);
+        System.out.println("PhoneList: " + p.getPhones().size());
         p = facade.getPersonFromPhone(12345678);
         System.out.println("Phone number: " + p.getPhones().get(0).getNumber());
         
