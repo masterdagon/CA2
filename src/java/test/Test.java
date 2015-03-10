@@ -74,7 +74,7 @@ public class Test {
         System.out.println("REMOVE COMPANY:");
         Company c1 = facade.createCompany("McRonalds", "Dette er ikke McDonalds", 13597562, 10, 999, "mcronald@funfun.com");
         System.out.println(c1.getId());
-        System.out.println(facade.deleteCompany(2));
+        System.out.println(facade.deleteCompany(c1.getId()));
     }
     
 }

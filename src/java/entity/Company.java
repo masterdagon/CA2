@@ -23,8 +23,6 @@ public class Company extends InfoEntity implements Serializable {
     private int cvr;
     private int NumEmployees;
     private int marketValue;
-    @ManyToOne
-    private Address address;
     @OneToMany(mappedBy = "company")
     private List<Phone> phones;
 

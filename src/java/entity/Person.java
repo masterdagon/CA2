@@ -25,9 +25,6 @@ public class Person extends InfoEntity implements Serializable {
     @ManyToMany
     private List<Hobby> hobbies = new ArrayList();
 
-    @ManyToOne
-    private Address address;
-
     @OneToMany(mappedBy = "person")
     private List<Phone> phones;
 

@@ -298,8 +298,10 @@ public class Facade {
         try {
             em = getEntityManager();
             Company c = em.find(Company.class, companyId);
+            System.out.println("sker det her 1");
+            System.out.println(c.getPhones().isEmpty());
             List<Phone> phones = c.getPhones();
-            
+            System.out.println("Sker det her 2");
             if (!c.getAddress().getCompanies().isEmpty()) {
                 if (c.getAddress().getCompanies().contains(c)) {
                     c.getAddress().removeCompany(c);
@@ -307,7 +309,7 @@ public class Facade {
             } else {
                 System.out.println("addres empty");
             }
-
+            System.out.println("Sker det her 3?");
             em.getTransaction().begin();
            
             System.out.println(phones.size());
