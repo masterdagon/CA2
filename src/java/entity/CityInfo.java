@@ -33,6 +33,10 @@ public class CityInfo implements Serializable {
         this.zipCode = zipCode;
         this.city = city;
     }
+
+    public List<Address> getAddresses() {
+        return addresses;
+    }  
     
     public void addAddress(Address address){
         addresses.add(address);
