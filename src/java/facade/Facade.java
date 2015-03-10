@@ -62,7 +62,7 @@ public class Facade {
         }
     }
 
-    public Company getCompanyFromcvr(int CVR) {//not ready
+    public Company getCompanyFromcvr(int CVR) {//not ready teacher
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -113,7 +113,16 @@ public class Facade {
     }
 
     public List<CityInfo> getListOfZipCodes() {
-        return null;
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            TypedQuery<CityInfo> q = em.createQuery("select c from CityInfo c", CityInfo.class);
+            return q.getResultList();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
     }
 
     public List<Company> getListOfCompaniesWithXEmployes(int EmpCount) {//not ready
