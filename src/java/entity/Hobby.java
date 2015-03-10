@@ -19,14 +19,15 @@ import javax.persistence.ManyToMany;
  */
 @Entity
 public class Hobby implements Serializable {
-    @ManyToMany(mappedBy = "hobbies")
-    private List<Person> persons;
-    private String name;
-    private String description;
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
+    private String name;
+    private String description;
+    @ManyToMany(mappedBy = "hobbies")
+    private List<Person> persons;
+   
 
     public Hobby() {
     }

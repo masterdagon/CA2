@@ -22,7 +22,7 @@ import javax.persistence.OneToMany;
 public class CityInfo implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    private String zipCode;
+    private String zip;
     private String city;
     @OneToMany(mappedBy = "cityInfo")
     private List<Address> addresses = new ArrayList();
@@ -30,9 +30,13 @@ public class CityInfo implements Serializable {
     public CityInfo(){}
 
     public CityInfo(String zipCode, String city) {
-        this.zipCode = zipCode;
+        this.zip = zipCode;
         this.city = city;
     }
+
+    public List<Address> getAddresses() {
+        return addresses;
+    }  
     
     public void addAddress(Address address){
         addresses.add(address);
@@ -43,11 +47,11 @@ public class CityInfo implements Serializable {
     }
 
     public String getZipCode() {
-        return zipCode;
+        return zip;
     }
 
     public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
+        this.zip = zipCode;
     }
 
     public String getCity() {

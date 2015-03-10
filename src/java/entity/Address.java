@@ -21,10 +21,9 @@ import javax.persistence.OneToMany;
  */
 @Entity
 public class Address implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
     private String Street;
     private String additionalinfo;
@@ -43,11 +42,12 @@ public class Address implements Serializable {
         this.persons = new ArrayList();
     }
 
-    public Address(String Street, String additionalinfo) {
+    public Address(String Street, String additionalinfo, CityInfo cityInfo) {
         this.companies = new ArrayList();
         this.persons = new ArrayList();
         this.Street = Street;
         this.additionalinfo = additionalinfo;
+        this.cityInfo = cityInfo;
     }
 
     public List<Company> getCompanies() {
