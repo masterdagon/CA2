@@ -12,6 +12,7 @@ import entity.Hobby;
 import entity.InfoEntity;
 import entity.Person;
 import entity.Phone;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -49,7 +50,7 @@ public class Facade {
         }
     }
 
-    public Company getCompanyFromPhone(int PhoneNumber) {
+    public Company getCompanyFromPhone(int PhoneNumber) {//finnish
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -90,8 +91,23 @@ public class Facade {
         }
     }
 
-    public List<Person> getAllPersonsInCity(String zipcode) {
-        return null;
+    public List<Person> getAllPersonsInCity(int zipcode) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            CityInfo ci = em.find(CityInfo.class, zipcode);
+            List<Person> persons = new ArrayList();
+            for (Address address : ci.getAddresses()) {
+                for (Person person : address.getPersons()) {
+                    persons.add(person);
+                }
+            }
+            return persons;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
     }
 
     public int getCountOfPeopleWithHobby(Hobby hobby) {
