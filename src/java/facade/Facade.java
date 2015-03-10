@@ -180,8 +180,21 @@ public class Facade {
         }
     }
 
-    public Address createAddress() {
-        return null;
+    public Address createAddressForPerson(Person p, String street, String info) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            Address address = new Address(street,info);
+            address.addPerson(p);
+            em.getTransaction().begin();
+            em.merge(address);
+            em.getTransaction().commit();
+            return address;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
     }
 
     public Hobby createHobbies() {

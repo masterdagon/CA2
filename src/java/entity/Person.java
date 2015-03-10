@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -22,6 +23,8 @@ public class Person extends InfoEntity implements Serializable {
     private String lastName;
     @ManyToMany
     private List<Hobby> hobbies = new ArrayList();
+    @ManyToOne
+    private Address address;
     
     public Person (String fName, String lName){
         firstName = fName;

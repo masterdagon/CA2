@@ -21,34 +21,41 @@ import javax.persistence.OneToMany;
  */
 @Entity
 public class Address implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String Street;
-    private String Additionalinfo;
-    
+    private String additionalinfo;
+
     @OneToMany(mappedBy = "address")
-    private List<InfoEntity> infoEntitys;
-    
+    private List<Person> persons;
+
+    @OneToMany(mappedBy = "address")
+    private List<Company> companies;
+
     @ManyToOne
     private CityInfo cityInfo;
 
-    public Address(){}
-    
-    public Address(String Street, String Additionalinfo) {
-        this.infoEntitys = new ArrayList();
+    public Address() {
+        this.companies = new ArrayList();
+        this.persons = new ArrayList();
+    }
+
+    public Address(String Street, String additionalinfo) {
+        this.companies = new ArrayList();
+        this.persons = new ArrayList();
         this.Street = Street;
-        this.Additionalinfo = Additionalinfo;
-        this.infoEntitys = new ArrayList();
+        this.additionalinfo = additionalinfo;
     }
 
-    public List<InfoEntity> getInfoEntitys() {
-        return infoEntitys;
+    public List<Company> getCompanies() {
+        return companies;
     }
 
-    public void setInfoEntitys(List<InfoEntity> infoEntitys) {
-        this.infoEntitys = infoEntitys;
+    public List<Person> getPersons() {
+        return persons;
     }
 
     public CityInfo getCityInfo() {
@@ -58,15 +65,23 @@ public class Address implements Serializable {
     public void setCityInfo(CityInfo cityInfo) {
         this.cityInfo = cityInfo;
     }
-    
-    public void addInfoEntity(InfoEntity ie){
-        infoEntitys.add(ie);
+
+    public void addPerson(Person ie) {
+        persons.add(ie);
+    }
+
+    public void removePerson(Person ie) {
+        persons.remove(ie);
     }
     
-    public void removeInfoEntity(InfoEntity ie){
-        infoEntitys.remove(ie);
+    public void addCompany(Company ie) {
+        companies.add(ie);
     }
-    
+
+    public void removeCompany(Company ie) {
+        companies.remove(ie);
+    }
+
     public String getStreet() {
         return Street;
     }
@@ -76,13 +91,13 @@ public class Address implements Serializable {
     }
 
     public String getAdditionalinfo() {
-        return Additionalinfo;
+        return additionalinfo;
     }
 
-    public void setAdditionalinfo(String Additionalinfo) {
-        this.Additionalinfo = Additionalinfo;
+    public void setAdditionalinfo(String additionalinfo) {
+        this.additionalinfo = additionalinfo;
     }
-    
+
     public Integer getId() {
         return id;
     }

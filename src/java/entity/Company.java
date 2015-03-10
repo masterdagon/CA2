@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -26,6 +27,8 @@ public class Company extends InfoEntity implements Serializable {
     private int cvr;
     private int NumEmployees;
     private int marketValue;
+    @ManyToOne
+    private Address address;
 
     public Company() {
     }
