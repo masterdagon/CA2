@@ -293,7 +293,41 @@ public class Facade {
         }
     }
 
-    public void deleteCompany(int CompanyId) {
+    public boolean deleteCompany(int companyId) {
+            EntityManager em = null;
+        try {
+            em = getEntityManager();
+            Company c = em.find(Company.class, companyId);
+            List<Phone> phones = c.getPhones();
+            
+            if (!c.getAddress().getCompanies().isEmpty()) {
+                if (c.getAddress().getCompanies().contains(c)) {
+                    c.getAddress().removeCompany(c);
+                }
+            } else {
+                System.out.println("addres empty");
+            }
+
+            em.getTransaction().begin();
+           
+            System.out.println(phones.size());
+            for (Phone ph : phones) {
+                em.remove(ph);
+            }
+
+            c.getPhones().clear();
+            em.merge(c);
+            em.remove(c);
+            em.getTransaction().commit();
+            return true;
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
     }
 
     public Person deletePersonPhone(int PhoneNumber) {
