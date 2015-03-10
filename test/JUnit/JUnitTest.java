@@ -117,7 +117,7 @@ public class JUnitTest {
 
     @Test
     public void addHobbyToPerson(){
-        
+        Person p = f.CreatePerson("addHobbyToPerson", "test", "test");
     }
     
     @Test
