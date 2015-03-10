@@ -6,10 +6,13 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -26,6 +29,8 @@ public class Company extends InfoEntity implements Serializable {
     private int cvr;
     private int NumEmployees;
     private int marketValue;
+    @OneToMany(mappedBy = "company")
+    private List<Phone> phones;
 
     public Company() {
     }
@@ -36,7 +41,21 @@ public class Company extends InfoEntity implements Serializable {
         this.cvr = cvr;
         this.NumEmployees = NumEmployees;
         this.marketValue = marketValue;
+        this.phones = new ArrayList();
     }
+    
+        public List<Phone> getPhones() {
+        return phones;
+    }
+
+    public void addPhone(Phone phone){
+        phones.add(phone);
+    }
+    
+    public void removePhone(Phone phone){
+        phones.remove(phone);
+    }
+    
     
     public Integer getId() {
         return id;

@@ -22,8 +22,6 @@ import javax.persistence.OneToMany;
 public class CityInfo implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
     private String zipCode;
     private String city;
     @OneToMany(mappedBy = "cityInfo")
@@ -59,13 +57,4 @@ public class CityInfo implements Serializable {
     public void setCity(String city) {
         this.city = city;
     }
-    
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
 }

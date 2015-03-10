@@ -16,6 +16,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 /**
@@ -34,11 +35,13 @@ public class Facade {
         return emf.createEntityManager();
     }
 
-    public Person getPersonFromPhone(int PhoneNumber) {
+    public Person getPersonFromPhone(int phoneNumber) {
         EntityManager em = null;
         try {
             em = getEntityManager();
-            Person p = em.find(Person.class, PhoneNumber);
+            TypedQuery<Phone> q = em.createQuery("select p from Phone where p.number = :1",Phone.class);
+            q.setParameter("1", phoneNumber);
+            Person p = q.getResultList().get(0).getPerson();
             return p;
         } finally {
             if (em != null) {
@@ -77,8 +80,9 @@ public class Facade {
                 EntityManager em = null;
         try {
             em = getEntityManager();
-            TypedQuery<Person> q = em.createQuery("select p from Person p", Person.class);
-            return q.getResultList();
+            TypedQuery<Hobby> q = em.createQuery("select p from Hobby p", Hobby.class);
+            
+            return null;
         } finally {
             if (em != null) {
                 em.close();
@@ -153,7 +157,7 @@ public class Facade {
             Phone phone = new Phone(person, number, description);
             person.addPhone(phone);
             em.getTransaction().begin();
-            em.persist(person);
+            em.merge(person);
             em.getTransaction().commit();
             return person;
         } finally {
