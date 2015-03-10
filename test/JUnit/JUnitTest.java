@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import org.junit.After;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,6 +45,7 @@ public class JUnitTest {
             f = new Facade();
             emf = Persistence.createEntityManagerFactory("CA2PU");
             em = getEntityManager();
+            System.out.println("setup running");
         } catch (Exception e) {
             System.out.println("Error in setup");
 
@@ -62,24 +64,16 @@ public class JUnitTest {
 
     @Test
     public void createPerson() throws InterruptedException {
-//        Thread.sleep(1000);
         Person p = f.CreatePerson("Test", "Test", "Test");
-        p = em.find(Person.class, p.getId());
-        em.getTransaction().begin();
-        em.remove(p);
-        em.getTransaction().commit();
-        assertTrue(1 == p.getId());
+        Person p1 = em.find(Person.class, p.getId());
+        assertEquals(p.getId(),p1.getId());
     }
 
     @Test
     public void createCompany() throws InterruptedException {
-//        Thread.sleep(1000);
         Company c = f.createCompany("Test", "Test", 1, 1, 1, "Test");
-        c = em.find(Company.class, c.getId());
-        em.getTransaction().begin();
-        em.remove(c);
-        em.getTransaction().commit();
-        assertTrue(1 == c.getId());
+        Company c1 = em.find(Company.class, c.getId());
+        assertEquals(c.getId(),c1.getId());
     }
 //
 //    @Test
