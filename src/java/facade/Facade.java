@@ -35,7 +35,7 @@ public class Facade {
         return emf.createEntityManager();
     }
 
-    public Person getPersonFromPhone(int phoneNumber) {
+    public Person getPersonFromPhone(int phoneNumber) {//Finnish
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -53,7 +53,8 @@ public class Facade {
         EntityManager em = null;
         try {
             em = getEntityManager();
-            Company c = em.find(Company.class, PhoneNumber);
+            Phone phone = em.find(Phone.class, PhoneNumber);
+            Company c = phone.getCompany();
             return c;
         } finally {
             if (em != null) {
@@ -173,7 +174,7 @@ public class Facade {
             Phone phone = new Phone(company, number, description);
             company.addPhone(phone);
             em.getTransaction().begin();
-            em.persist(company);
+            em.merge(company);
             em.getTransaction().commit();
             return company;
         } finally {
@@ -247,6 +248,12 @@ public class Facade {
     }
 
 
+    
+    
+    
+    //--------------------Andre metoder------------------------------------//
+    
+    
     public List<Person> getAllPersons() {
         EntityManager em = null;
         try {

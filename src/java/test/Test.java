@@ -29,14 +29,19 @@ public class Test {
         p = facade.getPersonFromPhone(12345678);
         System.out.println("Phone number: " + p.getPhones().get(0).getNumber());
         
+        System.out.println("");
+        System.out.println("------------------------------------------");
+        System.out.println("");
+        
         Company c = facade.createCompany("Hansens Hardware", "Billigt hardware og andet",221866, 23, 500000,"hh@hh.dk");
+        c = facade.addPhoneCompany(c, "home", 87654321);
+        c = facade.getCompanyFromPhone(87654321);
+        System.out.println("should be Hanses Harware = "+c.getName());
         List<Company> listC = facade.getAllCompanies();
+        System.out.println("All companies below");
         for (int i = 0; i < args.length; i++) {
             System.out.println(listC.get(i).getName());
         }
-        System.out.println(c.getId());
-        c = facade.getCompany(c.getId());
-        System.out.println(c.getDescription());
     }
     
 }
