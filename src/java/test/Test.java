@@ -6,6 +6,7 @@
 package test;
 
 import entity.Address;
+import entity.CityInfo;
 import entity.Company;
 import entity.Person;
 import facade.Facade;
@@ -33,6 +34,16 @@ public class Test {
         System.out.println("getAllpersontoAddres: All persons below size = "+p.getAddress().getPersons().size());
         for (int i = 0; i < p.getAddress().getPersons().size(); i++) {
             System.out.println("       " + p.getAddress().getPersons().get(i).getLastName());
+        }
+        
+        System.out.println("");
+        System.out.println("------------------------------------------");
+        System.out.println("");
+        
+        List<Person> PCityList = facade.getAllPersonsInCity(3390);
+        System.out.println("getAllpersoninCity: All persons in city = 3390");
+        for (int i = 0; i < PCityList.size(); i++) {
+            System.out.println("       " + PCityList.get(i).getLastName());
         }
         
         System.out.println("");
@@ -75,6 +86,17 @@ public class Test {
         Company c1 = facade.createCompany("McRonalds", "Dette er ikke McDonalds", 13597562, 10, 999, "mcronald@funfun.com");
         System.out.println(c1.getId());
         System.out.println(facade.deleteCompany(c1.getId()));
+        
+        System.out.println("");
+        System.out.println("------------------------------------------");
+        System.out.println("");
+        
+        List<CityInfo> cityList = facade.getListOfZipCodes();
+        System.out.println("getAllCitys: All cities List Size ="+cityList.size());
+        for (int i = 0; i < 3; i++) {
+            System.out.println("       " + cityList.get(i).getCity());
+        }
+        
     }
     
 }
