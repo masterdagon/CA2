@@ -249,13 +249,14 @@ public class Facade {
             Person p = em.find(Person.class, personId);
             List<Phone> phones = p.getPhones();
             List<Hobby> hobbies = p.getHobbies();
-            
-            if (!p.getAddress().getPersons().isEmpty()) {
-                if (p.getAddress().getPersons().contains(p)) {
-                    p.getAddress().removePerson(p);
+            if (p.getAddress() != null) {
+                if (!p.getAddress().getPersons().isEmpty()) {
+                    if (p.getAddress().getPersons().contains(p)) {
+                        p.getAddress().removePerson(p);
+                    }
+                } else {
+                    System.out.println("addres emty");
                 }
-            } else {
-                System.out.println("addres emty");
             }
 
             em.getTransaction().begin();
@@ -294,7 +295,7 @@ public class Facade {
     }
 
     public boolean deleteCompany(int companyId) {
-            EntityManager em = null;
+        EntityManager em = null;
         try {
             em = getEntityManager();
             Company c = em.find(Company.class, companyId);
@@ -302,16 +303,18 @@ public class Facade {
             System.out.println(c.getPhones().isEmpty());
             List<Phone> phones = c.getPhones();
             System.out.println("Sker det her 2");
-            if (!c.getAddress().getCompanies().isEmpty()) {
-                if (c.getAddress().getCompanies().contains(c)) {
-                    c.getAddress().removeCompany(c);
+            if (c.getAddress() != null) {
+                if (c.getAddress().getCompanies().isEmpty()) {
+                    System.out.println("addres empty");
+                } else {
+                    if (c.getAddress().getCompanies().contains(c)) {
+                        c.getAddress().removeCompany(c);
+                    }
                 }
-            } else {
-                System.out.println("addres empty");
             }
             System.out.println("Sker det her 3?");
             em.getTransaction().begin();
-           
+
             System.out.println(phones.size());
             for (Phone ph : phones) {
                 em.remove(ph);
@@ -338,41 +341,41 @@ public class Facade {
         try {
             em = getEntityManager();
             Phone phone = em.find(Phone.class, PhoneNumber);
-            if(phone.getPerson() != null){
-               if(phone.getPerson().getPhones().contains(phone)){
-                  p = phone.getPerson();
-                  phone.getPerson().removePhone(phone);
+            if (phone.getPerson() != null) {
+                if (phone.getPerson().getPhones().contains(phone)) {
+                    p = phone.getPerson();
+                    phone.getPerson().removePhone(phone);
                 }
             }
             em.getTransaction().begin();
             em.remove(phone);
             em.merge(p);
             em.getTransaction().commit();
-            return p;     
+            return p;
         } finally {
             if (em != null) {
                 em.close();
             }
         }
     }
-    
+
     public Company deleteCompanyPhone(int PhoneNumber) {
         EntityManager em = null;
         Company c = null;
         try {
             em = getEntityManager();
             Phone phone = em.find(Phone.class, PhoneNumber);
-            if(phone.getCompany() != null){
-               if(phone.getCompany().getPhones().contains(phone)){
-                  c = phone.getCompany();
-                  phone.getCompany().removePhone(phone);
+            if (phone.getCompany() != null) {
+                if (phone.getCompany().getPhones().contains(phone)) {
+                    c = phone.getCompany();
+                    phone.getCompany().removePhone(phone);
                 }
             }
             em.getTransaction().begin();
             em.remove(phone);
             em.merge(c);
             em.getTransaction().commit();
-            return c;     
+            return c;
         } finally {
             if (em != null) {
                 em.close();
