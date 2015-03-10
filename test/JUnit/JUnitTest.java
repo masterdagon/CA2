@@ -64,28 +64,28 @@ public class JUnitTest {
 
     @Test
     public void createPerson() throws InterruptedException {
-        Person p = f.CreatePerson("Test", "Test", "Test");
+        Person p = f.CreatePerson("createPerson", "Test", "Test");
         Person p1 = em.find(Person.class, p.getId());
         assertEquals(p.getId(),p1.getId());
     }
 
     @Test
     public void createCompany() throws InterruptedException {
-        Company c = f.createCompany("Test", "Test", 1, 1, 1, "Test");
+        Company c = f.createCompany("createCompany", "Test", 1, 1, 1, "Test");
         Company c1 = em.find(Company.class, c.getId());
         assertEquals(c.getId(),c1.getId());
     }
 
     @Test
     public void addPhonePerson() {
-        Person p = f.CreatePerson("Test", "Test", "Test");
+        Person p = f.CreatePerson("addPhonePerson", "Test", "Test");
         Person p1 = f.addPhonePerson(p, "Test", 5);
         assertEquals(5,p1.getPhones().get(0).getNumber());
     }
 
     @Test
     public void getPersonFromPhone() {
-        Person p = f.CreatePerson("Test2", "Test2", "Test2");
+        Person p = f.CreatePerson("getPersonFromPhone", "Test", "Test");
         f.addPhonePerson(p, "Test", 555);
         Person pp = f.getPersonFromPhone(555);
         assertEquals(pp.getPhones().get(0).getNumber(),555);
