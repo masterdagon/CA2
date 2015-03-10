@@ -5,9 +5,9 @@
  */
 package test;
 
+import entity.Address;
 import entity.Company;
 import entity.Person;
-import entity.Phone;
 import facade.Facade;
 import java.util.List;
 
@@ -21,11 +21,12 @@ public class Test {
         Facade facade = new Facade();
         
         Person p = facade.CreatePerson("Muggi","Dagon","666@gmail.com");
+        System.out.println(p.getId());
         List<Person> listP = facade.getAllPersons();
-        System.out.println(listP.get(0).getFirstName());
-        facade.addPhonePerson(p,"home", 12345678);
+        System.out.println(listP.get(0).getLastName());
+        p = facade.addPhonePerson(p,"home", 12345678);
         p = facade.getPersonFromPhone(12345678);
-        System.out.println(p.getPhones().get(0).getNumber());
+        System.out.println("Phone number: " + p.getPhones().get(0).getNumber());
         
         System.out.println("");
         System.out.println("------------------------------------------");
