@@ -39,9 +39,8 @@ public class Facade {
         EntityManager em = null;
         try {
             em = getEntityManager();
-            TypedQuery<Phone> q = em.createQuery("select p from Phone where p.number = :1",Phone.class);
-            q.setParameter("1", phoneNumber);
-            Person p = q.getResultList().get(0).getPerson();
+            Phone phone = em.find(Phone.class, phoneNumber);
+            Person p = phone.getPerson();
             return p;
         } finally {
             if (em != null) {
@@ -150,7 +149,7 @@ public class Facade {
         }
     }
 
-    public Person addPhonePerson(Person person, String description, String number) {
+    public Person addPhonePerson(Person person, String description, int number) {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -167,7 +166,7 @@ public class Facade {
         }
     }
     
-    public Company addPhoneCompany(Company company, String description, String number) {
+    public Company addPhoneCompany(Company company, String description, int number) {
         EntityManager em = null;
         try {
             em = getEntityManager();

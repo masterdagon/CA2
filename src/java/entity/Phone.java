@@ -20,7 +20,7 @@ import javax.persistence.ManyToOne;
 public class Phone implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    private String number;
+    private int number;
     private String description;
     @ManyToOne
     private Person person;
@@ -30,13 +30,13 @@ public class Phone implements Serializable {
     public Phone() {
     }
 
-    public Phone(Person person, String number, String description) {
+    public Phone(Person person, int number, String description) {
         this.person = person;
         this.number = number;
         this.description = description;
     }
     
-    public Phone(Company company, String number, String description) {
+    public Phone(Company company, int number, String description) {
         this.company = company;
         this.number = number;
         this.description = description;
@@ -58,11 +58,11 @@ public class Phone implements Serializable {
         this.company = company;
     }
    
-    public String getNumber() {
+    public int getNumber() {
         return number;
     }
 
-    public void setNumber(String number) {
+    public void setNumber(int number) {
         this.number = number;
     }
 
