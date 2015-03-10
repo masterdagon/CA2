@@ -296,23 +296,47 @@ public class Facade {
     public void deleteCompany(int CompanyId) {
     }
 
-    public void deletePhone(int PhoneNumber) {
+    public Person deletePersonPhone(int PhoneNumber) {
         EntityManager em = null;
+        Person p = null;
         try {
             em = getEntityManager();
             Phone phone = em.find(Phone.class, PhoneNumber);
-            if(phone.getCompany() != null){
-                if(phone.getCompany().getPhones().contains(phone)){
-                    phone.getCompany().removePhone(phone);
-                }
-            }else if(phone.getPerson() != null){
-                if(phone.getPerson().getPhones().contains(phone)){
-                    phone.getPerson().removePhone(phone);
+            if(phone.getPerson() != null){
+               if(phone.getPerson().getPhones().contains(phone)){
+                  p = phone.getPerson();
+                  phone.getPerson().removePhone(phone);
                 }
             }
             em.getTransaction().begin();
             em.remove(phone);
+            em.merge(p);
             em.getTransaction().commit();
+            return p;     
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+    
+    public Company deleteCompanyPhone(int PhoneNumber) {
+        EntityManager em = null;
+        Company c = null;
+        try {
+            em = getEntityManager();
+            Phone phone = em.find(Phone.class, PhoneNumber);
+            if(phone.getCompany() != null){
+               if(phone.getCompany().getPhones().contains(phone)){
+                  c = phone.getCompany();
+                  phone.getCompany().removePhone(phone);
+                }
+            }
+            em.getTransaction().begin();
+            em.remove(phone);
+            em.merge(c);
+            em.getTransaction().commit();
+            return c;     
         } finally {
             if (em != null) {
                 em.close();
