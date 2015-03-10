@@ -11,9 +11,9 @@ import facade.Facade;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import org.junit.AfterClass;
+import org.junit.After;
 import static org.junit.Assert.assertTrue;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 import test.CreateTables;
 
@@ -24,34 +24,34 @@ import test.CreateTables;
 public class JUnitTest {
 
     private Facade f;
-    static private EntityManagerFactory emf;
-    static private EntityManager em;
-    private Person p;
-    private Company c;
+    private EntityManagerFactory emf;
+    private EntityManager em;
+//    private Person p;
+//    private Company c;
 
     public JUnitTest() {
-        f = new Facade();
-        emf = Persistence.createEntityManagerFactory("CA2PU");  
+        String[] args = new String[0];
+        CreateTables.main(args);
     }
 
-    public static EntityManager getEntityManager() {
+    public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
-    @BeforeClass
-    public static void setup() {
-        String[] args = new String[0];
-        CreateTables.main(args);
+    @Before
+    public void setup() {
         try {
+            f = new Facade();
+            emf = Persistence.createEntityManagerFactory("CA2PU");
             em = getEntityManager();
         } catch (Exception e) {
-            System.out.println("Error in creating entity manager");
+            System.out.println("Error in setup");
 
         }
     }
 
-    @AfterClass
-    public static void teardown() {
+    @After
+    public void teardown() {
         try {
             em.close();
         } catch (Exception e) {
@@ -61,14 +61,24 @@ public class JUnitTest {
     }
 
     @Test
-    public void createPerson() {
+    public void createPerson() throws InterruptedException {
+//        Thread.sleep(1000);
         Person p = f.CreatePerson("Test", "Test", "Test");
+        p = em.find(Person.class, p.getId());
+        em.getTransaction().begin();
+        em.remove(p);
+        em.getTransaction().commit();
         assertTrue(1 == p.getId());
     }
 
     @Test
-    public void createCompany() {
+    public void createCompany() throws InterruptedException {
+//        Thread.sleep(1000);
         Company c = f.createCompany("Test", "Test", 1, 1, 1, "Test");
+        c = em.find(Company.class, c.getId());
+        em.getTransaction().begin();
+        em.remove(c);
+        em.getTransaction().commit();
         assertTrue(1 == c.getId());
     }
 //
@@ -85,5 +95,4 @@ public class JUnitTest {
 //        Person pp = f.getPersonFromPhone(1);
 //        assertTrue(1==pp.getId());
 //    }
-
 }
