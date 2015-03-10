@@ -9,14 +9,12 @@ import entity.Address;
 import entity.CityInfo;
 import entity.Company;
 import entity.Hobby;
-import entity.InfoEntity;
 import entity.Person;
 import entity.Phone;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 /**
@@ -64,7 +62,7 @@ public class Facade {
     }
 
     public Company getCompanyFromcvr(int CVR) {
-                EntityManager em = null;
+        EntityManager em = null;
         try {
             em = getEntityManager();
             Company c = em.find(Company.class, CVR);
@@ -77,11 +75,11 @@ public class Facade {
     }
 
     public List<Person> getAllPersonsWithHobby(Hobby hobby) {//not ready
-                EntityManager em = null;
+        EntityManager em = null;
         try {
             em = getEntityManager();
             TypedQuery<Hobby> q = em.createQuery("select p from Hobby p", Hobby.class);
-            
+
             return null;
         } finally {
             if (em != null) {
@@ -117,10 +115,10 @@ public class Facade {
     }
 
     public Person CreatePerson(String fName, String lName, String email) {
-         EntityManager em = null; 
+        EntityManager em = null;
         try {
             em = getEntityManager();
-            Person p = new Person(fName,lName);
+            Person p = new Person(fName, lName);
             p.setEmail(email);
             em.getTransaction().begin();
             em.persist(p);
@@ -137,7 +135,7 @@ public class Facade {
         EntityManager em = null;
         try {
             em = getEntityManager();
-            Company c = new Company(name,description,cvr,NumEmployees,marketValue);
+            Company c = new Company(name, description, cvr, NumEmployees, marketValue);
             c.setEmail(email);
             em.getTransaction().begin();
             em.persist(c);
@@ -166,7 +164,7 @@ public class Facade {
             }
         }
     }
-    
+
     public Company addPhoneCompany(Company company, String description, int number) {
         EntityManager em = null;
         try {
@@ -188,7 +186,7 @@ public class Facade {
         EntityManager em = null;
         try {
             em = getEntityManager();
-            Address address = new Address(street,info);
+            Address address = new Address(street, info);
             p.setAddress(address);
             address.addPerson(p);
             em.getTransaction().begin();
@@ -202,12 +200,12 @@ public class Facade {
             }
         }
     }
-    
+
     public Company createAddressForPerson(Company c, String street, String info) {
         EntityManager em = null;
         try {
             em = getEntityManager();
-            Address address = new Address(street,info);
+            Address address = new Address(street, info);
             c.setAddress(address);
             address.addCompany(c);
             em.getTransaction().begin();
@@ -226,7 +224,49 @@ public class Facade {
         return null;
     }
 
-    public void deletePerson(int PersonId) {
+    public boolean deletePerson(int personId) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            Person p = em.find(Person.class, personId);
+            System.out.println("find persom");
+//            em.getTransaction().begin();
+            System.out.println("transaction begin");
+            List<Phone> phones = p.getPhones();
+            System.out.println("get phone list, size: " + phones.size());
+            p.getPhones().clear();
+            System.out.println("phonelist clear");
+//            if (p.getAddress().getPersons().contains(p)) {
+//                p.getAddress().removePerson(p);
+//            }
+            System.out.println("address remove person");
+            List<Hobby> hobbies = p.getHobbies();
+            System.out.println("get hobby list");
+            p.getHobbies().clear();
+            System.out.println("hobby list clear");
+            em.merge(p);
+            System.out.println("merge p");
+            for (Hobby hb : hobbies) {
+                System.out.println("hobby loop");
+                hb.removePerson(p);
+                em.merge(hb);
+            }
+            for (Phone ph : phones) {
+                System.out.println("phone loop");
+                em.remove(ph);
+            }
+            em.remove(p);
+            System.out.println("remove person");
+//            em.getTransaction().commit();
+            System.out.println("commit finished");
+            return true;
+        } catch (Exception e) {
+            return false;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
     }
 
     public void deleteCompany(int CompanyId) {
@@ -247,13 +287,7 @@ public class Facade {
     public void deleteHobbies(int hobbyId) {
     }
 
-
-    
-    
-    
     //--------------------Andre metoder------------------------------------//
-    
-    
     public List<Person> getAllPersons() {
         EntityManager em = null;
         try {
@@ -266,7 +300,7 @@ public class Facade {
             }
         }
     }
-    
+
     public List<Company> getAllCompanies() {
         EntityManager em = null;
         try {
@@ -279,7 +313,7 @@ public class Facade {
             }
         }
     }
-    
+
     public Company getCompany(int id) {
         EntityManager em = null;
         try {

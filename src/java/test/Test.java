@@ -42,6 +42,8 @@ public class Test {
         for (int i = 0; i < listC.size(); i++) {
             System.out.println("       " + listC.get(i).getName());
         }
+        
+        System.out.println(facade.deletePerson(1));
     }
     
 }
