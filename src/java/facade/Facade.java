@@ -83,7 +83,7 @@ public class Facade {
             List<Hobby> hobbies = q.getResultList();
             List<Person> listP = null;
             for (Hobby h : hobbies) {
-                if (h == hobby) {
+                if (h.getName().equals(hobby.getName())) {
                     listP = h.getPersons();
                 }
             }
@@ -142,7 +142,7 @@ public class Facade {
         }
     }
 
-    public List<Company> getListOfCompaniesWithXEmployes(int EmpCount) {//not ready
+    public List<Company> getListOfCompaniesWithXEmployes(int EmpCount) {//not ready WHERE
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -414,7 +414,7 @@ public class Facade {
             em = getEntityManager();
             Person p = em.find(Person.class, personID);
             p.getAddress().getPersons().remove(p);
-            p = createAddressForPerson(p,street,info,zip);
+            p = createAddressForPerson(p, street, info, zip);
             em.getTransaction().begin();
             em.merge(p);
             em.getTransaction().commit();
@@ -425,14 +425,14 @@ public class Facade {
             }
         }
     }
-    
+
     public Company changeAddressFromCompany(int companyID, String street, String info, int zip) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             Company c = em.find(Company.class, companyID);
             c.getAddress().getPersons().remove(c);
-            c = createAddressForCompany(c,street,info,zip);
+            c = createAddressForCompany(c, street, info, zip);
             em.getTransaction().begin();
             em.merge(c);
             em.getTransaction().commit();
@@ -500,7 +500,7 @@ public class Facade {
             em.remove(hobby);
             em.getTransaction().commit();
             return true;
-        }catch(Exception e){
+        } catch (Exception e) {
             return false;
         } finally {
             if (em != null) {
@@ -542,6 +542,26 @@ public class Facade {
             em = getEntityManager();
             Company c = em.find(Company.class, id);
             return c;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+
+    public Person addHobbyToPerson(Person person, Hobby hobby) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            Person p = em.find(Person.class, person.getId());
+            Hobby h = em.find(Hobby.class, hobby.getId());
+            em.getTransaction().begin();
+            p.addHobby(hobby);
+            h.addPerson(person);
+            em.merge(p);
+            em.merge(h);
+            em.getTransaction().commit();
+            return p;
         } finally {
             if (em != null) {
                 em.close();

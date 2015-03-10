@@ -6,14 +6,15 @@
 package JUnit;
 
 import entity.Company;
+import entity.Hobby;
 import entity.Person;
 import facade.Facade;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import test.CreateTables;
@@ -101,10 +102,22 @@ public class JUnitTest {
 
     @Test
     public void getCompanyFromcvr() {
+        //method not made yet
     }
 
     @Test
     public void getAllPersonsWithHobby() {
+        Person p = f.CreatePerson("getAllPersonsWithHobby", "test", "test");
+        Hobby h = f.createHobbies("getAllPersonsWithHobby", "test");
+        p = f.addHobbyToPerson(p, h);
+        List<Person> listp = f.getAllPersonsWithHobby(h);
+        p = em.find(Person.class, p.getId());
+        assertEquals(p.getId(),listp.get(0).getId());
+    }
+
+    @Test
+    public void addHobbyToPerson(){
+        
     }
 
     @Test
@@ -133,10 +146,16 @@ public class JUnitTest {
 
     @Test
     public void getListOfCompaniesWithXEmployes() {
+        Company c = f.createCompany("getListOfCompaniesWithXEmployes", "test", 25, 25, 25, "Test");
+        List<Company> clist = f.getListOfCompaniesWithXEmployes(25);
+        assertEquals(c.getNumEmployees(),clist.get(0).getNumEmployees());
     }
 
     @Test
     public void addPhoneCompany() {
+        Company c = f.createCompany("addPhoneCompany", "test", 22, 22, 22, "Test");
+        Company c1 = f.addPhoneCompany(c, "addPhoneCompany", 75);
+        assertEquals(75, c1.getPhones().get(0).getNumber());
     }
 
     @Test
