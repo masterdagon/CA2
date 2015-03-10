@@ -38,8 +38,6 @@ public class Address implements Serializable {
     private CityInfo cityInfo;
 
     public Address() {
-        this.companies = new ArrayList();
-        this.persons = new ArrayList();
     }
 
     public Address(String Street, String additionalinfo, CityInfo cityInfo) {

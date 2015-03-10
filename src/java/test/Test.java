@@ -28,6 +28,12 @@ public class Test {
         System.out.println("addPhonePerson : PhoneList = " + p.getPhones().size());
         p = facade.getPersonFromPhone(12345678);
         System.out.println("getPersonFromPhone : Person number = " + p.getPhones().get(0).getNumber());
+        p = facade.createAddressForPerson(p, "Thisway", "no Info", 3390);
+        System.out.println("createAddressForPerson: Zipcode= " + p.getAddress().getCityInfo().getZipCode());
+        System.out.println("getAllpersontoAddres: All persons below size = "+p.getAddress().getPersons().size());
+        for (int i = 0; i < p.getAddress().getPersons().size(); i++) {
+            System.out.println("       " + p.getAddress().getPersons().get(i).getLastName());
+        }
         
         System.out.println("");
         System.out.println("------------------------------------------");
@@ -43,7 +49,20 @@ public class Test {
             System.out.println("       " + listC.get(i).getName());
         }
         
+        System.out.println("");
+        System.out.println("------------------------------------------");
+        System.out.println("");
+        
         System.out.println(facade.deletePerson(1));
+        
+        System.out.println("");
+        System.out.println("------------------------------------------");
+        System.out.println("");
+        List<Person> pers = facade.getAllPersons();
+        System.out.println("Persons size ="+pers.size());
+        for (Person per : pers) {
+            System.out.println("         "+per.getLastName());
+        }
     }
     
 }

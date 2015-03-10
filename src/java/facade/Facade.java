@@ -18,7 +18,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
-
 /**
  *
  * @author Muggi
@@ -64,7 +63,7 @@ public class Facade {
     }
 
     public Company getCompanyFromcvr(int CVR) {//not ready
-                EntityManager em = null;
+        EntityManager em = null;
         try {
             em = getEntityManager();
             Company c = em.find(Company.class, CVR);
@@ -203,11 +202,13 @@ public class Facade {
         EntityManager em = null;
         try {
             em = getEntityManager();
-            Address address = new Address(street,info,em.find(CityInfo.class, zip));
+            CityInfo cityInfo = em.find(CityInfo.class, zip);
+            Address address = new Address(street, info, cityInfo);
+            cityInfo.addAddress(address);
             p.setAddress(address);
             address.addPerson(p);
             em.getTransaction().begin();
-            em.persist(address);
+            em.merge(cityInfo);
             em.merge(p);
             em.getTransaction().commit();
             return p;
@@ -217,12 +218,12 @@ public class Facade {
             }
         }
     }
-    
+
     public Company createAddressForCompany(Company c, String street, String info, int zip) {
         EntityManager em = null;
         try {
             em = getEntityManager();
-            Address address = new Address(street,info,em.find(CityInfo.class, zip));
+            Address address = new Address(street, info, em.find(CityInfo.class, zip));
             c.setAddress(address);
             address.addCompany(c);
             em.getTransaction().begin();
@@ -246,38 +247,45 @@ public class Facade {
         try {
             em = getEntityManager();
             Person p = em.find(Person.class, personId);
-            System.out.println("find persom");
-//            em.getTransaction().begin();
-            System.out.println("transaction begin");
             List<Phone> phones = p.getPhones();
-            System.out.println("get phone list, size: " + phones.size());
-            p.getPhones().clear();
-            System.out.println("phonelist clear");
-//            if (p.getAddress().getPersons().contains(p)) {
-//                p.getAddress().removePerson(p);
-//            }
-            System.out.println("address remove person");
             List<Hobby> hobbies = p.getHobbies();
-            System.out.println("get hobby list");
-            p.getHobbies().clear();
-            System.out.println("hobby list clear");
-            em.merge(p);
-            System.out.println("merge p");
+            
+            if (!p.getAddress().getPersons().isEmpty()) {
+                if (p.getAddress().getPersons().contains(p)) {
+                    p.getAddress().removePerson(p);
+                }
+            } else {
+                System.out.println("addres emty");
+            }
+
+            em.getTransaction().begin();
             for (Hobby hb : hobbies) {
-                System.out.println("hobby loop");
                 hb.removePerson(p);
                 em.merge(hb);
             }
+            System.out.println(phones.size());
             for (Phone ph : phones) {
-                System.out.println("phone loop");
                 em.remove(ph);
             }
+
+            p.getPhones().clear();
+            p.getHobbies().clear();
+            em.merge(p);
             em.remove(p);
-            System.out.println("remove person");
-//            em.getTransaction().commit();
-            System.out.println("commit finished");
+            em.getTransaction().commit();
             return true;
+//            System.out.println("address remove person");
+//            System.out.println("merge p");
+//            System.out.println("get hobby list");
+//            System.out.println("hobby list clear");
+//            System.out.println("remove person");
+//            System.out.println("commit finished");
+//            System.out.println("phonelist clear");
+//            System.out.println("transaction begin");
+//            System.out.println("find persom");
+//            System.out.println("get phone list, size: " + phones.size());
         } catch (Exception e) {
+            System.out.println(e);
             return false;
         } finally {
             if (em != null) {
