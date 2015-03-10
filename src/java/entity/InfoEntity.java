@@ -30,17 +30,15 @@ public class InfoEntity implements Serializable {
     private Integer id;
     
     private String email;
-    @OneToMany(mappedBy = "infoEntity")
-    private List<Phone> phones;
+   
     @ManyToOne
     private Address address;
 
     public InfoEntity() {
-        this.phones = new ArrayList();
+        
     }
 
     public InfoEntity(String email) {
-        this.phones = new ArrayList();
         this.email = email;
     }
     
@@ -50,18 +48,6 @@ public class InfoEntity implements Serializable {
 
     public void setAddress(Address address) {
         this.address = address;
-    }
-    
-    public List<Phone> getPhones(){
-        return phones;
-    }
-    
-    public void addPhone(Phone phone){
-        phones.add(phone);
-    }
-    
-    public void removePhone(Phone phone){
-        phones.remove(phone);
     }
     
     public Integer getId() {

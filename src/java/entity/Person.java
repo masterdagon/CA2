@@ -11,6 +11,7 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -23,17 +24,35 @@ public class Person extends InfoEntity implements Serializable {
     private String lastName;
     @ManyToMany
     private List<Hobby> hobbies = new ArrayList();
+
     @ManyToOne
     private Address address;
+
+    @OneToMany(mappedBy = "person")
+    private List<Phone> phones;
+
     
     public Person (String fName, String lName){
-        firstName = fName;
-        lastName = lName;
+        this.firstName = fName;
+        this.lastName = lName;
+        this.phones = new ArrayList();
     }
 
     public Person() {
     }
 
+    public List<Phone> getPhones() {
+        return phones;
+    }
+
+    public void addPhone(Phone phone){
+        phones.add(phone);
+    }
+    
+    public void removePhone(Phone phone){
+        phones.remove(phone);
+    }
+    
     public List<Hobby> getHobbies(){
         return hobbies;
     }

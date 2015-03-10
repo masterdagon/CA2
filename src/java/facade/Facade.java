@@ -16,6 +16,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 /**
@@ -34,11 +35,12 @@ public class Facade {
         return emf.createEntityManager();
     }
 
-    public Person getPersonFromPhone(int PhoneNumber) {
+    public Person getPersonFromPhone(int phoneNumber) {
         EntityManager em = null;
         try {
             em = getEntityManager();
-            Person p = em.find(Person.class, PhoneNumber);
+            Phone phone = em.find(Phone.class, phoneNumber);
+            Person p = phone.getPerson();
             return p;
         } finally {
             if (em != null) {
@@ -77,8 +79,9 @@ public class Facade {
                 EntityManager em = null;
         try {
             em = getEntityManager();
-            TypedQuery<Person> q = em.createQuery("select p from Person p", Person.class);
-            return q.getResultList();
+            TypedQuery<Hobby> q = em.createQuery("select p from Hobby p", Hobby.class);
+            
+            return null;
         } finally {
             if (em != null) {
                 em.close();
@@ -146,14 +149,14 @@ public class Facade {
         }
     }
 
-    public Person addPhonePerson(Person person, String description, String number) {
+    public Person addPhonePerson(Person person, String description, int number) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             Phone phone = new Phone(person, number, description);
             person.addPhone(phone);
             em.getTransaction().begin();
-            em.persist(person);
+            em.merge(person);
             em.getTransaction().commit();
             return person;
         } finally {
@@ -163,7 +166,7 @@ public class Facade {
         }
     }
     
-    public Company addPhoneCompany(Company company, String description, String number) {
+    public Company addPhoneCompany(Company company, String description, int number) {
         EntityManager em = null;
         try {
             em = getEntityManager();

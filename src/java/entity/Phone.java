@@ -18,42 +18,51 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 public class Phone implements Serializable {
-    @ManyToOne
-    private InfoEntity infoEntity;
-    private String number;
-    private String description;
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private int number;
+    private String description;
+    @ManyToOne
+    private Person person;
+    @ManyToOne
+    private Company company;
+    
     public Phone() {
     }
 
-    public Phone(Person person, String number, String description) {
-        this.infoEntity = infoEntity;
+    public Phone(Person person, int number, String description) {
+        this.person = person;
         this.number = number;
         this.description = description;
     }
     
-    public Phone(Company company, String number, String description) {
-        this.infoEntity = infoEntity;
+    public Phone(Company company, int number, String description) {
+        this.company = company;
         this.number = number;
         this.description = description;
     }
 
-    public InfoEntity getInfoEntity() {
-        return infoEntity;
+    public Person getPerson() {
+        return person;
     }
 
-    public void setInfoEntity(InfoEntity infoEntity) {
-        this.infoEntity = infoEntity;
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
-    public String getNumber() {
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+   
+    public int getNumber() {
         return number;
     }
 
-    public void setNumber(String number) {
+    public void setNumber(int number) {
         this.number = number;
     }
 
@@ -64,13 +73,4 @@ public class Phone implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-    
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-    
 }
