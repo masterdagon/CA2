@@ -42,8 +42,6 @@ public class JUnitTest {
     public void setup() {
         String[] args = new String[0];
         CreateTables.main(args);
-        p = f.CreatePerson("Test", "Test", "Test");
-        c = f.createCompany("Test", "Test", 1, 1, 1, "Test");
         try {
             em = getEntityManager();
         } catch (Exception e) {
@@ -64,28 +62,28 @@ public class JUnitTest {
 
     @Test
     public void createPerson() {
-        p = f.CreatePerson("Test2", "Test2", "Test2");
-        assertTrue(2 == p.getId());
+        Person p = f.CreatePerson("Test", "Test", "Test");
+        assertTrue(1 == p.getId());
     }
 
     @Test
     public void createCompany() {
-        c = f.createCompany("Test2", "Test2", 1, 1, 1, "Test2");
-        assertTrue(2 == c.getId());
+        Company c = f.createCompany("Test", "Test", 1, 1, 1, "Test");
+        assertTrue(1 == c.getId());
     }
-
-    @Test
-    public void addPhonePerson() {
-        f.addPhonePerson(p, "Test", 5);
-        p = em.find(Person.class, 1);
-        assertTrue(5==p.getPhones().get(0).getNumber());
-    }
-
-    @Test
-    public void getPersonFromPhone() {
-        f.addPhonePerson(p, "Test", 5);
-        Person pp = f.getPersonFromPhone(1);
-        assertTrue(1==pp.getId());
-    }
+//
+//    @Test
+//    public void addPhonePerson() {
+//        f.addPhonePerson(p, "Test", 5);
+//        p = em.find(Person.class, 1);
+//        assertTrue(5==p.getPhones().get(0).getNumber());
+//    }
+//
+//    @Test
+//    public void getPersonFromPhone() {
+//        f.addPhonePerson(p, "Test", 5);
+//        Person pp = f.getPersonFromPhone(1);
+//        assertTrue(1==pp.getId());
+//    }
 
 }
