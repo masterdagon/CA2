@@ -267,7 +267,6 @@ public class Facade {
             for (Phone ph : phones) {
                 em.remove(ph);
             }
-
             p.getPhones().clear();
             p.getHobbies().clear();
             em.merge(p);
@@ -332,6 +331,27 @@ public class Facade {
     }
 
     public void deletePhone(int PhoneNumber) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            Phone phone = em.find(Phone.class, PhoneNumber);
+            if(phone.getCompany() != null){
+                if(phone.getCompany().getPhones().contains(phone)){
+                    phone.getCompany().removePhone(phone);
+                }
+            }else if(phone.getPerson() != null){
+                if(phone.getPerson().getPhones().contains(phone)){
+                    phone.getPerson().removePhone(phone);
+                }
+            }
+            em.getTransaction().begin();
+            em.remove(phone);
+            em.getTransaction().commit();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
     }
 
     public void removeAddress(int addressId) {
