@@ -69,6 +69,12 @@ public class Test {
             System.out.println("       " + c.getPhones().get(i).getNumber());
         }
         
+        System.out.println("");
+        System.out.println("------------------------------------------");
+        System.out.println("REMOVE COMPANY:");
+        Company c1 = facade.createCompany("McRonalds", "Dette er ikke McDonalds", 13597562, 10, 999, "mcronald@funfun.com");
+        System.out.println(c1.getId());
+        System.out.println(facade.deleteCompany(2));
     }
     
 }

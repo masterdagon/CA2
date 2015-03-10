@@ -300,8 +300,8 @@ public class Facade {
             Company c = em.find(Company.class, companyId);
             List<Phone> phones = c.getPhones();
             
-            if (!c.getAddress().getPersons().isEmpty()) {
-                if (c.getAddress().getPersons().contains(c)) {
+            if (!c.getAddress().getCompanies().isEmpty()) {
+                if (c.getAddress().getCompanies().contains(c)) {
                     c.getAddress().removeCompany(c);
                 }
             } else {
