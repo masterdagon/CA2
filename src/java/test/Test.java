@@ -63,6 +63,12 @@ public class Test {
         System.out.println("------------------------------------------");
         System.out.println("");
         
+        facade.deletePhone(87654321);
+        System.out.println("getAllCompaniesphones: All phones below");
+        for (int i = 0; i < c.getPhones().size(); i++) {
+            System.out.println("       " + c.getPhones().get(i).getNumber());
+        }
+        
     }
     
 }
