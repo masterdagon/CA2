@@ -11,9 +11,9 @@ import facade.Facade;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import org.junit.After;
+import org.junit.AfterClass;
 import static org.junit.Assert.assertTrue;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import test.CreateTables;
 
@@ -24,22 +24,22 @@ import test.CreateTables;
 public class JUnitTest {
 
     private Facade f;
-    private EntityManagerFactory emf;
-    private EntityManager em;
+    static private EntityManagerFactory emf;
+    static private EntityManager em;
     private Person p;
     private Company c;
 
     public JUnitTest() {
         f = new Facade();
-        emf = Persistence.createEntityManagerFactory("CA2PU");
+        emf = Persistence.createEntityManagerFactory("CA2PU");  
     }
 
-    public EntityManager getEntityManager() {
+    public static EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
-    @Before
-    public void setup() {
+    @BeforeClass
+    public static void setup() {
         String[] args = new String[0];
         CreateTables.main(args);
         try {
@@ -50,8 +50,8 @@ public class JUnitTest {
         }
     }
 
-    @After
-    public void teardown() {
+    @AfterClass
+    public static void teardown() {
         try {
             em.close();
         } catch (Exception e) {
