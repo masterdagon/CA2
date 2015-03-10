@@ -79,14 +79,14 @@ public class JUnitTest {
     @Test
     public void addPhonePerson() {
         Person p = f.CreatePerson("addPhonePerson", "Test", "Test");
-        Person p1 = f.addPhonePerson(p, "Test", 5);
+        Person p1 = f.addPhonePerson(p, "addPhonePerson", 5);
         assertEquals(5,p1.getPhones().get(0).getNumber());
     }
 
     @Test
     public void getPersonFromPhone() {
         Person p = f.CreatePerson("getPersonFromPhone", "Test", "Test");
-        f.addPhonePerson(p, "Test", 555);
+        f.addPhonePerson(p, "getPersonFromPhone", 555);
         Person pp = f.getPersonFromPhone(555);
         assertEquals(pp.getPhones().get(0).getNumber(),555);
     }
@@ -174,5 +174,10 @@ public class JUnitTest {
     }
     @Test
     public void getCompany() {
+    public void getCompanyFromPhone(){
+        Company c = f.createCompany("getCompanyFromPhone", "test", 1, 1, 1,"Test");
+        f.addPhoneCompany(c, "getCompanyFromPhone", 77);
+        Company cc = f.getCompanyFromPhone(77);
+        assertEquals(c.getPhones().get(0).getNumber(),cc.getPhones().get(0).getNumber());
     }
 }
