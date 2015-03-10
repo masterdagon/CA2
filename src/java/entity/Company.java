@@ -21,10 +21,6 @@ import javax.persistence.OneToMany;
  */
 @Entity
 public class Company extends InfoEntity implements Serializable {
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
     private String name;
     private String description;
     private int cvr;
@@ -59,15 +55,6 @@ public class Company extends InfoEntity implements Serializable {
         phones.remove(phone);
     }
     
-    
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }

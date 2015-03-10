@@ -244,7 +244,6 @@ public class Facade {
         try {
             em = getEntityManager();
             TypedQuery<Company> q = em.createQuery("select c from Company c", Company.class);
-            q.setParameter("p", "Company");
             return q.getResultList();
         } finally {
             if (em != null) {

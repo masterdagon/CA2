@@ -23,15 +23,18 @@ public class Test {
         Person p = facade.CreatePerson("Muggi","Dagon","666@gmail.com");
         List<Person> listP = facade.getAllPersons();
         System.out.println(listP.get(0).getFirstName());
-        p = facade.addPhonePerson(p,"home", 12345678);
+        facade.addPhonePerson(p,"home", 12345678);
         p = facade.getPersonFromPhone(12345678);
         System.out.println(p.getPhones().get(0).getNumber());
         
-//        facade.createCompany("Hansens Hardware", "Billigt hardware og andet",221866, 23, 500000,"hh@hh.dk");
-//        List<Company> listC = facade.getAllCompanies();
-//        System.out.println(listC.get(1).getName());
-//        Company c = facade.getCompany(2);
-//        System.out.println(c.getDescription());
+        Company c = facade.createCompany("Hansens Hardware", "Billigt hardware og andet",221866, 23, 500000,"hh@hh.dk");
+        List<Company> listC = facade.getAllCompanies();
+        for (int i = 0; i < args.length; i++) {
+            System.out.println(listC.get(i).getName());
+        }
+        System.out.println(c.getId());
+        c = facade.getCompany(c.getId());
+        System.out.println(c.getDescription());
     }
     
 }
