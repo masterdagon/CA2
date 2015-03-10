@@ -89,7 +89,7 @@ public class Facade {
         }
     }
 
-    public List<Person> getAllPersonsInCity(int zipcode) {//ready
+    public List<Person> getAllPersonsInCity(int zipcode) {//finnish
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -112,7 +112,7 @@ public class Facade {
         return 0;
     }
 
-    public List<CityInfo> getListOfZipCodes() {
+    public List<CityInfo> getListOfZipCodes() {//finnish
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -139,7 +139,7 @@ public class Facade {
         }
     }
 
-    public Person CreatePerson(String fName, String lName, String email) {
+    public Person CreatePerson(String fName, String lName, String email) {//finnish
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -156,7 +156,7 @@ public class Facade {
         }
     }
 
-    public Company createCompany(String name, String description, int cvr, int NumEmployees, int marketValue, String email) {
+    public Company createCompany(String name, String description, int cvr, int NumEmployees, int marketValue, String email) {//finnish
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -173,7 +173,7 @@ public class Facade {
         }
     }
 
-    public Person addPhonePerson(Person person, String description, int number) {
+    public Person addPhonePerson(Person person, String description, int number) {//finnish
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -190,7 +190,7 @@ public class Facade {
         }
     }
 
-    public Company addPhoneCompany(Company company, String description, int number) {
+    public Company addPhoneCompany(Company company, String description, int number) {//finnish
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -207,7 +207,7 @@ public class Facade {
         }
     }
 
-    public Person createAddressForPerson(Person p, String street, String info, int zip) {
+    public Person createAddressForPerson(Person p, String street, String info, int zip) {//finnish
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -228,7 +228,7 @@ public class Facade {
         }
     }
 
-    public Company createAddressForCompany(Company c, String street, String info, int zip) {
+    public Company createAddressForCompany(Company c, String street, String info, int zip) {//finnish
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -251,7 +251,7 @@ public class Facade {
         return null;
     }
 
-    public boolean deletePerson(int personId) {
+    public boolean deletePerson(int personId) {//finnish
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -283,16 +283,6 @@ public class Facade {
             em.remove(p);
             em.getTransaction().commit();
             return true;
-//            System.out.println("address remove person");
-//            System.out.println("merge p");
-//            System.out.println("get hobby list");
-//            System.out.println("hobby list clear");
-//            System.out.println("remove person");
-//            System.out.println("commit finished");
-//            System.out.println("phonelist clear");
-//            System.out.println("transaction begin");
-//            System.out.println("find persom");
-//            System.out.println("get phone list, size: " + phones.size());
         } catch (Exception e) {
             System.out.println(e);
             return false;
@@ -303,7 +293,7 @@ public class Facade {
         }
     }
 
-    public boolean deleteCompany(int companyId) {
+    public boolean deleteCompany(int companyId) {//finnish
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -344,7 +334,7 @@ public class Facade {
         }
     }
 
-    public Person deletePersonPhone(int PhoneNumber) {
+    public Person deletePersonPhone(int PhoneNumber) {//finnish
         EntityManager em = null;
         Person p = null;
         try {
@@ -368,7 +358,7 @@ public class Facade {
         }
     }
 
-    public Company deleteCompanyPhone(int PhoneNumber) {
+    public Company deleteCompanyPhone(int PhoneNumber) {//finnish
         EntityManager em = null;
         Company c = null;
         try {
@@ -392,10 +382,63 @@ public class Facade {
         }
     }
 
-    public void removeAddress(int addressId) {
+    public Person changeAddressFromPerson(int personID, String street, String info, int zip) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            Person p = em.find(Person.class, personID);
+            p.getAddress().getPersons().remove(p);
+            p = createAddressForPerson(p,street,info,zip);
+            em.getTransaction().begin();
+            em.merge(p);
+            em.getTransaction().commit();
+            return p;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+    
+    public Company changeAddressFromCompany(int companyID, String street, String info, int zip) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            Company c = em.find(Company.class, companyID);
+            c.getAddress().getPersons().remove(c);
+            c = createAddressForCompany(c,street,info,zip);
+            em.getTransaction().begin();
+            em.merge(c);
+            em.getTransaction().commit();
+            return c;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
     }
 
-    public void deleteAddress(int addressId) {
+    public boolean deleteAddress(int addressId) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            Address address = em.find(Address.class, addressId);
+            em.getTransaction().begin();
+            for (Person p : address.getPersons()) {
+                p.setAddress(null);
+                em.merge(p);
+            }
+            em.remove(address);
+            em.getTransaction().commit();
+            return true;
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
     }
 
     public void removeHobbies(int hobbyId) {
