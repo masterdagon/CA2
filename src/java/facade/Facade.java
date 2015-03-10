@@ -183,16 +183,18 @@ public class Facade {
         }
     }
 
-    public Address createAddressForPerson(Person p, String street, String info) {
+    public Person createAddressForPerson(Person p, String street, String info) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             Address address = new Address(street,info);
+            p.setAddress(address);
             address.addPerson(p);
             em.getTransaction().begin();
-            em.merge(address);
+            em.persist(address);
+            em.merge(p);
             em.getTransaction().commit();
-            return address;
+            return p;
         } finally {
             if (em != null) {
                 em.close();
@@ -244,7 +246,6 @@ public class Facade {
         try {
             em = getEntityManager();
             TypedQuery<Company> q = em.createQuery("select c from Company c", Company.class);
-            q.setParameter("p", "Company");
             return q.getResultList();
         } finally {
             if (em != null) {
