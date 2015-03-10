@@ -20,6 +20,7 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+
 /**
  *
  * @author Muggi
@@ -64,7 +65,7 @@ public class Facade {
         }
     }
 
-    public Company getCompanyFromcvr(int CVR) {
+    public Company getCompanyFromcvr(int CVR) {//not ready
                 EntityManager em = null;
         try {
             em = getEntityManager();
@@ -91,7 +92,7 @@ public class Facade {
         }
     }
 
-    public List<Person> getAllPersonsInCity(int zipcode) {
+    public List<Person> getAllPersonsInCity(int zipcode) {//ready
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -200,11 +201,11 @@ public class Facade {
         }
     }
 
-    public Person createAddressForPerson(Person p, String street, String info) {
+    public Person createAddressForPerson(Person p, String street, String info, int zip) {
         EntityManager em = null;
         try {
             em = getEntityManager();
-            Address address = new Address(street,info);
+            Address address = new Address(street,info,em.find(CityInfo.class, zip));
             p.setAddress(address);
             address.addPerson(p);
             em.getTransaction().begin();
@@ -219,11 +220,11 @@ public class Facade {
         }
     }
     
-    public Company createAddressForPerson(Company c, String street, String info) {
+    public Company createAddressForCompany(Company c, String street, String info, int zip) {
         EntityManager em = null;
         try {
             em = getEntityManager();
-            Address address = new Address(street,info);
+            Address address = new Address(street,info,em.find(CityInfo.class, zip));
             c.setAddress(address);
             address.addCompany(c);
             em.getTransaction().begin();

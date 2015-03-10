@@ -42,11 +42,12 @@ public class Address implements Serializable {
         this.persons = new ArrayList();
     }
 
-    public Address(String Street, String additionalinfo) {
+    public Address(String Street, String additionalinfo, CityInfo cityInfo) {
         this.companies = new ArrayList();
         this.persons = new ArrayList();
         this.Street = Street;
         this.additionalinfo = additionalinfo;
+        this.cityInfo = cityInfo;
     }
 
     public List<Company> getCompanies() {
