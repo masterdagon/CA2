@@ -90,4 +90,89 @@ public class JUnitTest {
         Person pp = f.getPersonFromPhone(555);
         assertEquals(pp.getPhones().get(0).getNumber(),555);
     }
+    
+    @Test
+    public void getCompanyFromcvr() {
+    }
+    
+    @Test
+    public void getAllPersonsWithHobby() {
+    }
+    
+    @Test
+    public void getAllPersonsInCity() {
+    }
+    
+    @Test
+    public void getCountOfPeopleWithHobby() {
+    }
+    
+    @Test
+    public void getListOfZipCodes() {
+    }
+    
+    @Test
+    public void getListOfCompaniesWithXEmployes() {
+    }
+    
+    @Test
+    public void addPhoneCompany() {
+    }
+    
+    @Test
+    public void createAddressForPerson() {
+    }
+    
+    @Test
+    public void createAddressForCompany() {
+    }
+    
+    @Test
+    public void createHobbies() {
+    }
+    
+    @Test
+    public void deletePerson() {
+    }
+    
+    @Test
+    public void deleteCompany() {
+    }
+    
+    @Test
+    public void deletePersonPhone() {
+    }
+    
+    @Test
+    public void deleteCompanyPhone() {
+    }
+    
+    @Test
+    public void changeAddressFromPerson() {
+    }
+    
+    @Test
+    public void changeAddressFromCompany() {
+    }
+    
+    @Test
+    public void deleteAddress() {
+    }
+    
+    @Test
+    public void removeHobbyFromPerson() {
+    }
+    
+    @Test
+    public void deleteHobbyFromDB() {
+    }
+    @Test
+    public void getAllPersons() {
+    }
+    @Test
+    public void getAllCompanies() {
+    }
+    @Test
+    public void getCompany() {
+    }
 }
