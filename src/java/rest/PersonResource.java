@@ -112,7 +112,7 @@ public class PersonResource {
         f.addPhonePerson(p, jo.get("description").getAsString(), jo.get("number").getAsInt());
 
     }
-    
+
     @DELETE
     @Consumes("application/json")
     @Path("phone")
@@ -174,25 +174,35 @@ public class PersonResource {
         String jsonString = gson.toJson(jo);
         return jsonString;
     }
-    
+
     @POST
     @Consumes("application/json")
     @Path("hobby/create")
     public void createHobby(String content) { //json: name, description
         JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
         f.createHobbies(jo.get("name").getAsString(), jo.get("description").getAsString());
-        
+
     }
-    
+
     @GET
     @Produces("application/json")
     @Path("hobby/count/{id}")
-    public String getCountOfPeopleWithHobby(@PathParam("id") int id){
+    public String getCountOfPeopleWithHobby(@PathParam("id") int id) {
         Hobby h = f.getHobbiesFromID(id);
         int count = f.getCountOfPeopleWithHobby(h);
         String json = String.valueOf(count);
         return gson.toJson(json);
-        
+
+    }
+
+    @POST
+    @Consumes("application/json")
+    @Path("hobby/add")
+    public void addHobbyToPerson(String content) { // json: personid, hobbyid
+        JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
+        Person p = f.getPerson(jo.get("personid").getAsInt());
+        Hobby h = f.getHobbiesFromID(jo.get("hobbyid").getAsInt());
+        f.addHobbyToPerson(p, h);
     }
     
     @GET
@@ -210,4 +220,5 @@ public class PersonResource {
     }
     
     
+
 }

@@ -519,7 +519,7 @@ public class Facade {
         }
     }
 
-    public Person addHobbyToPerson(Person person, Hobby hobby) {
+    public Person addHobbyToPerson(Person person, Hobby hobby) { //finished, not tested with postman
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -564,6 +564,8 @@ public class Facade {
             }
         }
     }
+    
+    
     
 
     //--------------------Andre metoder------------------------------------//
