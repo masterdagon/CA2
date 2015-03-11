@@ -450,7 +450,7 @@ public class Facade {
         }
     }
 
-    public boolean deleteAddress(int addressId) {
+    public boolean deleteAddress(int addressId) { //skal også inkludere company
         EntityManager em = null;
         try {
             em = getEntityManager();

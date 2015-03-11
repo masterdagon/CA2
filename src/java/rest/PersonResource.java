@@ -49,46 +49,11 @@ public class PersonResource {
 
     @GET
     @Produces("application/json")
-    public String allProjects() {
+    public String allPersons() {
         List<Person> listP = f.getAllPersons();
         JsonArray ja = new JsonArray();
         for (Person p : listP) {
-            JsonObject jo = new JsonObject();
-            jo.addProperty("id", p.getId());
-            jo.addProperty("firstname", p.getFirstName());
-            jo.addProperty("lastname", p.getLastName());
-            jo.addProperty("email", p.getEmail());
-
-            JsonObject address = new JsonObject();
-            address.addProperty("id", p.getAddress().getId());
-            address.addProperty("street", p.getAddress().getStreet());
-            address.addProperty("additionalinfo", p.getAddress().getAdditionalinfo());
-
-            JsonObject city = new JsonObject();
-            city.addProperty("zipcode", p.getAddress().getCityInfo().getZipCode());
-            city.addProperty("city", p.getAddress().getCityInfo().getCity());
-            address.add("cityinfo", city);
-            jo.add("address", address);
-
-            JsonArray phones = new JsonArray();
-            for (Phone ph : p.getPhones()) {
-                JsonObject phone = new JsonObject();
-                phone.addProperty("number", ph.getNumber());
-                phone.addProperty("description", ph.getDescription());
-                phones.add(phone);
-            }
-            jo.add("phones", phones);
-
-            JsonArray hobbies = new JsonArray();
-            for (Hobby h : p.getHobbies()) {
-                JsonObject hobby = new JsonObject();
-                hobby.addProperty("id", h.getId());
-                hobby.addProperty("name", h.getName());
-                hobby.addProperty("description", h.getDescription());
-                hobbies.add(hobby);
-            }
-            jo.add("hobbies", hobbies);
-
+            JsonObject jo = new JsonParser().parse(createJsonStringfromPerson(p)).getAsJsonObject();
             ja.add(jo);
         }
 
@@ -125,7 +90,7 @@ public class PersonResource {
     @Path("{id}")
     public String getPersonFromId(@PathParam("id") int id) {
         Person p = f.getPerson(id);
-        return createJsonfromPerson(p);
+        return createJsonStringfromPerson(p);
     }
 
     @PUT
@@ -146,7 +111,7 @@ public class PersonResource {
 
     }
 
-    public String createJsonfromPerson(Person p) {
+    public String createJsonStringfromPerson(Person p) {
         JsonObject jo = new JsonObject();
         jo.addProperty("id", p.getId());
         jo.addProperty("firstname", p.getFirstName());
@@ -193,6 +158,6 @@ public class PersonResource {
     @Path("phone/{id}")
     public String getPersonFromPhone(@PathParam("id") int phonenumber) {
         Person p = f.getPersonFromPhone(phonenumber);
-        return createJsonfromPerson(p);
+        return createJsonStringfromPerson(p);
     }
 }
