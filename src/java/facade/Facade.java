@@ -432,7 +432,7 @@ public class Facade {
         }
     }
 
-    public Company changeAddressFromCompany(int companyID, String street, String info, int zip) {
+    public Company changeAddressFromCompany(int companyID, String street, String info, int zip) { //finished, not tested
         EntityManager em = null;
         try {
             em = getEntityManager();
