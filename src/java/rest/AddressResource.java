@@ -25,7 +25,7 @@ import javax.ws.rs.PUT;
  *
  * @author Dennnis
  */
-@Path("zip")
+@Path("address")
 public class AddressResource {
 
     @Context
@@ -46,6 +46,7 @@ public class AddressResource {
      */
     @GET
     @Produces("application/json")
+    @Path("/zip")
     public String getallZipcodes() {
         List<CityInfo> cities = f.getListOfZipCodes();
         JsonArray zipCodes = new JsonArray();

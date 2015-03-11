@@ -110,6 +110,19 @@ public class PersonResource {
         f.addPhonePerson(p, jo.get("description").getAsString(), jo.get("number").getAsInt());
 
     }
+    
+    @DELETE
+    @Consumes("application/json")
+    @Path("phone")
+    public void deletePhone(String content) {
+        Type type = new TypeToken<List<Integer>>() {
+        }.getType();
+        List<Integer> iList = gson.fromJson(content, type);
+        Integer[] intArray = iList.toArray(new Integer[0]);
+        int phoneNumber = intArray[0];
+        f.deletePersonPhone(phoneNumber);
+
+    }
 
     public String createJsonStringfromPerson(Person p) {
         JsonObject jo = new JsonObject();
