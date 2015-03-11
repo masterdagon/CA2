@@ -183,5 +183,16 @@ public class PersonResource {
         
     }
     
+    @GET
+    @Produces("application/json")
+    @Path("hobby/count/{id}")
+    public String getCountOfPeopleWithHobby(@PathParam("id") int id){
+        Hobby h = f.getHobbiesFromID(id);
+        int count = f.getCountOfPeopleWithHobby(h);
+        String json = String.valueOf(count);
+        return gson.toJson(json);
+        
+    }
+    
     
 }

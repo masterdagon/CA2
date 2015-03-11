@@ -115,7 +115,7 @@ public class Facade {
         }
     }
 
-    public int getCountOfPeopleWithHobby(Hobby hobby) {
+    public int getCountOfPeopleWithHobby(Hobby hobby) { //finished in rest, not tested
         EntityManager em = null;
         try {
             em = getEntityManager();
