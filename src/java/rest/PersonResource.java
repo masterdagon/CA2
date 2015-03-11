@@ -217,7 +217,7 @@ public class PersonResource {
     @GET
     @Produces("application/json")
     @Path("hobby/{id}")
-    public String getAllPersonfromhobby(@PathParam("id") int id){
+    public String getAllPersonsFromHobby(@PathParam("id") int id){
         List<Person> plist = f.getAllPersonsWithHobby(id);
         JsonArray persons = new JsonArray();
         for (Person person : plist) {
