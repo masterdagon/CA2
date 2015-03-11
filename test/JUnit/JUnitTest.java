@@ -117,7 +117,10 @@ public class JUnitTest {
 
     @Test
     public void addHobbyToPerson(){
-        
+        Person p = f.CreatePerson("addHobbyToPerson", "test", "test");
+        Hobby h = f.createHobbies("addHobbyToPerson", "test");
+        p = f.addHobbyToPerson(p, h);
+        assertEquals(p.getHobbies().get(0).getId(),h.getId());
     }
 
     @Test
@@ -135,6 +138,11 @@ public class JUnitTest {
 
     @Test
     public void getCountOfPeopleWithHobby() {
+        Person p = f.CreatePerson("getCountOfPeopleWithHobby", "test", "test");
+        Hobby h = f.createHobbies("getCountOfPeopleWithHobby", "test");
+        p = f.addHobbyToPerson(p, h);
+        int count = f.getCountOfPeopleWithHobby(h);
+        assertEquals(1,count);
     }
 
     @Test
