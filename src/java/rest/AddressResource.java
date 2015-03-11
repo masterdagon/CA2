@@ -30,7 +30,7 @@ public class AddressResource {
 
     @Context
     private UriInfo context;
-     private Facade f;
+    private Facade f;
     private Gson gson;
     /**
      * Creates a new instance of ZipResource
