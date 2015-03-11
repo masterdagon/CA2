@@ -7,6 +7,7 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
@@ -53,7 +54,7 @@ public class PersonResource {
         List<Person> listP = f.getAllPersons();
         JsonArray ja = new JsonArray();
         for (Person p : listP) {
-            JsonObject jo = createJsonStringfromPerson(p);
+            JsonObject jo = createJsonObjectfromPerson(p);
             ja.add(jo);
         }
 
@@ -89,7 +90,7 @@ public class PersonResource {
     @Path("{id}")
     public String getPersonFromId(@PathParam("id") int id) {
         Person p = f.getPerson(id);
-        JsonObject jo = createJsonStringfromPerson(p);
+        JsonObject jo = createJsonObjectfromPerson(p);
         String jsonString = gson.toJson(jo);
         return jsonString;
     }
@@ -125,7 +126,7 @@ public class PersonResource {
 
     }
 
-    public JsonObject createJsonStringfromPerson(Person p) {
+    public JsonObject createJsonObjectfromPerson(Person p) {
         JsonObject jo = new JsonObject();
         jo.addProperty("id", p.getId());
         jo.addProperty("firstname", p.getFirstName());
@@ -169,7 +170,7 @@ public class PersonResource {
     @Path("phone/{id}")
     public String getPersonFromPhone(@PathParam("id") int phonenumber) {
         Person p = f.getPersonFromPhone(phonenumber);
-        JsonObject jo = createJsonStringfromPerson(p);
+        JsonObject jo = createJsonObjectfromPerson(p);
         String jsonString = gson.toJson(jo);
         return jsonString;
     }
@@ -191,6 +192,20 @@ public class PersonResource {
         int count = f.getCountOfPeopleWithHobby(h);
         String json = String.valueOf(count);
         return gson.toJson(json);
+        
+    }
+    
+    @GET
+    @Produces("application/json")
+    @Path("hobby/{id}")
+    public String getAllPersonfromhobby(@PathParam("id") int id){
+        List<Person> plist = f.getAllPersonsWithHobby(id);
+        JsonArray persons = new JsonArray();
+        for (Person person : plist) {
+            JsonObject po = createJsonObjectfromPerson(person);
+            persons.add(po);
+        }
+        return gson.toJson(persons);
         
     }
     
