@@ -12,12 +12,15 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author Muggi
  */
 @Entity
+@XmlRootElement
 public class Person extends InfoEntity implements Serializable {
     
     private String firstName;
@@ -38,6 +41,7 @@ public class Person extends InfoEntity implements Serializable {
     public Person() {
     }
 
+    @XmlTransient
     public List<Phone> getPhones() {
         return phones;
     }
@@ -50,6 +54,7 @@ public class Person extends InfoEntity implements Serializable {
         phones.remove(phone);
     }
     
+    @XmlTransient
     public List<Hobby> getHobbies(){
         return hobbies;
     }

@@ -14,12 +14,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author Muggi
  */
 @Entity
+@XmlRootElement
 public class Address implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -48,10 +51,12 @@ public class Address implements Serializable {
         this.cityInfo = cityInfo;
     }
 
+    @XmlTransient
     public List<Company> getCompanies() {
         return companies;
     }
 
+    @XmlTransient
     public List<Person> getPersons() {
         return persons;
     }
