@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+        <script>
+            $(document).ready(function () {
+
+                $("#btn1").click(getHobbies);
+                
+
+            });
+
+                function getHobbies() {
+
+                var request = $.ajax({
+                    url: "api/person/hobby",
+                    dataType: "json"
+                });
+                request.done(function (hobby) {
+                    $("#list").text("");
+                    for (var i = 0; i < hobby.length; i++) {
+                        var text = "<option ";
+                        text += "value=\""+ hobby[i].id;
+                        text += "\">";
+                        text += "Name: " + hobby[i].name;
+                        text += "</option>";
+                        $("#list").append(text);
+                    }
+                });
+                request.fail(function (jqXHR, textStatus) {
+                    alert("Request failed: " + textStatus);
+                });
+            }
+
+        </script>
+    </head>
+    <body>
+        <div>TODO write content</div>
+        <div>
+        <button id="btn1">Get Users</button><br>
+        <select name="listbox" id="list" size="5">
+            <option>test</option>
+
+        </select>
+        </div>
+    </body>
+</html>
