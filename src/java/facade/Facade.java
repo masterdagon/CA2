@@ -541,7 +541,7 @@ public class Facade {
         }
     }
     
-    public List<Hobby> getAllHobbies() { //not junit tested, not in rest yet
+    public List<Hobby> getAllHobbies() { //finished
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -554,7 +554,7 @@ public class Facade {
         }
     }
     
-    public Hobby getHobbiesFromID(int id) { //not junit tested, not in rest yet
+    public Hobby getHobbiesFromID(int id) { //finished
         EntityManager em = null;
         try {
             em = getEntityManager();

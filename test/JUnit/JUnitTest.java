@@ -316,5 +316,19 @@ public class JUnitTest {
         Company c1 = f.getCompany(c.getId());
         assertEquals(c.getId(),c1.getId());
     }
+    
+    @Test
+    public void getHobbiesFromID(){
+        Hobby h = f.createHobbies("getHobbiesFromID", "getHobbiesFromID");
+        Hobby h1 = f.getHobbiesFromID(h.getId());
+        assertEquals(h.getId(),h1.getId());
+    }
+    
+    @Test
+    public void getAllHobbies(){
+        Hobby h = f.createHobbies("getAllHobbies", "getAllHobbies");
+        List<Hobby> hobbies = f.getAllHobbies();
+        assertTrue(hobbies.size()>0);
+    }
 
 }
