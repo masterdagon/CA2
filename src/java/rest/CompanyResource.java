@@ -75,4 +75,35 @@ public class CompanyResource {
         String jasonCompany =  gson.toJson(new Gson().toJsonTree(comp, JsonObject.class));
         return jasonCompany;    
     }
+    
+    @GET
+    @Produces("application/json")
+    @Path("/{phoneCvr}")
+    public String getCompany(@PathParam("phoneCvr") int phoneCvr) {
+        Company c = f.getCompanyFromPhone(phoneCvr);
+            JsonObject company = new JsonObject();
+            company.addProperty("id", c.getId());
+            company.addProperty("description", c.getDescription());
+            company.addProperty("cvr", c.getCvr());
+            company.addProperty("email", c.getEmail());
+            company.addProperty("street", c.getAddress().getStreet());
+            company.addProperty("additionalinfo", c.getAddress().getAdditionalinfo());
+            company.addProperty("zipcode", c.getAddress().getCityInfo().getZipCode());
+            company.addProperty("city", c.getAddress().getCityInfo().getCity());
+            
+            JsonArray phones = new JsonArray();
+            List<Phone> phs = c.getPhones();
+            for (Phone ph : phs) {
+                JsonObject phone = new JsonObject();
+                phone.addProperty("number", ph.getNumber());
+                phone.addProperty("description", ph.getDescription());
+                phones.add(phone); 
+            }
+            company.add("phones", phones);
+            company.addProperty("numemployees", c.getNumEmployees());
+            company.addProperty("marketvalue", c.getMarketValue());
+
+        String jasonCompany =  gson.toJson(company, JsonObject.class);
+        return jasonCompany;
+    }
 }
