@@ -5,6 +5,7 @@
  */
 package JUnit;
 
+import entity.Address;
 import entity.Company;
 import entity.Hobby;
 import entity.Person;
@@ -107,7 +108,7 @@ public class JUnitTest {
 
     @Test
     public void getCompanyFromcvr() {
-        //method not made yet
+        assertTrue(false);//method not made yet
     }
 
     @Test
@@ -256,6 +257,15 @@ public class JUnitTest {
 
     @Test
     public void deleteAddress() {
+        Person p = f.createPerson("deleteAddress", "test", "test");
+        p = f.createAddressForPerson(p, "street", "a", 2900);
+        f.deleteAddress(p.getAddress().getId());
+        Address h1 = null;
+        try {
+            h1 = em.find(Address.class, p.getAddress().getId());
+        } finally {
+            assertEquals(null, h1);
+        }
     }
 
     @Test
