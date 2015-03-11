@@ -53,12 +53,11 @@ public class PersonResource {
         List<Person> listP = f.getAllPersons();
         JsonArray ja = new JsonArray();
         for (Person p : listP) {
-            JsonObject jo = new JsonParser().parse(createJsonStringfromPerson(p)).getAsJsonObject();
+            JsonObject jo = createJsonStringfromPerson(p);
             ja.add(jo);
         }
 
         String jsonString = gson.toJson(ja);
-
         return jsonString;
 
     }
@@ -90,7 +89,9 @@ public class PersonResource {
     @Path("{id}")
     public String getPersonFromId(@PathParam("id") int id) {
         Person p = f.getPerson(id);
-        return createJsonStringfromPerson(p);
+        JsonObject jo = createJsonStringfromPerson(p);
+        String jsonString = gson.toJson(jo);
+        return jsonString;
     }
 
     @PUT
@@ -124,7 +125,7 @@ public class PersonResource {
 
     }
 
-    public String createJsonStringfromPerson(Person p) {
+    public JsonObject createJsonStringfromPerson(Person p) {
         JsonObject jo = new JsonObject();
         jo.addProperty("id", p.getId());
         jo.addProperty("firstname", p.getFirstName());
@@ -160,10 +161,7 @@ public class PersonResource {
             hobbies.add(hobby);
         }
         jo.add("hobbies", hobbies);
-
-        String jsonString = gson.toJson(jo);
-
-        return jsonString;
+        return jo;
     }
 
     @GET
@@ -171,7 +169,9 @@ public class PersonResource {
     @Path("phone/{id}")
     public String getPersonFromPhone(@PathParam("id") int phonenumber) {
         Person p = f.getPersonFromPhone(phonenumber);
-        return createJsonStringfromPerson(p);
+        JsonObject jo = createJsonStringfromPerson(p);
+        String jsonString = gson.toJson(jo);
+        return jsonString;
     }
     
     @POST
