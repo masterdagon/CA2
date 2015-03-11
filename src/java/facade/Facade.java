@@ -515,6 +515,26 @@ public class Facade {
         }
     }
 
+    public Person addHobbyToPerson(Person person, Hobby hobby) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            Person p = em.find(Person.class, person.getId());
+            Hobby h = em.find(Hobby.class, hobby.getId());
+            em.getTransaction().begin();
+            p.addHobby(hobby);
+            h.addPerson(person);
+            em.merge(p);
+            em.merge(h);
+            em.getTransaction().commit();
+            return p;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+
     //--------------------Andre metoder------------------------------------//
     public List<Person> getAllPersons() {
         EntityManager em = null;
@@ -554,7 +574,7 @@ public class Facade {
             }
         }
     }
-    
+
     public Person getPerson(int id) {
         EntityManager em = null;
         try {
@@ -568,23 +588,4 @@ public class Facade {
         }
     }
 
-    public Person addHobbyToPerson(Person person, Hobby hobby) {
-        EntityManager em = null;
-        try {
-            em = getEntityManager();
-            Person p = em.find(Person.class, person.getId());
-            Hobby h = em.find(Hobby.class, hobby.getId());
-            em.getTransaction().begin();
-            p.addHobby(hobby);
-            h.addPerson(person);
-            em.merge(p);
-            em.merge(h);
-            em.getTransaction().commit();
-            return p;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
-    }
 }

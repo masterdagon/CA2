@@ -291,6 +291,9 @@ public class JUnitTest {
 
     @Test
     public void getAllPersons() {
+        Person p = f.createPerson("getAllPersons", "test", "test");
+        List<Person> listp = f.getAllPersons();
+        assertTrue(listp.size()>0);
     }
 
     @Test
@@ -299,9 +302,19 @@ public class JUnitTest {
         int size = f.getAllCompanies().size();
         assertTrue(size>0);
     }
+    
+    @Test
+    public void getPerson(){
+        Person p = f.createPerson("getPerson", "test","test");
+        Person p1 = f.getPerson(p.getId());
+        assertEquals(p.getId(),p1.getId());
+    }
 
     @Test
     public void getCompany() {
+        Company c = f.createCompany("getCompany", "test",0,0,0, "test");
+        Company c1 = f.getCompany(c.getId());
+        assertEquals(c.getId(),c1.getId());
     }
 
 }
