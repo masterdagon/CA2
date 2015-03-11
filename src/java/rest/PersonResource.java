@@ -11,6 +11,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import entity.Address;
+import entity.Company;
 import entity.Hobby;
 import entity.Person;
 import entity.Phone;
@@ -26,6 +27,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import javax.ws.rs.PathParam;
 
 /**
  * REST Web Service
@@ -99,12 +101,12 @@ public class PersonResource {
     @POST
     @Consumes("application/json")
     @Path("create")
-    public void createPersonAndAddress(String content){
+    public void createPersonAndAddress(String content) {
         JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
         Person p = f.createPerson(jo.get("firstname").getAsString(), jo.get("lastname").getAsString(), jo.get("email").getAsString());
-        p = f.createAddressForPerson(p, jo.get("street").getAsString(), jo.get("additionalinfo").getAsString(),jo.get("zipcode").getAsInt() );
+        p = f.createAddressForPerson(p, jo.get("street").getAsString(), jo.get("additionalinfo").getAsString(), jo.get("zipcode").getAsInt());
     }
-    
+
     @DELETE
     @Consumes("application/json")
     @Path("delete")
@@ -116,6 +118,53 @@ public class PersonResource {
         int id = intArray[0];
         f.deletePerson(id);
 
+    }
+
+    @GET
+    @Produces("application/json")
+    @Path("{id}")
+    public String getPersonFromId(@PathParam("id") int id) {
+        Person p = f.getPerson(id);
+ 
+            JsonObject jo = new JsonObject();
+            jo.addProperty("id", p.getId());
+            jo.addProperty("firstname", p.getFirstName());
+            jo.addProperty("lastname", p.getLastName());
+            jo.addProperty("email", p.getEmail());
+
+            JsonObject address = new JsonObject();
+            address.addProperty("id", p.getAddress().getId());
+            address.addProperty("street", p.getAddress().getStreet());
+            address.addProperty("additionalinfo", p.getAddress().getAdditionalinfo());
+
+            JsonObject city = new JsonObject();
+            city.addProperty("zipcode", p.getAddress().getCityInfo().getZipCode());
+            city.addProperty("city", p.getAddress().getCityInfo().getCity());
+            address.add("cityinfo", city);
+            jo.add("address", address);
+
+            JsonArray phones = new JsonArray();
+            for (Phone ph : p.getPhones()) {
+                JsonObject phone = new JsonObject();
+                phone.addProperty("number", ph.getNumber());
+                phone.addProperty("description", ph.getDescription());
+                phones.add(phone);
+            }
+            jo.add("phones", phones);
+
+            JsonArray hobbies = new JsonArray();
+            for (Hobby h : p.getHobbies()) {
+                JsonObject hobby = new JsonObject();
+                hobby.addProperty("id", h.getId());
+                hobby.addProperty("name", h.getName());
+                hobby.addProperty("description", h.getDescription());
+                hobbies.add(hobby);
+            }
+            jo.add("hobbies", hobbies);
+
+        String jsonString = gson.toJson(jo);
+
+        return jsonString;
     }
 
     @PUT
