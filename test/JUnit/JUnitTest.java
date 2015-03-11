@@ -18,6 +18,7 @@ import static org.hamcrest.CoreMatchers.not;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import test.CreateTables;
@@ -279,6 +280,9 @@ public class JUnitTest {
 
     @Test
     public void getAllPersons() {
+        Person p = f.createPerson("getAllPersons", "test", "test");
+        List<Person> listp = f.getAllPersons();
+        assertTrue(listp.size()>0);
     }
 
     @Test
@@ -287,6 +291,9 @@ public class JUnitTest {
 
     @Test
     public void getCompany() {
+        Company c = f.createCompany("getCompany", "test",0,0,0, "test");
+        Company c1 = f.getCompany(c.getId());
+        assertEquals(c.getId(),c1.getId());
     }
 
     private void assertFalse() {
