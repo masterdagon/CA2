@@ -125,7 +125,28 @@ public class PersonResource {
     @Path("{id}")
     public String getPersonFromId(@PathParam("id") int id) {
         Person p = f.getPerson(id);
+        return createJsonfromPerson(p);
+    }
 
+    @PUT
+    @Consumes("application/json")
+    @Path("address")
+    public void changeAddress(String content) { //json: id, street, additionalinfo, zipcode
+        JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
+        Person p = f.changeAddressFromPerson(jo.get("id").getAsInt(), jo.get("street").getAsString(), jo.get("additionalinfo").getAsString(), jo.get("zipcode").getAsInt());
+    }
+
+    @POST
+    @Consumes("application/json")
+    @Path("phone")
+    public void addPhoneToPerson(String content) { //json: id, number, description
+        JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
+        Person p = f.getPerson(jo.get("id").getAsInt());
+        f.addPhonePerson(p, jo.get("description").getAsString(), jo.get("number").getAsInt());
+
+    }
+
+    public String createJsonfromPerson(Person p) {
         JsonObject jo = new JsonObject();
         jo.addProperty("id", p.getId());
         jo.addProperty("firstname", p.getFirstName());
@@ -167,21 +188,11 @@ public class PersonResource {
         return jsonString;
     }
 
-    @PUT
-    @Consumes("application/json")
-    @Path("address")
-    public void changeAddress(String content) { //json: id, street, additionalinfo, zipcode
-        JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
-        Person p = f.changeAddressFromPerson(jo.get("id").getAsInt(), jo.get("street").getAsString(), jo.get("additionalinfo").getAsString(), jo.get("zipcode").getAsInt());
-    }
-
-    @POST
-    @Consumes("application/json")
-    @Path("phone")
-    public void addPhoneToPerson(String content) { //json: id, number, description
-        JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
-        Person p = f.getPerson(jo.get("id").getAsInt());
-        f.addPhonePerson(p,jo.get("description").getAsString() , jo.get("number").getAsInt());
-                
+    @GET
+    @Produces("application/json")
+    @Path("phone/{id}")
+    public String getPersonFromPhone(@PathParam("id") int phonenumber) {
+        Person p = f.getPersonFromPhone(phonenumber);
+        return createJsonfromPerson(p);
     }
 }
