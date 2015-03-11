@@ -538,6 +538,33 @@ public class Facade {
             }
         }
     }
+    
+    public List<Hobby> getAllHobbies() { //not junit tested, not in rest yet
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            TypedQuery<Hobby> q = em.createQuery("select p from Hobby p", Hobby.class);
+            return q.getResultList();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+    
+    public Hobby getHobbiesFromID(int id) { //not junit tested, not in rest yet
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            Hobby h = em.find(Hobby.class, id);
+            return h;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+    
 
     //--------------------Andre metoder------------------------------------//
     public List<Person> getAllPersons() {
