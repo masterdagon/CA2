@@ -8,6 +8,7 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import entity.Company;
 import entity.Phone;
@@ -21,8 +22,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PUT;
 
 /**
  * REST Web Service
@@ -75,15 +76,15 @@ public class CompanyResource {
             
             comp.add(company);
         }
-        String jasonCompany =  gson.toJson(new Gson().toJsonTree(comp, JsonObject.class));
+        String jasonCompany =  gson.toJson(comp);
         return jasonCompany;    
     }
     
     @GET
     @Produces("application/json")
-    @Path("/{phoneCvr}")
-    public String getCompany(@PathParam("phoneCvr") int phoneCvr) {
-        Company c = f.getCompanyFromPhone(phoneCvr);
+    @Path("/{phoneNumber}")
+    public String getCompany(@PathParam("phoneNumber") int phoneNumber) {
+        Company c = f.getCompanyFromPhone(phoneNumber);
             JsonObject company = new JsonObject();
             company.addProperty("id", c.getId());
             company.addProperty("description", c.getDescription());
@@ -109,6 +110,16 @@ public class CompanyResource {
         String jasonCompany =  gson.toJson(company, JsonObject.class);
         return jasonCompany;
     }
+    
+    @POST
+    @Consumes("application/json")
+    @Path("/create")
+    public void createCompanyAndAddress(String content){
+        JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
+        Company c = f.createCompany(jo.get("name").getAsString(), jo.get("description").getAsString(),jo.get("cvr").getAsInt(),jo.get("numemployees").getAsInt(),jo.get("marketvalue").getAsInt(), jo.get("email").getAsString());
+        c = f.createAddressForCompany(c, jo.get("street").getAsString(), jo.get("additionalinfo").getAsString(),jo.get("zipcode").getAsInt() );
+    }
+    
     
     @DELETE
     @Consumes("application/json")
