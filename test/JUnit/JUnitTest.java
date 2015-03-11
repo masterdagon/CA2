@@ -16,8 +16,10 @@ import javax.persistence.Persistence;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import org.junit.After;
+import org.junit.Assert;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import test.CreateTables;
@@ -283,17 +285,13 @@ public class JUnitTest {
 
     @Test
     public void getAllCompanies() {
+        Company c = f.createCompany("getAllCompanies", "test", 0, 0, 0, "test");
+        int size = f.getAllCompanies().size();
+        assertTrue(size>0);
     }
 
     @Test
     public void getCompany() {
     }
 
-    private void assertFalse() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private void assertNotSame(boolean b) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }

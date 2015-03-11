@@ -554,6 +554,19 @@ public class Facade {
             }
         }
     }
+    
+    public Person getPerson(int id) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            Person p = em.find(Person.class, id);
+            return p;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
 
     public Person addHobbyToPerson(Person person, Hobby hobby) {
         EntityManager em = null;
