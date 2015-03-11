@@ -8,15 +8,18 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import entity.Company;
 import entity.Phone;
 import facade.Facade;
+import java.lang.reflect.Type;
 import java.util.List;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
@@ -105,5 +108,15 @@ public class CompanyResource {
 
         String jasonCompany =  gson.toJson(company, JsonObject.class);
         return jasonCompany;
+    }
+    
+    @DELETE
+    @Consumes("application/json")
+    @Path("/delete")
+    public void deletePerson(String content) {
+         Type type = new TypeToken<List<Integer>>() {
+        }.getType();
+        List<Integer> iList = gson.fromJson(content, type);
+        f.deleteCompany(iList.get(0).intValue());
     }
 }
