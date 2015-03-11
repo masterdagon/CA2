@@ -116,7 +116,7 @@ public class JUnitTest {
         Person p = f.createPerson("getAllPersonsWithHobby", "test", "test");
         Hobby h = f.createHobbies("getAllPersonsWithHobby", "test");
         p = f.addHobbyToPerson(p, h);
-        List<Person> listp = f.getAllPersonsWithHobby(h);
+        List<Person> listp = f.getAllPersonsWithHobby(h.getId());
         p = em.find(Person.class, p.getId());
         assertEquals(p.getId(), listp.get(0).getId());
     }

@@ -75,7 +75,7 @@ public class Facade {
         }
     }
 
-    public List<Person> getAllPersonsWithHobby(Hobby hobby) {//kind of strange, since the hobby parameter should already contain the list of persons. oh well :P
+    public List<Person> getAllPersonsWithHobby(int hobbyId) {//kind of strange, since the hobby parameter should already contain the list of persons. oh well :P
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -83,7 +83,7 @@ public class Facade {
             List<Hobby> hobbies = q.getResultList();
             List<Person> listP = null;
             for (Hobby h : hobbies) {
-                if (h.getName().equals(hobby.getName())) {
+                if (h.getId()==hobbyId) {
                     listP = h.getPersons();
                 }
             }
