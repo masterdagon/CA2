@@ -13,8 +13,11 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 import test.CreateTables;
@@ -204,10 +207,20 @@ public class JUnitTest {
 
     @Test
     public void changeAddressFromPerson() {
+        Person p = f.CreatePerson("changeAddressFromPerson", "test", "test");
+        p = f.createAddressForPerson(p, "street1", "no", 3000);
+        Person p1 = p;
+        p1 = f.changeAddressFromPerson(p1.getId(), "Street2", "no", 3000);
+        assertThat(p.getAddress(), is(not(p1.getAddress())));
     }
 
     @Test
     public void changeAddressFromCompany() {
+        Company c = f.createCompany("changeAddressFromPerson", "test",0,0,0, "test");
+        c = f.createAddressForCompany(c, "street1", "no", 3000);
+        Company c1 = c;
+        c1 = f.changeAddressFromCompany(c1.getId(), "Street2", "no", 3000);
+        assertThat(c.getAddress(), is(not(c1.getAddress())));
     }
 
     @Test
@@ -232,5 +245,13 @@ public class JUnitTest {
 
     @Test
     public void getCompany() {
+    }
+
+    private void assertFalse() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void assertNotSame(boolean b) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
