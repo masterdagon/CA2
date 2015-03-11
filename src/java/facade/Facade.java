@@ -270,7 +270,7 @@ public class Facade {
         }
     }
 
-    public Hobby createHobbies(String name, String description) {
+    public Hobby createHobbies(String name, String description) { //finished not tested
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -414,7 +414,7 @@ public class Facade {
         }
     }
 
-    public Person changeAddressFromPerson(int personID, String street, String info, int zip) {
+    public Person changeAddressFromPerson(int personID, String street, String info, int zip) { //finished and tested
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -459,6 +459,10 @@ public class Facade {
             for (Person p : address.getPersons()) {
                 p.setAddress(null);
                 em.merge(p);
+            }
+            for (Company c : address.getCompanies()){
+                c.setAddress(null);
+                em.merge(c);
             }
             em.remove(address);
             em.getTransaction().commit();

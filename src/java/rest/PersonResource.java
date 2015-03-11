@@ -160,4 +160,15 @@ public class PersonResource {
         Person p = f.getPersonFromPhone(phonenumber);
         return createJsonStringfromPerson(p);
     }
+    
+    @POST
+    @Consumes("application/json")
+    @Path("hobby/create")
+    public void createHobby(String content) { //json: name, description
+        JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
+        f.createHobbies(jo.get("name").getAsString(), jo.get("description").getAsString());
+        
+    }
+    
+    
 }
