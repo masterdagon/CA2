@@ -101,7 +101,7 @@ public class PersonResource {
     @POST
     @Consumes("application/json")
     @Path("create")
-    public void createPersonAndAddress(String content) {
+    public void createPersonAndAddress(String content) { //json: firstname, lastname, email, street, additional info, zipcode
         JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
         Person p = f.createPerson(jo.get("firstname").getAsString(), jo.get("lastname").getAsString(), jo.get("email").getAsString());
         p = f.createAddressForPerson(p, jo.get("street").getAsString(), jo.get("additionalinfo").getAsString(), jo.get("zipcode").getAsInt());
@@ -125,42 +125,42 @@ public class PersonResource {
     @Path("{id}")
     public String getPersonFromId(@PathParam("id") int id) {
         Person p = f.getPerson(id);
- 
-            JsonObject jo = new JsonObject();
-            jo.addProperty("id", p.getId());
-            jo.addProperty("firstname", p.getFirstName());
-            jo.addProperty("lastname", p.getLastName());
-            jo.addProperty("email", p.getEmail());
 
-            JsonObject address = new JsonObject();
-            address.addProperty("id", p.getAddress().getId());
-            address.addProperty("street", p.getAddress().getStreet());
-            address.addProperty("additionalinfo", p.getAddress().getAdditionalinfo());
+        JsonObject jo = new JsonObject();
+        jo.addProperty("id", p.getId());
+        jo.addProperty("firstname", p.getFirstName());
+        jo.addProperty("lastname", p.getLastName());
+        jo.addProperty("email", p.getEmail());
 
-            JsonObject city = new JsonObject();
-            city.addProperty("zipcode", p.getAddress().getCityInfo().getZipCode());
-            city.addProperty("city", p.getAddress().getCityInfo().getCity());
-            address.add("cityinfo", city);
-            jo.add("address", address);
+        JsonObject address = new JsonObject();
+        address.addProperty("id", p.getAddress().getId());
+        address.addProperty("street", p.getAddress().getStreet());
+        address.addProperty("additionalinfo", p.getAddress().getAdditionalinfo());
 
-            JsonArray phones = new JsonArray();
-            for (Phone ph : p.getPhones()) {
-                JsonObject phone = new JsonObject();
-                phone.addProperty("number", ph.getNumber());
-                phone.addProperty("description", ph.getDescription());
-                phones.add(phone);
-            }
-            jo.add("phones", phones);
+        JsonObject city = new JsonObject();
+        city.addProperty("zipcode", p.getAddress().getCityInfo().getZipCode());
+        city.addProperty("city", p.getAddress().getCityInfo().getCity());
+        address.add("cityinfo", city);
+        jo.add("address", address);
 
-            JsonArray hobbies = new JsonArray();
-            for (Hobby h : p.getHobbies()) {
-                JsonObject hobby = new JsonObject();
-                hobby.addProperty("id", h.getId());
-                hobby.addProperty("name", h.getName());
-                hobby.addProperty("description", h.getDescription());
-                hobbies.add(hobby);
-            }
-            jo.add("hobbies", hobbies);
+        JsonArray phones = new JsonArray();
+        for (Phone ph : p.getPhones()) {
+            JsonObject phone = new JsonObject();
+            phone.addProperty("number", ph.getNumber());
+            phone.addProperty("description", ph.getDescription());
+            phones.add(phone);
+        }
+        jo.add("phones", phones);
+
+        JsonArray hobbies = new JsonArray();
+        for (Hobby h : p.getHobbies()) {
+            JsonObject hobby = new JsonObject();
+            hobby.addProperty("id", h.getId());
+            hobby.addProperty("name", h.getName());
+            hobby.addProperty("description", h.getDescription());
+            hobbies.add(hobby);
+        }
+        jo.add("hobbies", hobbies);
 
         String jsonString = gson.toJson(jo);
 
@@ -169,6 +169,19 @@ public class PersonResource {
 
     @PUT
     @Consumes("application/json")
-    public void putJson(String content) {
+    @Path("address")
+    public void changeAddress(String content) { //json: id, street, additionalinfo, zipcode
+        JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
+        Person p = f.changeAddressFromPerson(jo.get("id").getAsInt(), jo.get("street").getAsString(), jo.get("additionalinfo").getAsString(), jo.get("zipcode").getAsInt());
+    }
+
+    @POST
+    @Consumes("application/json")
+    @Path("phone")
+    public void addPhoneToPerson(String content) { //json: id, number, description
+        JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
+        Person p = f.getPerson(jo.get("id").getAsInt());
+        f.addPhonePerson(p,jo.get("description").getAsString() , jo.get("number").getAsInt());
+                
     }
 }
