@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>API documentation</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div>API Documentation</div>
+        <table style="width:100%" border="1">
+            <thead>
+            <th>Path</th>
+            <th>Request Type</th>
+            <th>Parameters/Json</th>
+            <th>Description</th>                
+        </thead>
+        <tbody>
+            <tr>
+                <td>api/person</td>
+                <td>GET</td>
+                <td>[{id,firstname,lastname,email,address{id,street,additionalinfo,cityinfo{zipcode,city}},phones[{number,description}],hobbies[{id,name,description}]}]</td>
+                <td>Return a list of all persons in DB</td>
+            </tr>
+            <tr>
+                <td>api/person/create</td>
+                <td>POST</td>
+                <td>firstname, lastname, email, street, additionalinfo, zipcode</td>
+                <td>Creates person and address in DB and assigns address to person</td>
+            </tr>
+            <tr>
+                <td>api/person/delete</td>
+                <td>POST</td>
+                <td>id(person)</td>
+                <td>Deletes person with given id from DB</td>
+            </tr>
+            <tr>
+                <td>api/person/address</td>
+                <td>PUT</td>
+                <td>id(person), street, additionalinfo, zipcode</td>
+                <td>Updates address for person</td>
+            </tr>
+            <tr>
+                <td>api/person/{id}</td>
+                <td>GET</td>
+                <td>{id,firstname,lastname,email,address{id,street,additionalinfo,cityinfo{zipcode,city}},phones[{number,description}],hobbies[{id,name,description}]}</td>
+                <td>Return a person with given id</td>
+            </tr>
+            <tr>
+                <td>api/person/phone</td>
+                <td>POST</td>
+                <td>id(person), number, description</td>
+                <td>Creates and assign a phone to a person with given id</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
