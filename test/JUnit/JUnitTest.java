@@ -272,7 +272,7 @@ public class JUnitTest {
     public void removeHobbyFromPerson() {
         Person p = f.createPerson("removeHobbyFromPerson", "test", "test");
         Hobby h = f.createHobbies("removeHobbyFromPerson", "test");
-        f.removeHobbyFromPerson(h, p);
+        f.removeHobbyFromPerson(h.getId(), p.getId());
         p = em.find(Person.class, p.getId());
         assertEquals(0,p.getHobbies().size());
     }

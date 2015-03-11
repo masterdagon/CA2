@@ -204,11 +204,11 @@ public class PersonResource {
         Hobby h = f.getHobbiesFromID(jo.get("hobbyid").getAsInt());
         f.addHobbyToPerson(p, h);
     }
-    
+
     @GET
     @Produces("application/json")
-    @Path("hobby/{id}")
-    public String getAllPersonfromhobby(@PathParam("id") int id){
+    @Path("hobby/person/{id}")
+    public String getAllPersonfromhobby(@PathParam("id") int id) {
         List<Person> plist = f.getAllPersonsWithHobby(id);
         JsonArray persons = new JsonArray();
         for (Person person : plist) {
@@ -216,9 +216,74 @@ public class PersonResource {
             persons.add(po);
         }
         return gson.toJson(persons);
-        
+
     }
-    
-    
+
+    @PUT
+    @Consumes("application/json")
+    @Path("/hobby")
+    public void removehobbyFromPerson(String content) { //json: personid, hobbyid
+        JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
+        f.removeHobbyFromPerson(jo.get("personid").getAsInt(), jo.get("hobbyid").getAsInt());
+    }
+
+    @GET
+    @Produces("application/json")
+    @Path("hobby")
+    public String getAllhobby() {
+        List<Hobby> hlist = f.getAllHobbies();
+        JsonArray hobbies = new JsonArray();
+        for (Hobby hobby : hlist) {
+            JsonObject ho = new JsonObject();
+            ho.addProperty("id", hobby.getId());
+            ho.addProperty("name", hobby.getName());
+            ho.addProperty("description", hobby.getDescription());
+            hobbies.add(ho);
+        }
+        return gson.toJson(hobbies);
+    }
+
+    @GET
+    @Produces("application/json")
+    @Path("hobby/{id}")
+    public String getHobbyFromId(@PathParam("id") int id) {
+        Hobby hobby = f.getHobbiesFromID(id);
+        JsonObject ho = new JsonObject();
+        ho.addProperty("id", hobby.getId());
+        ho.addProperty("name", hobby.getName());
+        ho.addProperty("description", hobby.getDescription());
+        JsonArray persons = new JsonArray();
+        List<Person> pers = hobby.getPersons();
+        for (Person p : pers) {
+            JsonObject po = new JsonObject();
+            po.addProperty("id", p.getId());
+            po.addProperty("firstname", p.getFirstName());
+            po.addProperty("lastname", p.getLastName());
+            po.addProperty("email", p.getEmail());
+
+            JsonObject address = new JsonObject();
+            address.addProperty("id", p.getAddress().getId());
+            address.addProperty("street", p.getAddress().getStreet());
+            address.addProperty("additionalinfo", p.getAddress().getAdditionalinfo());
+
+            JsonObject city = new JsonObject();
+            city.addProperty("zipcode", p.getAddress().getCityInfo().getZipCode());
+            city.addProperty("city", p.getAddress().getCityInfo().getCity());
+            address.add("cityinfo", city);
+            po.add("address", address);
+
+            JsonArray phones = new JsonArray();
+            for (Phone ph : p.getPhones()) {
+                JsonObject phone = new JsonObject();
+                phone.addProperty("number", ph.getNumber());
+                phone.addProperty("description", ph.getDescription());
+                phones.add(phone);
+            }
+            po.add("phones", phones);
+            persons.add(po);
+        }
+        ho.add("persons", persons);
+        return gson.toJson(ho);
+    }
 
 }

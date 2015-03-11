@@ -477,10 +477,12 @@ public class Facade {
         }
     }
 
-    public boolean removeHobbyFromPerson(Hobby hobby, Person person) {
+    public boolean removeHobbyFromPerson(int hobbyId, int personId) {
         EntityManager em = null;
         try {
             em = getEntityManager();
+            Person person= em.find(Person.class, personId);
+            Hobby hobby= em.find(Hobby.class, hobbyId);
             person.removeHobby(hobby);
             em.merge(person);
             em.getTransaction().commit();
