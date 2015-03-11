@@ -26,7 +26,7 @@ import javax.ws.rs.PUT;
  *
  * @author Dennnis
  */
-@Path("copmany")
+@Path("company")
 public class CompanyResource {
 
     @Context
