@@ -215,10 +215,20 @@ public class JUnitTest {
 
     @Test
     public void deletePersonPhone() {
+        Person p = f.CreatePerson("deletePersonPhone", "test", "test");
+        p = f.addPhonePerson(p, "Test", 9999);
+        p = f.deletePersonPhone(9999);
+        Person p1 = em.find(Person.class, p.getId());
+        assertEquals(p1.getPhones().size(),0);
     }
 
     @Test
     public void deleteCompanyPhone() {
+        Company c = f.createCompany("deleteCompanyPhone", "test", 1478, 11478, 54164, "test");
+        c = f.addPhoneCompany(c, "Test", 123456789);
+        c = f.deleteCompanyPhone(123456789);
+        Company c1 = em.find(Company.class, c.getId());
+        assertEquals(c1.getPhones().size(),0);
     }
 
     @Test
@@ -235,10 +245,23 @@ public class JUnitTest {
 
     @Test
     public void removeHobbyFromPerson() {
+        Person p = f.CreatePerson("removeHobbyFromPerson", "test", "test");
+        Hobby h = f.createHobbies("removeHobbyFromPerson", "test");
+        f.removeHobbyFromPerson(h, p);
+        p = em.find(Person.class, p.getId());
+        assertEquals(0,p.getHobbies().size());
     }
 
     @Test
     public void deleteHobbyFromDB() {
+        Hobby h = f.createHobbies("deleteHobbyFromDB", "test");
+        f.deleteHobbyFromDB(h.getId());
+        Hobby h1 = null;
+        try {
+            h1 = em.find(Hobby.class, h.getId());
+        } finally {
+            assertEquals(null, h1);
+        }
     }
 
     @Test
