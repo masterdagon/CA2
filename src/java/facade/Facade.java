@@ -230,11 +230,13 @@ public class Facade {
             em = getEntityManager();
             CityInfo cityInfo = em.find(CityInfo.class, zip);
             Address address = new Address(street, info, cityInfo);
-            cityInfo.addAddress(address);
-            p.setAddress(address);
-            address.addPerson(p);
             em.getTransaction().begin();
+            em.persist(address);
+            cityInfo.addAddress(address);
+            address.addPerson(p);
+            p.setAddress(address);
             em.merge(cityInfo);
+            em.merge(address);
             em.merge(p);
             em.getTransaction().commit();
             return p;
@@ -249,11 +251,15 @@ public class Facade {
         EntityManager em = null;
         try {
             em = getEntityManager();
+            CityInfo cityInfo = em.find(CityInfo.class, zip);
             Address address = new Address(street, info, em.find(CityInfo.class, zip));
-            c.setAddress(address);
-            address.addCompany(c);
             em.getTransaction().begin();
             em.persist(address);
+            cityInfo.addAddress(address);
+            c.setAddress(address);
+            address.addCompany(c);
+            em.merge(cityInfo);
+            em.merge(address);
             em.merge(c);
             em.getTransaction().commit();
             return c;
