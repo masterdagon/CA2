@@ -116,7 +116,7 @@ public class CompanyResource {
     
      @GET
     @Produces("application/json")
-    @Path("/{cvr}")
+    @Path("cvr/{cvr}")
     public String getCompanyFromCVR(@PathParam("cvr") int cvr) {
         Company c = f.getCompanyFromcvr(cvr);
         JsonObject co = createCompanyObject(c);    
