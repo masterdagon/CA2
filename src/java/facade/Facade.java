@@ -156,7 +156,7 @@ public class Facade {
         }
     }
 
-    public Person CreatePerson(String fName, String lName, String email) {//finnish
+    public Person createPerson(String fName, String lName, String email) {//finnish
         EntityManager em = null;
         try {
             em = getEntityManager();
