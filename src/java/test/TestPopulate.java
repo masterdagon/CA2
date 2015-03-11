@@ -5,6 +5,7 @@
  */
 package test;
 
+import entity.Company;
 import entity.Person;
 import facade.Facade;
 
@@ -24,6 +25,14 @@ public class TestPopulate {
         Person p2 = f.createPerson("firstname2", "lastname2","email2");
         p2 = f.createAddressForPerson(p2, "street2", "info2", 2990);
         p2 = f.addPhonePerson(p2, "phone2", 888);
+        
+        Company c1 = f.createCompany("kiosk", "lille", 11111111, 2, 10, "email1");
+        c1 = f.createAddressForCompany(c1, "street1", "info1", 3390);
+        c1 = f.addPhoneCompany(c1, "Home", 22334455);
+        c1 = f.addPhoneCompany(c1, "Work", 44334433);
+        Company c2 = f.createCompany("Marked", "stor", 11111112, 10, 90, "email2");
+        c2 = f.createAddressForCompany(c2, "street1", "info1", 3300);
+        c2 = f.addPhoneCompany(c1, "Work", 44443333);
     }
     
 }
