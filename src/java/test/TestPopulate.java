@@ -6,6 +6,7 @@
 package test;
 
 import entity.Company;
+import entity.Hobby;
 import entity.Person;
 import facade.Facade;
 
@@ -21,6 +22,8 @@ public class TestPopulate {
         Person p1 = f.createPerson("firstname1", "lastname1","email1");
         p1 = f.createAddressForPerson(p1, "street1", "info1", 2980);
         p1 = f.addPhonePerson(p1, "phone1", 999);
+        Hobby hobby = f.createHobbies("Navlepilning", "Man piller navle");
+        p1 = f.addHobbyToPerson(p1, hobby);
         
         Person p2 = f.createPerson("firstname2", "lastname2","email2");
         p2 = f.createAddressForPerson(p2, "street2", "info2", 2990);
