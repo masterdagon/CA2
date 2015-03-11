@@ -171,16 +171,15 @@ public class JUnitTest {
         Person p = f.CreatePerson("createAddressForPerson", "test", "test");
         p = f.createAddressForPerson(p, "street", "a", 3300);
         Person p1 = em.find(Person.class, p.getId());
-        System.out.println("er null =" + p.getAddress() == null);
-        assertEquals(p.getAddress().getId(), p1.getAddress().getId());
+        assertEquals(p.getAddress().getId(),p1.getAddress().getId());
     }
 
     @Test
     public void createAddressForCompany() {
         Company c = f.createCompany("createAddressForCompany", "test", 0, 0, 0, "test");
         c = f.createAddressForCompany(c, "street", "a", 3300);
-        Person c1 = em.find(Person.class, c.getId());
-        assertEquals(c.getAddress().getId(), c1.getAddress().getId());
+        Company c1 = em.find(Company.class, c.getId());
+        assertEquals(c.getAddress().getId(),c1.getAddress().getId());
     }
 
     @Test
