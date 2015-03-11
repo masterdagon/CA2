@@ -26,7 +26,7 @@ import javax.ws.rs.PUT;
  * @author Dennnis
  */
 @Path("zip")
-public class ZipResource {
+public class AddressResource {
 
     @Context
     private UriInfo context;
@@ -35,13 +35,13 @@ public class ZipResource {
     /**
      * Creates a new instance of ZipResource
      */
-    public ZipResource() {
+    public AddressResource() {
         f = new Facade();
         gson = new Gson();
     }
 
     /**
-     * Retrieves representation of an instance of rest.ZipResource
+     * Retrieves representation of an instance of rest.AddressResource
      * @return an instance of java.lang.String
      */
     @GET
