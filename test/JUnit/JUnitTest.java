@@ -112,15 +112,15 @@ public class JUnitTest {
         p = f.addHobbyToPerson(p, h);
         List<Person> listp = f.getAllPersonsWithHobby(h);
         p = em.find(Person.class, p.getId());
-        assertEquals(p.getId(),listp.get(0).getId());
+        assertEquals(p.getId(), listp.get(0).getId());
     }
 
     @Test
-    public void addHobbyToPerson(){
+    public void addHobbyToPerson() {
         Person p = f.CreatePerson("addHobbyToPerson", "test", "test");
         Hobby h = f.createHobbies("addHobbyToPerson", "test");
         p = f.addHobbyToPerson(p, h);
-        assertEquals(p.getHobbies().get(0).getId(),h.getId());
+        assertEquals(p.getHobbies().get(0).getId(), h.getId());
     }
 
     @Test
@@ -133,7 +133,7 @@ public class JUnitTest {
         p2 = f.createAddressForPerson(p2, "test", "test", 3390);
         int exp = 3;
         int result = f.getAllPersonsInCity(3390).size();
-        assertEquals(exp,result);
+        assertEquals(exp, result);
     }
 
     @Test
@@ -142,21 +142,21 @@ public class JUnitTest {
         Hobby h = f.createHobbies("getCountOfPeopleWithHobby", "test");
         p = f.addHobbyToPerson(p, h);
         int count = f.getCountOfPeopleWithHobby(h);
-        assertEquals(1,count);
+        assertEquals(1, count);
     }
 
     @Test
     public void getListOfZipCodes() {
         int excp = 1348;
         int size = f.getListOfZipCodes().size();
-        assertEquals(excp,size);
+        assertEquals(excp, size);
     }
 
     @Test
     public void getListOfCompaniesWithXEmployes() {
         Company c = f.createCompany("getListOfCompaniesWithXEmployes", "test", 25, 25, 25, "Test");
         List<Company> clist = f.getListOfCompaniesWithXEmployes(25);
-        assertEquals(c.getNumEmployees(),clist.get(0).getNumEmployees());
+        assertEquals(c.getNumEmployees(), clist.get(0).getNumEmployees());
     }
 
     @Test
@@ -171,28 +171,47 @@ public class JUnitTest {
         Person p = f.CreatePerson("createAddressForPerson", "test", "test");
         p = f.createAddressForPerson(p, "street", "a", 3300);
         Person p1 = em.find(Person.class, p.getId());
-        System.out.println("er null ="+p.getAddress()==null);
-        assertEquals(p.getAddress().getId(),p1.getAddress().getId());
+        System.out.println("er null =" + p.getAddress() == null);
+        assertEquals(p.getAddress().getId(), p1.getAddress().getId());
     }
 
     @Test
     public void createAddressForCompany() {
-        Company c = f.createCompany("createAddressForCompany", "test",0,0,0, "test");
+        Company c = f.createCompany("createAddressForCompany", "test", 0, 0, 0, "test");
         c = f.createAddressForCompany(c, "street", "a", 3300);
         Person c1 = em.find(Person.class, c.getId());
-        assertEquals(c.getAddress().getId(),c1.getAddress().getId());
+        assertEquals(c.getAddress().getId(), c1.getAddress().getId());
     }
 
     @Test
     public void createHobbies() {
+        Hobby h = f.createHobbies("createHobbies", "test");
+        Hobby h1 = em.find(Hobby.class, h.getId());
+        assertEquals(h.getId(), h1.getId());
     }
 
     @Test
     public void deletePerson() {
+        Person p = f.CreatePerson("deletePerson", "test", "test");
+        f.deletePerson(p.getId());
+        Person p1 = null;
+        try {
+            p1 = em.find(Person.class, p.getId());
+        } finally {
+            assertEquals(null, p1);
+        }
     }
 
     @Test
     public void deleteCompany() {
+        Company c = f.createCompany("deleteCompany", "test", 68, 68, 68, "test");
+        f.deleteCompany(c.getId());
+        Company c1 = null;
+        try {
+            c1 = em.find(Company.class, c.getId());
+        } finally {
+            assertEquals(null, c1);
+        }
     }
 
     @Test
