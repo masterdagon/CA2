@@ -292,6 +292,13 @@ public class JUnitTest {
         int size = f.getAllCompanies().size();
         assertTrue(size>0);
     }
+    
+    @Test
+    public void getPerson(){
+        Person p = f.createPerson("getPerson", "test","test");
+        Person p1 = f.getPerson(p.getId());
+        assertEquals(p.getId(),p1.getId());
+    }
 
     @Test
     public void getCompany() {
