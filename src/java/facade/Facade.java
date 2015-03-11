@@ -496,7 +496,7 @@ public class Facade {
         }
     }
 
-    public boolean deleteHobbyFromDB(int hobbyId) {
+    public boolean deleteHobbyFromDB(int hobbyId) { //finished, not tested with postedman
         EntityManager em = null;
         try {
             em = getEntityManager();

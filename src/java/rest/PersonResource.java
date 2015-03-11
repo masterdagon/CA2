@@ -204,7 +204,16 @@ public class PersonResource {
         Hobby h = f.getHobbiesFromID(jo.get("hobbyid").getAsInt());
         f.addHobbyToPerson(p, h);
     }
-
+    
+    @DELETE
+    @Consumes("application/json")
+    @Path("hobby/delete")
+    public void deleteHobbyFromDB(String content) { // json: id
+        JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
+        f.deleteHobbyFromDB(jo.get("id").getAsInt());
+        
+    }
+    
     @GET
     @Produces("application/json")
     @Path("hobby/person/{id}")
