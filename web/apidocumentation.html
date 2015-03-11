@@ -23,8 +23,38 @@ and open the template in the editor.
             <tr>
                 <td>api/person</td>
                 <td>GET</td>
-                <td>{id,firstname,lastname,email,[</td>
+                <td>[{id,firstname,lastname,email,address{id,street,additionalinfo,cityinfo{zipcode,city}},phones[{number,description}],hobbies[{id,name,description}]}]</td>
                 <td>Return a list of all persons in DB</td>
+            </tr>
+            <tr>
+                <td>api/person/create</td>
+                <td>POST</td>
+                <td>firstname, lastname, email, street, additionalinfo, zipcode</td>
+                <td>Creates person and address in DB and assigns address to person</td>
+            </tr>
+            <tr>
+                <td>api/person/delete</td>
+                <td>POST</td>
+                <td>id(person)</td>
+                <td>Deletes person with given id from DB</td>
+            </tr>
+            <tr>
+                <td>api/person/address</td>
+                <td>PUT</td>
+                <td>id(person), street, additionalinfo, zipcode</td>
+                <td>Updates address for person</td>
+            </tr>
+            <tr>
+                <td>api/person/{id}</td>
+                <td>GET</td>
+                <td>{id,firstname,lastname,email,address{id,street,additionalinfo,cityinfo{zipcode,city}},phones[{number,description}],hobbies[{id,name,description}]}</td>
+                <td>Return a persons with given id</td>
+            </tr>
+            <tr>
+                <td>api/person/phone</td>
+                <td>POST</td>
+                <td>id(person), number, description</td>
+                <td>Creates and assign a phone to a person with given id</td>
             </tr>
         </tbody>
     </table>
