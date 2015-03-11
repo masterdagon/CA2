@@ -21,10 +21,22 @@ and open the template in the editor.
         </thead>
         <tbody>
             <tr>
+                <td>PERSON API:</td>
+                <td> </td>
+                <td> </td>
+                <td> </td>
+            </tr>
+            <tr>
                 <td>api/person</td>
                 <td>GET</td>
                 <td>[{id,firstname,lastname,email,address{id,street,additionalinfo,cityinfo{zipcode,city}},phones[{number,description}],hobbies[{id,name,description}]}]</td>
-                <td>Return a list of all persons in DB</td>
+                <td>Return an array of all persons in DB</td>
+            </tr>
+            <tr>
+                <td>api/person/{id}</td>
+                <td>GET</td>
+                <td>{id,firstname,lastname,email,address{id,street,additionalinfo,cityinfo{zipcode,city}},phones[{number,description}],hobbies[{id,name,description}]}</td>
+                <td>Return a person with given id</td>
             </tr>
             <tr>
                 <td>api/person/create</td>
@@ -45,12 +57,6 @@ and open the template in the editor.
                 <td>Updates address for person</td>
             </tr>
             <tr>
-                <td>api/person/{id}</td>
-                <td>GET</td>
-                <td>{id,firstname,lastname,email,address{id,street,additionalinfo,cityinfo{zipcode,city}},phones[{number,description}],hobbies[{id,name,description}]}</td>
-                <td>Return a person with given id</td>
-            </tr>
-            <tr>
                 <td>api/person/phone</td>
                 <td>POST</td>
                 <td>{id //person, number, description}</td>
@@ -67,6 +73,54 @@ and open the template in the editor.
                 <td>GET</td>
                 <td>{id,firstname,lastname,email,address{id,street,additionalinfo,cityinfo{zipcode,city}},phones[{number,description}],hobbies[{id,name,description}]}</td>
                 <td>Returns person with given number</td>
+            </tr>
+            <tr>
+                <td>api/person/hobby/create</td>
+                <td>POST</td>
+                <td>{name,description}</td>
+                <td>Creates a hobby with given parameters</td>
+            </tr>
+            <tr>
+                <td>api/person/hobby/count/{id}</td>
+                <td>GET</td>
+                <td>"count"</td>
+                <td>Returns count of people with hobby with given id</td>
+            </tr>
+            <tr>
+                <td>api/person/hobby/add</td>
+                <td>POST</td>
+                <td>{personid,hobbyid}</td>
+                <td>Add hobby with given hobbyid to person with given personid</td>
+            </tr>
+            <tr>
+                <td>api/person/hobby/delete</td>
+                <td>DELETE</td>
+                <td>{id}</td>
+                <td>Delete hobby with given id from DB</td>
+            </tr>
+            <tr>
+                <td>api/person/hobby/person/{id}</td>
+                <td>GET</td>
+                <td>[{id,firstname,lastname,email,address{id,street,additionalinfo,cityinfo{zipcode,city}},phones[{number,description}],hobbies[{id,name,description}]}]</td>
+                <td>Returns array of persons with hobby that contains given id</td>
+            </tr>
+            <tr>
+                <td>api/person/hobby</td>
+                <td>PUT</td>
+                <td>{personid, hobbyid}</td>
+                <td>Removes a hobby with given id from person with given id</td>
+            </tr>
+            <tr>
+                <td>api/person/hobby</td>
+                <td>GET</td>
+                <td>[{id,name,description}]</td>
+                <td>Returns array with all hobbies</td>
+            </tr>
+            <tr>
+                <td>api/person/hobby/{id}</td>
+                <td>GET</td>
+                <td>{id //hobby,name,description,persons[{id //person,firstname,lastname,email,address{id //address,street,additionalinfo,cityinfo{zipcode,city}},phones[{number,description}]}]}</td>
+                <td>Returns hobby with given id</td>
             </tr>
         </tbody>
     </table>
