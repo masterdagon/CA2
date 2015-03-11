@@ -68,7 +68,7 @@ public class JUnitTest {
 
     @Test
     public void createPerson() throws InterruptedException {
-        Person p = f.CreatePerson("createPerson", "Test", "Test");
+        Person p = f.createPerson("createPerson", "Test", "Test");
         Person p1 = em.find(Person.class, p.getId());
         assertEquals(p.getId(), p1.getId());
     }
@@ -82,14 +82,14 @@ public class JUnitTest {
 
     @Test
     public void addPhonePerson() {
-        Person p = f.CreatePerson("addPhonePerson", "Test", "Test");
+        Person p = f.createPerson("addPhonePerson", "Test", "Test");
         Person p1 = f.addPhonePerson(p, "addPhonePerson", 5);
         assertEquals(5, p1.getPhones().get(0).getNumber());
     }
 
     @Test
     public void getPersonFromPhone() {
-        Person p = f.CreatePerson("getPersonFromPhone", "Test", "Test");
+        Person p = f.createPerson("getPersonFromPhone", "Test", "Test");
         f.addPhonePerson(p, "getPersonFromPhone", 555);
         Person pp = f.getPersonFromPhone(555);
         assertEquals(pp.getPhones().get(0).getNumber(), 555);
@@ -110,7 +110,7 @@ public class JUnitTest {
 
     @Test
     public void getAllPersonsWithHobby() {
-        Person p = f.CreatePerson("getAllPersonsWithHobby", "test", "test");
+        Person p = f.createPerson("getAllPersonsWithHobby", "test", "test");
         Hobby h = f.createHobbies("getAllPersonsWithHobby", "test");
         p = f.addHobbyToPerson(p, h);
         List<Person> listp = f.getAllPersonsWithHobby(h);
@@ -120,7 +120,7 @@ public class JUnitTest {
 
     @Test
     public void addHobbyToPerson() {
-        Person p = f.CreatePerson("addHobbyToPerson", "test", "test");
+        Person p = f.createPerson("addHobbyToPerson", "test", "test");
         Hobby h = f.createHobbies("addHobbyToPerson", "test");
         p = f.addHobbyToPerson(p, h);
         assertEquals(p.getHobbies().get(0).getId(), h.getId());
@@ -128,11 +128,11 @@ public class JUnitTest {
 
     @Test
     public void getAllPersonsInCity() {
-        Person p = f.CreatePerson("getAllPersonsInCity", "test", "test");
+        Person p = f.createPerson("getAllPersonsInCity", "test", "test");
         p = f.createAddressForPerson(p, "test", "test", 3390);
-        Person p1 = f.CreatePerson("getAllPersonsInCity", "test", "test");
+        Person p1 = f.createPerson("getAllPersonsInCity", "test", "test");
         p1 = f.createAddressForPerson(p1, "test", "test", 3390);
-        Person p2 = f.CreatePerson("getAllPersonsInCity", "test", "test");
+        Person p2 = f.createPerson("getAllPersonsInCity", "test", "test");
         p2 = f.createAddressForPerson(p2, "test", "test", 3390);
         int exp = 3;
         int result = f.getAllPersonsInCity(3390).size();
@@ -141,7 +141,7 @@ public class JUnitTest {
 
     @Test
     public void getCountOfPeopleWithHobby() {
-        Person p = f.CreatePerson("getCountOfPeopleWithHobby", "test", "test");
+        Person p = f.createPerson("getCountOfPeopleWithHobby", "test", "test");
         Hobby h = f.createHobbies("getCountOfPeopleWithHobby", "test");
         p = f.addHobbyToPerson(p, h);
         int count = f.getCountOfPeopleWithHobby(h);
@@ -171,7 +171,7 @@ public class JUnitTest {
 
     @Test
     public void createAddressForPerson() {
-        Person p = f.CreatePerson("createAddressForPerson", "test", "test");
+        Person p = f.createPerson("createAddressForPerson", "test", "test");
         p = f.createAddressForPerson(p, "street", "a", 3300);
         Person p1 = em.find(Person.class, p.getId());
         assertEquals(p.getAddress().getId(),p1.getAddress().getId());
@@ -194,7 +194,7 @@ public class JUnitTest {
 
     @Test
     public void deletePerson() {
-        Person p = f.CreatePerson("deletePerson", "test", "test");
+        Person p = f.createPerson("deletePerson", "test", "test");
         f.deletePerson(p.getId());
         Person p1 = null;
         try {
@@ -218,7 +218,7 @@ public class JUnitTest {
 
     @Test
     public void deletePersonPhone() {
-        Person p = f.CreatePerson("deletePersonPhone", "test", "test");
+        Person p = f.createPerson("deletePersonPhone", "test", "test");
         p = f.addPhonePerson(p, "Test", 9999);
         p = f.deletePersonPhone(9999);
         Person p1 = em.find(Person.class, p.getId());
@@ -236,7 +236,7 @@ public class JUnitTest {
 
     @Test
     public void changeAddressFromPerson() {
-        Person p = f.CreatePerson("changeAddressFromPerson", "test", "test");
+        Person p = f.createPerson("changeAddressFromPerson", "test", "test");
         p = f.createAddressForPerson(p, "street1", "no", 3000);
         Person p1 = p;
         p1 = f.changeAddressFromPerson(p1.getId(), "Street2", "no", 3000);
@@ -258,7 +258,7 @@ public class JUnitTest {
 
     @Test
     public void removeHobbyFromPerson() {
-        Person p = f.CreatePerson("removeHobbyFromPerson", "test", "test");
+        Person p = f.createPerson("removeHobbyFromPerson", "test", "test");
         Hobby h = f.createHobbies("removeHobbyFromPerson", "test");
         f.removeHobbyFromPerson(h, p);
         p = em.find(Person.class, p.getId());

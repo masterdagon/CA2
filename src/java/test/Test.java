@@ -21,7 +21,7 @@ public class Test {
     public static void main(String[] args) {
         Facade facade = new Facade();
         
-        Person p = facade.CreatePerson("Muggi","Dagon","666@gmail.com");
+        Person p = facade.createPerson("Muggi","Dagon","666@gmail.com");
         System.out.println("CreatePerson : Person ID = " + p.getId());
         List<Person> listP = facade.getAllPersons();
         System.out.println("getAllPersons: Person last name = " + listP.get(0).getLastName());
