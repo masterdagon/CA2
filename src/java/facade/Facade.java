@@ -142,12 +142,12 @@ public class Facade {
         }
     }
 
-    public List<Company> getListOfCompaniesWithXEmployes(int EmpCount) {//not ready WHERE
+    public List<Company> getListOfCompaniesWithXEmployes(int empCount) {//not ready WHERE
         EntityManager em = null;
         try {
             em = getEntityManager();
-            TypedQuery<Company> q = em.createQuery("select c from Company c", Company.class);
-            q.setParameter("p", "Company");
+            TypedQuery<Company> q = em.createQuery("select c from Company c where c.numemployees = :p", Company.class);
+            q.setParameter("p", empCount);
             return q.getResultList();
         } finally {
             if (em != null) {
