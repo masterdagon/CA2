@@ -40,7 +40,9 @@ public class Facade {
         try {
             em = getEntityManager();
             Phone phone = em.find(Phone.class, phoneNumber);
-            if(phone == null) throw new EntityNotFoundException("Try to find Phone number "+phoneNumber+" it dosnt exicst");
+            if (phone == null) {
+                throw new EntityNotFoundException("The PhoneNumber: " + phoneNumber + " does not exist");
+            }
             Person p = phone.getPerson();
             return p;
         } finally {
@@ -50,11 +52,14 @@ public class Facade {
         }
     }
 
-    public Company getCompanyFromPhone(int PhoneNumber) {//finnish
+    public Company getCompanyFromPhone(int phoneNumber) throws EntityNotFoundException {//finnish
         EntityManager em = null;
         try {
             em = getEntityManager();
-            Phone phone = em.find(Phone.class, PhoneNumber);
+            Phone phone = em.find(Phone.class, phoneNumber);
+            if (phone == null) {
+                throw new EntityNotFoundException("The PhoneNumber: " + phoneNumber + " does not exist");
+            }
             Company c = phone.getCompany();
             return c;
         } finally {
@@ -64,11 +69,14 @@ public class Facade {
         }
     }
 
-    public Company getCompanyFromcvr(int CVR) {//ready
+    public Company getCompanyFromcvr(int CVR) throws EntityNotFoundException {//ready
         EntityManager em = null;
         try {
             em = getEntityManager();
-            Company c = (Company)em.createQuery("select c From Company c where c.cvr=:cvr").setParameter("cvr", CVR).getSingleResult();
+            Company c = (Company) em.createQuery("select c From Company c where c.cvr=:cvr").setParameter("cvr", CVR).getSingleResult();
+            if (c == null) {
+                throw new EntityNotFoundException("The Company with cvr: " + CVR + " does not exist");
+            }
             return c;
         } finally {
             if (em != null) {
@@ -77,18 +85,16 @@ public class Facade {
         }
     }
 
-    public List<Person> getAllPersonsWithHobby(int hobbyId) {//kind of strange, since the hobby parameter should already contain the list of persons. oh well :P
+    public List<Person> getAllPersonsWithHobby(int hobbyId) throws EntityNotFoundException {//kind of strange, since the hobby parameter should already contain the list of persons. oh well :P
         EntityManager em = null;
         try {
             em = getEntityManager();
-            TypedQuery<Hobby> q = em.createQuery("select p from Hobby p", Hobby.class);
-            List<Hobby> hobbies = q.getResultList();
-            List<Person> listP = null;
-            for (Hobby h : hobbies) {
-                if (h.getId() == hobbyId) {
-                    listP = h.getPersons();
-                }
+            TypedQuery<Hobby> q = em.createQuery("select p from Hobby p where p.id=:id", Hobby.class).setParameter("id", hobbyId);
+            Hobby hobby = q.getSingleResult();
+            if (hobby == null) {
+                throw new EntityNotFoundException("The hobby does not exist");
             }
+            List<Person> listP = hobby.getPersons();
             return listP;
 
         } finally {
@@ -98,11 +104,14 @@ public class Facade {
         }
     }
 
-    public List<Person> getAllPersonsInCity(int zipcode) {//finnish
+    public List<Person> getAllPersonsInCity(int zipcode) throws EntityNotFoundException {//finnish
         EntityManager em = null;
         try {
             em = getEntityManager();
             CityInfo ci = em.find(CityInfo.class, zipcode);
+            if (ci == null) {
+                throw new EntityNotFoundException("The zipcode does not exist in database");
+            }
             List<Person> persons = new ArrayList();
             for (Address address : ci.getAddresses()) {
                 for (Person person : address.getPersons()) {
@@ -117,11 +126,14 @@ public class Facade {
         }
     }
 
-    public int getCountOfPeopleWithHobby(Hobby hobby) { //finished in rest, not tested
+    public int getCountOfPeopleWithHobby(Hobby hobby) throws EntityNotFoundException { //finished in rest, not tested
         EntityManager em = null;
         try {
             em = getEntityManager();
             Hobby h = em.find(Hobby.class, hobby.getId());
+            if (h == null) {
+                throw new EntityNotFoundException("The hobby does not exist");
+            }
             return h.getPersons().size();
         } finally {
             if (em != null) {
@@ -226,11 +238,12 @@ public class Facade {
         }
     }
 
-    public Person createAddressForPerson(Person p, String street, String info, int zip) {//finnish
+    public Person createAddressForPerson(Person p, String street, String info, int zip) throws EntityNotFoundException {//finnish
         EntityManager em = null;
         try {
             em = getEntityManager();
             CityInfo cityInfo = em.find(CityInfo.class, zip);
+            if(cityInfo == null) throw new EntityNotFoundException("The zipcode does not exist in database");
             Address address = new Address(street, info, cityInfo);
             em.getTransaction().begin();
             em.persist(address);
@@ -249,11 +262,12 @@ public class Facade {
         }
     }
 
-    public Company createAddressForCompany(Company c, String street, String info, int zip) {//finnish
+    public Company createAddressForCompany(Company c, String street, String info, int zip) throws EntityNotFoundException {//finnish
         EntityManager em = null;
         try {
             em = getEntityManager();
             CityInfo cityInfo = em.find(CityInfo.class, zip);
+            if(cityInfo == null) throw new EntityNotFoundException("The zipcode does not exist in database");
             Address address = new Address(street, info, em.find(CityInfo.class, zip));
             em.getTransaction().begin();
             em.persist(address);
@@ -288,11 +302,12 @@ public class Facade {
         }
     }
 
-    public boolean deletePerson(int personId) {//finnish
+    public void deletePerson(int personId) throws EntityNotFoundException {//finnish
         EntityManager em = null;
         try {
             em = getEntityManager();
             Person p = em.find(Person.class, personId);
+            if(p == null) throw new EntityNotFoundException("The person does not exist in database");
             List<Phone> phones = p.getPhones();
             List<Hobby> hobbies = p.getHobbies();
             if (p.getAddress() != null) {
@@ -319,10 +334,6 @@ public class Facade {
             em.merge(p);
             em.remove(p);
             em.getTransaction().commit();
-            return true;
-        } catch (Exception e) {
-            System.out.println(e);
-            return false;
         } finally {
             if (em != null) {
                 em.close();
@@ -330,11 +341,12 @@ public class Facade {
         }
     }
 
-    public boolean deleteCompany(int companyId) {//finnish
+    public void deleteCompany(int companyId) throws EntityNotFoundException {//finnish
         EntityManager em = null;
         try {
             em = getEntityManager();
             Company c = em.find(Company.class, companyId);
+            if(c == null) throw new EntityNotFoundException("The company does not exist in database");
             System.out.println(c.getPhones().isEmpty());
             List<Phone> phones = c.getPhones();
             if (c.getAddress() != null) {
@@ -357,10 +369,6 @@ public class Facade {
             em.merge(c);
             em.remove(c);
             em.getTransaction().commit();
-            return true;
-        } catch (Exception e) {
-            System.out.println(e);
-            return false;
         } finally {
             if (em != null) {
                 em.close();
@@ -368,12 +376,13 @@ public class Facade {
         }
     }
 
-    public Person deletePersonPhone(int PhoneNumber) {//finnish
+    public Person deletePersonPhone(int phoneNumber) throws EntityNotFoundException {//finnish
         EntityManager em = null;
         Person p = null;
         try {
             em = getEntityManager();
-            Phone phone = em.find(Phone.class, PhoneNumber);
+            Phone phone = em.find(Phone.class, phoneNumber);
+            if(phone == null) throw new EntityNotFoundException("The phonenumber: "+phoneNumber+" does not exist in database");
             if (phone.getPerson() != null) {
                 if (phone.getPerson().getPhones().contains(phone)) {
                     p = phone.getPerson();
@@ -392,12 +401,13 @@ public class Facade {
         }
     }
 
-    public Company deleteCompanyPhone(int PhoneNumber) {//finnish
+    public Company deleteCompanyPhone(int phoneNumber) throws EntityNotFoundException {//finnish
         EntityManager em = null;
         Company c = null;
         try {
             em = getEntityManager();
-            Phone phone = em.find(Phone.class, PhoneNumber);
+            Phone phone = em.find(Phone.class, phoneNumber);
+            if(phone == null) throw new EntityNotFoundException("The phonenumber: "+phoneNumber+" does not exist in database");
             if (phone.getCompany() != null) {
                 if (phone.getCompany().getPhones().contains(phone)) {
                     c = phone.getCompany();
@@ -416,11 +426,12 @@ public class Facade {
         }
     }
 
-    public Person changeAddressFromPerson(int personID, String street, String info, int zip) { //finished and tested
+    public Person changeAddressFromPerson(int personID, String street, String info, int zip) throws EntityNotFoundException { //finished and tested
         EntityManager em = null;
         try {
             em = getEntityManager();
             Person p = em.find(Person.class, personID);
+            if(p == null) throw new EntityNotFoundException("The person does not exist in database");
             p.getAddress().getPersons().remove(p);
             p = createAddressForPerson(p, street, info, zip);
             em.getTransaction().begin();
@@ -434,7 +445,7 @@ public class Facade {
         }
     }
 
-    public Company changeAddressFromCompany(int companyID, String street, String info, int zip) { //finished, not tested
+    public Company changeAddressFromCompany(int companyID, String street, String info, int zip) throws EntityNotFoundException { //finished, not tested
         EntityManager em = null;
         try {
             em = getEntityManager();
