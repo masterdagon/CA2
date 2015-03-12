@@ -10,6 +10,7 @@ import entity.Hobby;
 import entity.Person;
 import facade.Facade;
 import java.util.List;
+import rest.exception.EntityNotFoundException;
 
 /**
  *
@@ -17,7 +18,7 @@ import java.util.List;
  */
 public class TestPopulate {
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws EntityNotFoundException {
         Facade f = new Facade();
         
         Person p1 = f.createPerson("firstname1", "lastname1","email1");

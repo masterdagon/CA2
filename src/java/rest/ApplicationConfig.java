@@ -32,6 +32,9 @@ public class ApplicationConfig extends Application {
         resources.add(rest.AddressResource.class);
         resources.add(rest.CompanyResource.class);
         resources.add(rest.PersonResource.class);
+        resources.add(rest.exception.EntityNotFoundExceptionMapper.class);
+        resources.add(rest.exception.GenericExceptionMapper.class);
+     
     }
     
 }

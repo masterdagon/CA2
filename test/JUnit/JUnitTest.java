@@ -100,7 +100,7 @@ public class JUnitTest {
     }
 
     @Test
-    public void getCompanyFromPhone() {
+    public void getCompanyFromPhone() throws EntityNotFoundException {
         Company c = f.createCompany("getCompanyFromPhone", "test", 1, 1, 1, "Test");
         f.addPhoneCompany(c, "getCompanyFromPhone", 77);
         Company cc = f.getCompanyFromPhone(77);
@@ -108,14 +108,14 @@ public class JUnitTest {
     }
 
     @Test
-    public void getCompanyFromcvr() {
+    public void getCompanyFromcvr() throws EntityNotFoundException {
         Company c = f.createCompany("getCompanyFromcvr", "test", 99, 1, 1, "Test");
         Company cc = f.getCompanyFromcvr(99);
         assertEquals(c.getCvr(), cc.getCvr());
     }
 
     @Test
-    public void getAllPersonsWithHobby() {
+    public void getAllPersonsWithHobby() throws EntityNotFoundException {
         Person p = f.createPerson("getAllPersonsWithHobby", "test", "test");
         Hobby h = f.createHobbies("getAllPersonsWithHobby", "test");
         p = f.addHobbyToPerson(p, h);
@@ -133,7 +133,7 @@ public class JUnitTest {
     }
 
     @Test
-    public void getAllPersonsInCity() {
+    public void getAllPersonsInCity() throws EntityNotFoundException {
         Person p = f.createPerson("getAllPersonsInCity", "test", "test");
         p = f.createAddressForPerson(p, "test", "test", 3390);
         Person p1 = f.createPerson("getAllPersonsInCity", "test", "test");
@@ -146,7 +146,7 @@ public class JUnitTest {
     }
 
     @Test
-    public void getCountOfPeopleWithHobby() {
+    public void getCountOfPeopleWithHobby() throws EntityNotFoundException {
         Person p = f.createPerson("getCountOfPeopleWithHobby", "test", "test");
         Hobby h = f.createHobbies("getCountOfPeopleWithHobby", "test");
         p = f.addHobbyToPerson(p, h);
@@ -177,7 +177,7 @@ public class JUnitTest {
     }
 
     @Test
-    public void createAddressForPerson() {
+    public void createAddressForPerson() throws EntityNotFoundException {
         Person p = f.createPerson("createAddressForPerson", "test", "test");
         p = f.createAddressForPerson(p, "street", "a", 3300);
         Person p1 = em.find(Person.class, p.getId());
@@ -185,7 +185,7 @@ public class JUnitTest {
     }
 
     @Test
-    public void createAddressForCompany() {
+    public void createAddressForCompany() throws EntityNotFoundException {
         Company c = f.createCompany("createAddressForCompany", "test", 0, 0, 0, "test");
         c = f.createAddressForCompany(c, "street", "a", 3300);
         Company c1 = em.find(Company.class, c.getId());
@@ -200,7 +200,7 @@ public class JUnitTest {
     }
 
     @Test
-    public void deletePerson() {
+    public void deletePerson() throws EntityNotFoundException {
         Person p = f.createPerson("deletePerson", "test", "test");
         f.deletePerson(p.getId());
         Person p1 = null;
@@ -212,7 +212,7 @@ public class JUnitTest {
     }
 
     @Test
-    public void deleteCompany() {
+    public void deleteCompany() throws EntityNotFoundException {
         Company c = f.createCompany("deleteCompany", "test", 68, 68, 68, "test");
         f.deleteCompany(c.getId());
         Company c1 = null;
@@ -224,7 +224,7 @@ public class JUnitTest {
     }
 
     @Test
-    public void deletePersonPhone() {
+    public void deletePersonPhone() throws EntityNotFoundException {
         Person p = f.createPerson("deletePersonPhone", "test", "test");
         p = f.addPhonePerson(p, "Test", 9999);
         p = f.deletePersonPhone(9999);
@@ -233,7 +233,7 @@ public class JUnitTest {
     }
 
     @Test
-    public void deleteCompanyPhone() {
+    public void deleteCompanyPhone() throws EntityNotFoundException {
         Company c = f.createCompany("deleteCompanyPhone", "test", 50, 50, 50, "test");
         c = f.addPhoneCompany(c, "Test", 123456789);
         c = f.deleteCompanyPhone(123456789);
@@ -242,7 +242,7 @@ public class JUnitTest {
     }
 
     @Test
-    public void changeAddressFromPerson() {
+    public void changeAddressFromPerson() throws EntityNotFoundException {
         Person p = f.createPerson("changeAddressFromPerson", "test", "test");
         p = f.createAddressForPerson(p, "street1", "no", 3000);
         Person p1 = p;
@@ -251,7 +251,7 @@ public class JUnitTest {
     }
 
     @Test
-    public void changeAddressFromCompany() {
+    public void changeAddressFromCompany() throws EntityNotFoundException {
         Company c = f.createCompany("changeAddressFromPerson", "test",0,0,0, "test");
         c = f.createAddressForCompany(c, "street1", "no", 3000);
         Company c1 = c;
@@ -260,7 +260,7 @@ public class JUnitTest {
     }
 
     @Test
-    public void deleteAddress() {
+    public void deleteAddress() throws EntityNotFoundException {
         Person p = f.createPerson("deleteAddress", "test", "test");
         p = f.createAddressForPerson(p, "street", "a", 2900);
         f.deleteAddress(p.getAddress().getId());

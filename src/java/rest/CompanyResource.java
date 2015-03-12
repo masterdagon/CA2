@@ -26,6 +26,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import rest.exception.EntityNotFoundException;
 
 /**
  * REST Web Service
@@ -113,7 +114,7 @@ public class CompanyResource {
     @GET
     @Produces("application/json")
     @Path("/phone/{phoneNumber}")
-    public String getCompanyFromOPhone(@PathParam("phoneNumber") int phoneNumber) {
+    public String getCompanyFromOPhone(@PathParam("phoneNumber") int phoneNumber) throws EntityNotFoundException {
         Company c = f.getCompanyFromPhone(phoneNumber);
         JsonObject co = createCompanyObject(c);    
         String jasonCompany =  gson.toJson(co, JsonObject.class);
@@ -123,7 +124,7 @@ public class CompanyResource {
     @POST
     @Consumes("application/json")
     @Path("/create")
-    public void createCompanyAndAddress(String content){//json: name, description, cvr, numemployees, marketvalue, email, street, additionalinfo, zipcode
+    public void createCompanyAndAddress(String content) throws EntityNotFoundException{//json: name, description, cvr, numemployees, marketvalue, email, street, additionalinfo, zipcode
         JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
         Company c = f.createCompany(jo.get("name").getAsString(), jo.get("description").getAsString(),jo.get("cvr").getAsInt(),jo.get("numemployees").getAsInt(),jo.get("marketvalue").getAsInt(), jo.get("email").getAsString());
         c = f.createAddressForCompany(c, jo.get("street").getAsString(), jo.get("additionalinfo").getAsString(),jo.get("zipcode").getAsInt());
@@ -132,7 +133,7 @@ public class CompanyResource {
      @GET
     @Produces("application/json")
     @Path("cvr/{cvr}")
-    public String getCompanyFromCVR(@PathParam("cvr") int cvr) {
+    public String getCompanyFromCVR(@PathParam("cvr") int cvr) throws EntityNotFoundException {
         Company c = f.getCompanyFromcvr(cvr);
         JsonObject co = createCompanyObject(c);    
         String jasonCompany =  gson.toJson(co, JsonObject.class);
@@ -151,7 +152,7 @@ public class CompanyResource {
     @DELETE
     @Consumes("application/json")
     @Path("phone")
-    public void deletePhone(String content) {
+    public void deletePhone(String content) throws EntityNotFoundException {
          Type type = new TypeToken<List<Integer>>() {
         }.getType();
         List<Integer> iList = gson.fromJson(content, type);
@@ -161,7 +162,7 @@ public class CompanyResource {
     @DELETE
     @Consumes("application/json")
     @Path("/delete")
-    public void deleteCompany(String content) {
+    public void deleteCompany(String content) throws EntityNotFoundException {
          Type type = new TypeToken<List<Integer>>() {
         }.getType();
         List<Integer> iList = gson.fromJson(content, type);
@@ -171,7 +172,7 @@ public class CompanyResource {
     @PUT
     @Consumes("application/json")
     @Path("address")
-    public void changeAddressForCompany(String content) { //json: id, street, additionalinfo, zipcode
+    public void changeAddressForCompany(String content) throws EntityNotFoundException { //json: id, street, additionalinfo, zipcode
         JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
         f.changeAddressFromCompany(jo.get("id").getAsInt(), jo.get("street").getAsString(), jo.get("additionalinfo").getAsString(), jo.get("zipcode").getAsInt());
     }

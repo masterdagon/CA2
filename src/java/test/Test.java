@@ -11,6 +11,7 @@ import entity.Company;
 import entity.Person;
 import facade.Facade;
 import java.util.List;
+import rest.exception.EntityNotFoundException;
 
 /**
  *
@@ -18,7 +19,7 @@ import java.util.List;
  */
 public class Test {
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws EntityNotFoundException {
         Facade facade = new Facade();
         
         Person p = facade.createPerson("Muggi","Dagon","666@gmail.com");
@@ -64,7 +65,7 @@ public class Test {
         System.out.println("------------------------------------------");
         System.out.println("");
         
-        System.out.println(facade.deletePerson(p.getId()));
+        facade.deletePerson(p.getId());
         List<Person> pers = facade.getAllPersons();
         System.out.println("Persons size after delete ="+pers.size());
         for (Person per : pers) {
@@ -85,7 +86,7 @@ public class Test {
         System.out.println("REMOVE COMPANY:");
         Company c1 = facade.createCompany("McRonalds", "Dette er ikke McDonalds", 13597562, 10, 999, "mcronald@funfun.com");
         System.out.println(c1.getId());
-        System.out.println(facade.deleteCompany(c1.getId()));
+        facade.deleteCompany(c1.getId());
         
         System.out.println("");
         System.out.println("------------------------------------------");

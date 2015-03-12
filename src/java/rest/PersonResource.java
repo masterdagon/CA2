@@ -29,6 +29,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
+import rest.exception.EntityNotFoundException;
 
 /**
  * REST Web Service
@@ -66,7 +67,7 @@ public class PersonResource {
     @POST
     @Consumes("application/json")
     @Path("create")
-    public void createPersonAndAddress(String content) { //json: firstname, lastname, email, street, additional info, zipcode
+    public void createPersonAndAddress(String content) throws EntityNotFoundException { //json: firstname, lastname, email, street, additional info, zipcode
         JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
         Person p = f.createPerson(jo.get("firstname").getAsString(), jo.get("lastname").getAsString(), jo.get("email").getAsString());
         p = f.createAddressForPerson(p, jo.get("street").getAsString(), jo.get("additionalinfo").getAsString(), jo.get("zipcode").getAsInt());
@@ -75,7 +76,7 @@ public class PersonResource {
     @DELETE
     @Consumes("application/json")
     @Path("delete")
-    public void deletePerson(String content) {
+    public void deletePerson(String content) throws EntityNotFoundException {
         Type type = new TypeToken<List<Integer>>() {
         }.getType();
         List<Integer> iList = gson.fromJson(content, type);
@@ -98,7 +99,7 @@ public class PersonResource {
     @PUT
     @Consumes("application/json")
     @Path("address")
-    public void changeAddress(String content) { //json: id, street, additionalinfo, zipcode
+    public void changeAddress(String content) throws EntityNotFoundException { //json: id, street, additionalinfo, zipcode
         JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
         Person p = f.changeAddressFromPerson(jo.get("id").getAsInt(), jo.get("street").getAsString(), jo.get("additionalinfo").getAsString(), jo.get("zipcode").getAsInt());
     }
@@ -116,7 +117,7 @@ public class PersonResource {
     @DELETE
     @Consumes("application/json")
     @Path("phone")
-    public void deletePhone(String content) {
+    public void deletePhone(String content) throws EntityNotFoundException {
         Type type = new TypeToken<List<Integer>>() {
         }.getType();
         List<Integer> iList = gson.fromJson(content, type);
@@ -168,7 +169,7 @@ public class PersonResource {
     @GET
     @Produces("application/json")
     @Path("phone/{id}")
-    public String getPersonFromPhone(@PathParam("id") int phonenumber) {
+    public String getPersonFromPhone(@PathParam("id") int phonenumber) throws EntityNotFoundException {
         Person p = f.getPersonFromPhone(phonenumber);
         JsonObject jo = createJsonObjectfromPerson(p);
         String jsonString = gson.toJson(jo);
@@ -187,7 +188,7 @@ public class PersonResource {
     @GET
     @Produces("application/json")
     @Path("hobby/count/{id}")
-    public String getCountOfPeopleWithHobby(@PathParam("id") int id) {
+    public String getCountOfPeopleWithHobby(@PathParam("id") int id) throws EntityNotFoundException {
         Hobby h = f.getHobbiesFromID(id);
         int count = f.getCountOfPeopleWithHobby(h);
         String json = String.valueOf(count);
@@ -217,7 +218,7 @@ public class PersonResource {
     @GET
     @Produces("application/json")
     @Path("hobby/person/{id}")
-    public String getAllPersonfromhobby(@PathParam("id") int id) {
+    public String getAllPersonfromhobby(@PathParam("id") int id) throws EntityNotFoundException {
         List<Person> plist = f.getAllPersonsWithHobby(id);
         JsonArray persons = new JsonArray();
         for (Person person : plist) {

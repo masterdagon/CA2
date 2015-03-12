@@ -431,12 +431,14 @@ public class Facade {
         try {
             em = getEntityManager();
             Person p = em.find(Person.class, personID);
+            int adID = p.getAddress().getId();
             if(p == null) throw new EntityNotFoundException("The person does not exist in database");
             p.getAddress().getPersons().remove(p);
             p = createAddressForPerson(p, street, info, zip);
             em.getTransaction().begin();
             em.merge(p);
             em.getTransaction().commit();
+            deleteAddress(adID);
             return p;
         } finally {
             if (em != null) {
