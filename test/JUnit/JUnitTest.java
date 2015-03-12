@@ -108,7 +108,9 @@ public class JUnitTest {
 
     @Test
     public void getCompanyFromcvr() {
-        assertTrue(false);//method not made yet
+        Company c = f.createCompany("getCompanyFromcvr", "test", 99, 1, 1, "Test");
+        Company cc = f.getCompanyFromcvr(99);
+        assertEquals(c.getCvr(), cc.getCvr());
     }
 
     @Test
@@ -159,10 +161,11 @@ public class JUnitTest {
     }
 
     @Test
-    public void getListOfCompaniesWithXEmployes() {
-        Company c = f.createCompany("getListOfCompaniesWithXEmployes", "test", 25, 25, 25, "Test");
-        List<Company> clist = f.getListOfCompaniesWithXEmployes(25);
-        assertEquals(c.getNumEmployees(), clist.get(0).getNumEmployees());
+    public void getListOfCompaniesWithHXEmployes() {
+        Company c = f.createCompany("getListOfCompaniesWithXEmployes", "test", 25, 105, 105, "Test");
+        List<Company> clist = f.getListOfCompaniesWithXEmployes(100);
+        int exp =1;
+        assertEquals(1, clist.size());
     }
 
     @Test
@@ -230,7 +233,7 @@ public class JUnitTest {
 
     @Test
     public void deleteCompanyPhone() {
-        Company c = f.createCompany("deleteCompanyPhone", "test", 1478, 11478, 54164, "test");
+        Company c = f.createCompany("deleteCompanyPhone", "test", 50, 50, 50, "test");
         c = f.addPhoneCompany(c, "Test", 123456789);
         c = f.deleteCompanyPhone(123456789);
         Company c1 = em.find(Company.class, c.getId());

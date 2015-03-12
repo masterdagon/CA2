@@ -85,6 +85,20 @@ public class CompanyResource {
         return jasonCompany;    
     }
     
+    @GET
+    @Produces("application/json")
+    @Path("/high/{id}")
+    public String getCompaniesHxEmp(@PathParam("id") int id) {
+        List<Company> clist = f.getListOfCompaniesWithXEmployes(id);
+        JsonArray comp = new JsonArray();
+        for (Company c : clist) {
+            JsonObject co = createCompanyObject(c);
+            comp.add(co);
+        }
+        String jasonCompany =  gson.toJson(comp);
+        return jasonCompany;    
+    }
+    
      @GET
     @Produces("application/json")
     @Path("/{id}")
