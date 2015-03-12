@@ -30,16 +30,18 @@ and open the template in the editor.
                         $("#table").append("<td>" + persons[i].firstname + " " + persons[i].lastname + "</td>");
                         $("#table").append("<td>" + persons[i].email + "</td>");
                         $("#table").append("<td>" + persons[i].address.street + " " + persons[i].address.additionalinfo + " " + persons[i].address.cityinfo.city + " " + persons[i].address.cityinfo.zipcode + "</td>");
-                        $("#table").append("<td>");
+                        var text = "<td> ";
                         for (var x = 0; x < persons[i].phones.length; x++) {
-                            $("#table").append(persons[i].phones[x].number + " " + persons[i].phones[x].description + " ");
+                            text += persons[i].phones[x].number + " " + persons[i].phones[x].description + " ";
                         }
-                        $("#table").append("</td>");
-                        $("#table").append("<td>");
+                        text +=" </td>";
+                        $("#table").append(text);
+                        var text2 = "<td>";
                         for (var j = 0; j < persons[i].hobbies.length; j++) {
-                            $("#table").append(persons[i].hobbies[j].name + " " + persons[i].phones[j].description + " ");
+                            text2 += persons[i].hobbies[j].name + " " + persons[i].phones[j].description + " ";
                         }
-                        $("#table").append("</td>");
+                        text2 +=" </td>";
+                        $("#table").append(text2);
                         $("#table").append("</tr>");
                     }
                 });
@@ -62,16 +64,18 @@ and open the template in the editor.
                     $("#table").append("<td>" + persons.firstname + " " + persons.lastname + "</td>");
                     $("#table").append("<td>" + persons.email + "</td>");
                     $("#table").append("<td>" + persons.address.street + " " + persons.address.additionalinfo + " " + persons.address.cityinfo.city + " " + persons.address.cityinfo.zipcode + "</td>");
-                    $("#table").append("<td>");
+                    var text = "<td>";
                     for (var x = 0; x < persons.phones.length; x++) {
-                        $("#table").append(persons.phones[x].number + " " + persons.phones[x].description + " ");
+                        text += persons.phones[x].number + " " + persons.phones[x].description + " ";
                     }
-                    $("#table").append("</td>");
-                    $("#table").append("<td>");
+                    text += "</td>";
+                    $("#table").append(text);
+                    var text2 = "<td>";
                     for (var j = 0; j < persons.hobbies.length; j++) {
-                        $("#table").append(persons.hobbies[j].name + " " + persons.phones[j].description + " ");
+                        text2 += persons.hobbies[j].name + " " + persons.phones[j].description + " ";
                     }
-                    $("#table").append("</td>");
+                    text2 += "</td>";
+                    $("#table").append(text2);
                     $("#table").append("</tr>");
 
                 });
