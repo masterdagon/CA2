@@ -9,6 +9,7 @@ import entity.Address;
 import entity.CityInfo;
 import entity.Company;
 import entity.Hobby;
+import static entity.InfoEntity_.address;
 import entity.Person;
 import entity.Phone;
 import java.util.ArrayList;
@@ -452,11 +453,14 @@ public class Facade {
         try {
             em = getEntityManager();
             Company c = em.find(Company.class, companyID);
+            if(c == null) throw new EntityNotFoundException("The Company does not exist in database");
+            int aId = c.getAddress().getId();
             c.getAddress().getPersons().remove(c);
             c = createAddressForCompany(c, street, info, zip);
             em.getTransaction().begin();
             em.merge(c);
             em.getTransaction().commit();
+            deleteAddress(aId);
             return c;
         } finally {
             if (em != null) {
@@ -465,42 +469,35 @@ public class Facade {
         }
     }
 
-    public boolean deleteAddress(int addressId) { //finished but not tested
+    public void deleteAddress(int addressId) throws EntityNotFoundException { //finished but not tested
         EntityManager em = null;
         try {
             em = getEntityManager();
             Address address = em.find(Address.class, addressId);
-
+            if(address == null) throw new EntityNotFoundException("The address does not exist in database");
             if (address.getPersons().size() == 0 && address.getCompanies().size() == 0) {
                 em.getTransaction().begin();
                 em.remove(address);
                 em.getTransaction().commit();
-                return true;
-            }else{
-                return false;
             }
-        } catch (Exception e) {
-            System.out.println(e);
-            return false;
-        } finally {
+        }finally {
             if (em != null) {
                 em.close();
             }
         }
     }
 
-    public boolean removeHobbyFromPerson(int hobbyId, int personId) {
+    public void removeHobbyFromPerson(int hobbyId, int personId) throws EntityNotFoundException {
         EntityManager em = null;
         try {
             em = getEntityManager();
             Person person = em.find(Person.class, personId);
+            if(person == null) throw new EntityNotFoundException("The person does not exist in database");
             Hobby hobby = em.find(Hobby.class, hobbyId);
+            if(hobby == null) throw new EntityNotFoundException("The hobby does not exist in database");
             person.removeHobby(hobby);
             em.merge(person);
             em.getTransaction().commit();
-            return true;
-        } catch (Exception e) {
-            return false;
         } finally {
             if (em != null) {
                 em.close();
@@ -508,12 +505,12 @@ public class Facade {
         }
     }
 
-    public boolean deleteHobbyFromDB(int hobbyId) { //finished, not tested with postedman
+    public void deleteHobbyFromDB(int hobbyId) throws EntityNotFoundException { //finished, not tested with postedman
         EntityManager em = null;
         try {
             em = getEntityManager();
             Hobby hobby = em.find(Hobby.class, hobbyId);
-
+            if(hobby == null) throw new EntityNotFoundException("The hobby does not exist in database");
             em.getTransaction().begin();
             for (Person p : hobby.getPersons()) {
                 p.removeHobby(hobby);
@@ -523,9 +520,6 @@ public class Facade {
             em.merge(hobby);
             em.remove(hobby);
             em.getTransaction().commit();
-            return true;
-        } catch (Exception e) {
-            return false;
         } finally {
             if (em != null) {
                 em.close();
@@ -533,12 +527,14 @@ public class Facade {
         }
     }
 
-    public Person addHobbyToPerson(Person person, Hobby hobby) { //finished, not tested with postman
+    public Person addHobbyToPerson(Person person, Hobby hobby) throws EntityNotFoundException { //finished, not tested with postman
         EntityManager em = null;
         try {
             em = getEntityManager();
             Person p = em.find(Person.class, person.getId());
+            if(p == null) throw new EntityNotFoundException("The person does not exist in database");
             Hobby h = em.find(Hobby.class, hobby.getId());
+            if(h == null) throw new EntityNotFoundException("The hobby does not exist in database");
             em.getTransaction().begin();
             p.addHobby(hobby);
             h.addPerson(person);
@@ -566,11 +562,12 @@ public class Facade {
         }
     }
 
-    public Hobby getHobbiesFromID(int id) { //finished
+    public Hobby getHobbiesFromID(int id) throws EntityNotFoundException { //finished
         EntityManager em = null;
         try {
             em = getEntityManager();
             Hobby h = em.find(Hobby.class, id);
+            if(h == null) throw new EntityNotFoundException("The hobby does not exist in database");
             return h;
         } finally {
             if (em != null) {
@@ -606,11 +603,12 @@ public class Facade {
         }
     }
 
-    public Company getCompany(int id) {
+    public Company getCompany(int id) throws EntityNotFoundException {
         EntityManager em = null;
         try {
             em = getEntityManager();
             Company c = em.find(Company.class, id);
+            if(c == null) throw new EntityNotFoundException("The company does not exist in database");
             return c;
         } finally {
             if (em != null) {
@@ -619,11 +617,12 @@ public class Facade {
         }
     }
 
-    public Person getPerson(int id) {
+    public Person getPerson(int id) throws EntityNotFoundException {
         EntityManager em = null;
         try {
             em = getEntityManager();
             Person p = em.find(Person.class, id);
+            if(p == null) throw new EntityNotFoundException("The person does not exist in database");
             return p;
         } finally {
             if (em != null) {

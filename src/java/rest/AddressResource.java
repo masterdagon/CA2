@@ -22,6 +22,7 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import rest.exception.EntityNotFoundException;
 
 /**
  * REST Web Service
@@ -65,7 +66,7 @@ public class AddressResource {
     
     @DELETE
     @Produces("application/json")
-    public void deleteAddress(String content) {
+    public void deleteAddress(String content) throws EntityNotFoundException {
         Type type = new TypeToken<List<Integer>>() {
         }.getType();
         List<Integer> iList = gson.fromJson(content, type);

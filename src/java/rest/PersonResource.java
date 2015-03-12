@@ -89,7 +89,7 @@ public class PersonResource {
     @GET
     @Produces("application/json")
     @Path("{id}")
-    public String getPersonFromId(@PathParam("id") int id) {
+    public String getPersonFromId(@PathParam("id") int id) throws EntityNotFoundException {
         Person p = f.getPerson(id);
         JsonObject jo = createJsonObjectfromPerson(p);
         String jsonString = gson.toJson(jo);
@@ -107,7 +107,7 @@ public class PersonResource {
     @POST
     @Consumes("application/json")
     @Path("phone")
-    public void addPhoneToPerson(String content) { //json: id, number, description
+    public void addPhoneToPerson(String content) throws EntityNotFoundException { //json: id, number, description
         JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
         Person p = f.getPerson(jo.get("id").getAsInt());
         f.addPhonePerson(p, jo.get("description").getAsString(), jo.get("number").getAsInt());
@@ -199,7 +199,7 @@ public class PersonResource {
     @POST
     @Consumes("application/json")
     @Path("hobby/add")
-    public void addHobbyToPerson(String content) { // json: personid, hobbyid
+    public void addHobbyToPerson(String content) throws EntityNotFoundException { // json: personid, hobbyid
         JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
         Person p = f.getPerson(jo.get("personid").getAsInt());
         Hobby h = f.getHobbiesFromID(jo.get("hobbyid").getAsInt());
@@ -209,7 +209,7 @@ public class PersonResource {
     @DELETE
     @Consumes("application/json")
     @Path("hobby/delete")
-    public void deleteHobbyFromDB(String content) { // json: id
+    public void deleteHobbyFromDB(String content) throws EntityNotFoundException { // json: id
         JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
         f.deleteHobbyFromDB(jo.get("id").getAsInt());
         
@@ -232,7 +232,7 @@ public class PersonResource {
     @PUT
     @Consumes("application/json")
     @Path("/hobby")
-    public void removehobbyFromPerson(String content) { //json: personid, hobbyid
+    public void removehobbyFromPerson(String content) throws EntityNotFoundException { //json: personid, hobbyid
         JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
         f.removeHobbyFromPerson(jo.get("personid").getAsInt(), jo.get("hobbyid").getAsInt());
     }
@@ -256,7 +256,7 @@ public class PersonResource {
     @GET
     @Produces("application/json")
     @Path("hobby/{id}")
-    public String getHobbyFromId(@PathParam("id") int id) {
+    public String getHobbyFromId(@PathParam("id") int id) throws EntityNotFoundException {
         Hobby hobby = f.getHobbiesFromID(id);
         JsonObject ho = new JsonObject();
         ho.addProperty("id", hobby.getId());

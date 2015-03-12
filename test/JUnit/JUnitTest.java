@@ -125,7 +125,7 @@ public class JUnitTest {
     }
 
     @Test
-    public void addHobbyToPerson() {
+    public void addHobbyToPerson() throws EntityNotFoundException {
         Person p = f.createPerson("addHobbyToPerson", "test", "test");
         Hobby h = f.createHobbies("addHobbyToPerson", "test");
         p = f.addHobbyToPerson(p, h);
@@ -273,7 +273,7 @@ public class JUnitTest {
     }
 
     @Test
-    public void removeHobbyFromPerson() {
+    public void removeHobbyFromPerson() throws EntityNotFoundException {
         Person p = f.createPerson("removeHobbyFromPerson", "test", "test");
         Hobby h = f.createHobbies("removeHobbyFromPerson", "test");
         f.removeHobbyFromPerson(h.getId(), p.getId());
@@ -282,7 +282,7 @@ public class JUnitTest {
     }
 
     @Test
-    public void deleteHobbyFromDB() {
+    public void deleteHobbyFromDB() throws EntityNotFoundException {
         Hobby h = f.createHobbies("deleteHobbyFromDB", "test");
         f.deleteHobbyFromDB(h.getId());
         Hobby h1 = null;
@@ -308,21 +308,21 @@ public class JUnitTest {
     }
     
     @Test
-    public void getPerson(){
+    public void getPerson() throws EntityNotFoundException{
         Person p = f.createPerson("getPerson", "test","test");
         Person p1 = f.getPerson(p.getId());
         assertEquals(p.getId(),p1.getId());
     }
 
     @Test
-    public void getCompany() {
+    public void getCompany() throws EntityNotFoundException {
         Company c = f.createCompany("getCompany", "test",0,0,0, "test");
         Company c1 = f.getCompany(c.getId());
         assertEquals(c.getId(),c1.getId());
     }
     
     @Test
-    public void getHobbiesFromID(){
+    public void getHobbiesFromID() throws EntityNotFoundException{
         Hobby h = f.createHobbies("getHobbiesFromID", "getHobbiesFromID");
         Hobby h1 = f.getHobbiesFromID(h.getId());
         assertEquals(h.getId(),h1.getId());

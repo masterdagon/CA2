@@ -104,7 +104,7 @@ public class CompanyResource {
      @GET
     @Produces("application/json")
     @Path("/{id}")
-    public String getCompany(@PathParam("id") int id) {
+    public String getCompany(@PathParam("id") int id) throws EntityNotFoundException {
         Company c = f.getCompany(id);
         JsonObject co = createCompanyObject(c);    
         String jasonCompany =  gson.toJson(co, JsonObject.class);
@@ -143,7 +143,7 @@ public class CompanyResource {
     @POST
     @Consumes("application/json")
     @Path("phone")
-    public void addPhoneToCompany(String content) { //json: id, number, description
+    public void addPhoneToCompany(String content) throws EntityNotFoundException { //json: id, number, description
         JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
         Company c = f.getCompany(jo.get("id").getAsInt());
         f.addPhoneCompany(c,jo.get("description").getAsString() , jo.get("number").getAsInt());

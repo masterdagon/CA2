@@ -14,6 +14,7 @@ and open the template in the editor.
             $(document).ready(function () {
 
                 $("#btn1").click(getHobbies);
+                $("#btn2").click(getselected);
                 
 
             });
@@ -40,21 +41,24 @@ and open the template in the editor.
                 });
             }
             
-            function getHobbies() {
+            function getselected(){
+                var e = document.getElementById("list");
+                getUsers(e.options[e.selectedIndex].value);
+            }
+            
+            function getUsers(num) {
 
                 var request = $.ajax({
-                    url: "api/person/hobby/",
+                    url: "api/person/hobby/person/"+num,
                     dataType: "json"
                 });
-                request.done(function (hobby) {
-                    $("#list").text("");
-                    for (var i = 0; i < hobby.length; i++) {
-                        var text = "<option ";
-                        text += "value=\""+ hobby[i].id;
-                        text += "\">";
-                        text += "Name: " + hobby[i].name;
+                request.done(function (persons) {
+                    $("#plist").text("");
+                    for (var i = 0; i < persons.length; i++) {
+                        var text = "<option> ";
+                        text += persons[i].firstname +" "+persons[i].lastname;
                         text += "</option>";
-                        $("#list").append(text);
+                        $("#plist").append(text);
                     }
                 });
                 request.fail(function (jqXHR, textStatus) {
@@ -69,15 +73,15 @@ and open the template in the editor.
         <div>
         <button id="btn1">Get Hobbies</button><br>
         <select name="listbox" id="list" size="5">
-            <option>test</option>
-
+            <option value="3">test</option>
+            <option value="4">test1</option>
         </select>
         </div>
+        <div><h1 id="test"></h1></div>
         <div>
-        <button id="btn1">Get Users</button><br>
+        <button id="btn2">Get Users</button><br>
         <select name="listbox" id="plist" size="5">
             <option>test</option>
-
         </select>
         </div>
     </body>
