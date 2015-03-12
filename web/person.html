@@ -17,12 +17,14 @@ and open the template in the editor.
             });
 
             function findAllPersons() {
+
                 var request = $.ajax({
-                    url: "api/person",
+                    url: "api/person/",
                     dataType: "json"
                 });
                 request.done(function (persons) {
                     $("#table").text("");
+
                     for (var i = 0; i < persons.length; i++) {
                         $("#table").append("<tr>");
                         $("#table").append("<td>" + persons[i].firstname + " " + persons[i].lastname + "</td>");
@@ -41,26 +43,6 @@ and open the template in the editor.
                         $("#table").append("</tr>");
                     }
                 });
-//                request.done(function (persons) {
-//                    $("#plist").text("");
-//                    for (var i = 0; i < persons.length; i++) {
-//                        var text = "<option> ";
-//                        text += "Name: " + persons[i].firstname + " " + persons[i].lastname
-//                                + " - Email: " + persons[i].email
-//                                + " - Street: " + persons[i].address.street + " " + persons[i].address.additionalinfo
-//                                + " - City: " + persons[i].address.cityinfo.city + " " + persons[i].address.cityinfo.zipcode
-//                                + " - Phone: ";
-//                        for (var x = 0; x < persons[i].phones.length; x++) {
-//                            text += persons[i].phones[x].number + " " + persons[i].phones[x].description + " ";
-//                        }
-//                        text += "- Hobby: ";
-//                        for (var j = 0; j < persons[i].hobbies.length; j++) {
-//                            text += persons[i].hobbies[j].name + " " + persons[i].phones[j].description + " ";
-//                        }
-//                        text += "</option>";
-//                        $("#plist").append(text);
-//                    }
-//                });
                 request.fail(function (jqXHR, textStatus) {
                     alert("Request failed: " + textStatus);
                 });
@@ -68,29 +50,30 @@ and open the template in the editor.
 
 
             function findPersonPhone() {
+                var number = $("#number").val();
                 var request = $.ajax({
-                    url: "api/person/phone/{id}",
+                    url: "api/person/phone/" + number,
                     dataType: "json"
                 });
                 request.done(function (persons) {
                     $("#table").text("");
-                    for (var i = 0; i < persons.length; i++) {
-                        $("#table").append("<tr>");
-                        $("#table").append("<td>" + persons[i].firstname + " " + persons[i].lastname + "</td>");
-                        $("#table").append("<td>" + persons[i].email + "</td>");
-                        $("#table").append("<td>" + persons[i].address.street + " " + persons[i].address.additionalinfo + " " + persons[i].address.cityinfo.city + " " + persons[i].address.cityinfo.zipcode + "</td>");
-                        $("#table").append("<td>");
-                        for (var x = 0; x < persons[i].phones.length; x++) {
-                            $("#table").append(persons[i].phones[x].number + " " + persons[i].phones[x].description + " ");
-                        }
-                        $("#table").append("</td>");
-                        $("#table").append("<td>");
-                        for (var j = 0; j < persons[i].hobbies.length; j++) {
-                            $("#table").append(persons[i].hobbies[j].name + " " + persons[i].phones[j].description + " ");
-                        }
-                        $("#table").append("</td>");
-                        $("#table").append("</tr>");
+
+                    $("#table").append("<tr>");
+                    $("#table").append("<td>" + persons.firstname + " " + persons.lastname + "</td>");
+                    $("#table").append("<td>" + persons.email + "</td>");
+                    $("#table").append("<td>" + persons.address.street + " " + persons.address.additionalinfo + " " + persons.address.cityinfo.city + " " + persons.address.cityinfo.zipcode + "</td>");
+                    $("#table").append("<td>");
+                    for (var x = 0; x < persons.phones.length; x++) {
+                        $("#table").append(persons.phones[x].number + " " + persons.phones[x].description + " ");
                     }
+                    $("#table").append("</td>");
+                    $("#table").append("<td>");
+                    for (var j = 0; j < persons.hobbies.length; j++) {
+                        $("#table").append(persons.hobbies[j].name + " " + persons.phones[j].description + " ");
+                    }
+                    $("#table").append("</td>");
+                    $("#table").append("</tr>");
+
                 });
                 request.fail(function (jqXHR, textStatus) {
                     alert("Request failed: " + textStatus);
@@ -109,12 +92,7 @@ and open the template in the editor.
         </script>
     </head>
     <body>
-        <div>All persons:</div>
-        <div><h1 id="test"></h1></div>
-        <div>
-            <select name="listbox" id="plist" size="10" style="width: 100%">
-            </select>
-        </div>
+        <div>Person:</div>
         <button id ="all">All persons</button>
         <button id ="findphone">Find person by phone</button>
         <input id="number" type="number">
