@@ -46,7 +46,8 @@ and open the template in the editor.
                     }
                 });
                 request.fail(function (jqXHR, textStatus) {
-                    alert("Request failed: " + textStatus);
+                    jsonValue = jQuery.parseJSON( jqXHR.responseText );
+                    alert("Request failed: " + jsonValue.message);
                 });
             }
 
@@ -80,10 +81,8 @@ and open the template in the editor.
 
                 });
                 request.fail(function (jqXHR, textStatus) {
-                    alert("Request failed: " + textStatuszzz);
-                    $("#playerid").text("ID: Not found");
-                    $("#name").text("Name: Not found");
-                    $("#country").text("Country: Not found");
+                    jsonValue = jQuery.parseJSON( jqXHR.responseText );
+                    alert("Request failed: " + jsonValue.message);
                 });
             }
             ;
