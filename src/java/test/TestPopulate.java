@@ -36,13 +36,6 @@ public class TestPopulate {
         c1 = f.addPhoneCompany(c1, "Work", 44334433);
         Company c2 = f.createCompany("Marked", "stor", 11111112, 10, 90, "email2");
         c2 = f.createAddressForCompany(c2, "street1", "info1", 3300);
-        c2 = f.addPhoneCompany(c1, "Work", 44443333);
-        
-        List<Company> clist = f.getListOfCompaniesWithXEmployes(2);
-        for (Company clist1 : clist) {
-                    System.out.println(clist1.getName());
-
-        }
+        c2 = f.addPhoneCompany(c1, "Work", 44443333);    
     }
-    
 }

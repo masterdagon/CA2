@@ -50,6 +50,7 @@ public class CompanyResource {
     public JsonObject createCompanyObject(Company c){
         JsonObject company = new JsonObject();
             company.addProperty("id", c.getId());
+            company.addProperty("name", c.getName());
             company.addProperty("description", c.getDescription());
             company.addProperty("cvr", c.getCvr());
             company.addProperty("email", c.getEmail());
