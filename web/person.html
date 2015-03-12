@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Persons</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                var request = $.ajax({
+                    url: "api/person",
+                    dataType: "json"
+                });
+                request.done(function (persons) {
+                    $("#plist").text("");
+                    for (var i = 0; i < persons.length; i++) {
+                        var text = "<option> ";
+                        text += "Name: " + persons[i].firstname + " " + persons[i].lastname
+                                + " - Email: " + persons[i].email
+                                + " - Street: " + persons[i].address.street + " " + persons[i].address.additionalinfo
+                                + " - City: " + persons[i].address.cityinfo.city + " " + persons[i].address.cityinfo.zipcode
+                                + " - Phone: ";
+                        for (var x = 0; x < persons[i].phones.length; x++) {
+                            text += persons[i].phones[x].number + " " + persons[i].phones[x].description + " ";
+                        }
+                        text += "- Hobby: ";
+                        for (var j = 0; j < persons[i].hobbies.length; j++) {
+                            text += persons[i].hobbies[j].name + " " + persons[i].phones[j].description + " ";
+                        }
+                        text += "</option>";
+                        $("#plist").append(text);
+                    }
+                });
+                request.fail(function (jqXHR, textStatus) {
+                    alert("Request failed: " + textStatus);
+                });
+            });
+
+
+
+        </script>
+    </head>
+    <body>
+        <div>All persons:</div>
+        <div><h1 id="test"></h1></div>
+        <div>
+            <select name="listbox" id="plist" size="10" style="width: 100%">
+                <option>test</option>
+            </select>
+        </div>
+    </body>
+</html>
