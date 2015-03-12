@@ -50,6 +50,7 @@ public class CompanyResource {
     public JsonObject createCompanyObject(Company c){
         JsonObject company = new JsonObject();
             company.addProperty("id", c.getId());
+            company.addProperty("name", c.getName());
             company.addProperty("description", c.getDescription());
             company.addProperty("cvr", c.getCvr());
             company.addProperty("email", c.getEmail());
@@ -76,6 +77,20 @@ public class CompanyResource {
     @Produces("application/json")
     public String getAllCompanies() {
         List<Company> clist = f.getAllCompanies();
+        JsonArray comp = new JsonArray();
+        for (Company c : clist) {
+            JsonObject co = createCompanyObject(c);
+            comp.add(co);
+        }
+        String jasonCompany =  gson.toJson(comp);
+        return jasonCompany;    
+    }
+    
+    @GET
+    @Produces("application/json")
+    @Path("/high/{id}")
+    public String getCompaniesHxEmp(@PathParam("id") int id) {
+        List<Company> clist = f.getListOfCompaniesWithXEmployes(id);
         JsonArray comp = new JsonArray();
         for (Company c : clist) {
             JsonObject co = createCompanyObject(c);
