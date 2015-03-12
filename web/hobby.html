@@ -14,9 +14,7 @@ and open the template in the editor.
             $(document).ready(function () {
 
                 $("#btn1").click(getHobbies);
-                $("#btn2").click(getselected);
                 
-
             });
 
                 function getHobbies() {
@@ -72,15 +70,14 @@ and open the template in the editor.
         <div>TODO write content</div>
         <div>
         <button id="btn1">Get Hobbies</button><br>
-        <select name="listbox" id="list" size="5">
+        <select name="listbox" id="list" size="5" onchange="getselected()">
             <option value="3">test</option>
             <option value="4">test1</option>
         </select>
         </div>
         <div><h1 id="test"></h1></div>
         <div>
-        <button id="btn2">Get Users</button><br>
-        <select name="listbox" id="plist" size="5">
+            <select name="listbox" id="plist" size="5">
             <option>test</option>
         </select>
         </div>
