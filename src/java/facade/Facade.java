@@ -85,7 +85,7 @@ public class Facade {
             List<Hobby> hobbies = q.getResultList();
             List<Person> listP = null;
             for (Hobby h : hobbies) {
-                if (h.getId()==hobbyId) {
+                if (h.getId() == hobbyId) {
                     listP = h.getPersons();
                 }
             }
@@ -457,17 +457,15 @@ public class Facade {
         try {
             em = getEntityManager();
             Address address = em.find(Address.class, addressId);
-            em.getTransaction().begin();
-            for (Person p : address.getPersons()) {
-                p.setAddress(null);
-                em.merge(p);
+
+            if (address.getPersons().size() != 0 || address.getCompanies().size() != 0) {
+                //throw exception
+            } else {
+                em.getTransaction().begin();
+                em.remove(address);
+                em.getTransaction().commit();
+               
             }
-            for (Company c : address.getCompanies()){
-                c.setAddress(null);
-                em.merge(c);
-            }
-            em.remove(address);
-            em.getTransaction().commit();
             return true;
         } catch (Exception e) {
             System.out.println(e);
@@ -483,8 +481,8 @@ public class Facade {
         EntityManager em = null;
         try {
             em = getEntityManager();
-            Person person= em.find(Person.class, personId);
-            Hobby hobby= em.find(Hobby.class, hobbyId);
+            Person person = em.find(Person.class, personId);
+            Hobby hobby = em.find(Hobby.class, hobbyId);
             person.removeHobby(hobby);
             em.merge(person);
             em.getTransaction().commit();
@@ -542,7 +540,7 @@ public class Facade {
             }
         }
     }
-    
+
     public List<Hobby> getAllHobbies() { //finished
         EntityManager em = null;
         try {
@@ -555,7 +553,7 @@ public class Facade {
             }
         }
     }
-    
+
     public Hobby getHobbiesFromID(int id) { //finished
         EntityManager em = null;
         try {
@@ -568,9 +566,6 @@ public class Facade {
             }
         }
     }
-    
-    
-    
 
     //--------------------Andre metoder------------------------------------//
     public List<Person> getAllPersons() {
