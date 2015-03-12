@@ -471,15 +471,14 @@ public class Facade {
             em = getEntityManager();
             Address address = em.find(Address.class, addressId);
 
-            if (address.getPersons().size() != 0 || address.getCompanies().size() != 0) {
-                //throw exception
-            } else {
+            if (address.getPersons().size() == 0 && address.getCompanies().size() == 0) {
                 em.getTransaction().begin();
                 em.remove(address);
                 em.getTransaction().commit();
-
+                return true;
+            }else{
+                return false;
             }
-            return true;
         } catch (Exception e) {
             System.out.println(e);
             return false;
