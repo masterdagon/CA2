@@ -58,7 +58,7 @@ and open the template in the editor.
             <tr>
                 <td>api/person/address</td>
                 <td>PUT</td>
-                <td>Updates address for person</td>
+                <td>Updates address for person and attempts to delete former address</td>
                 <td>{id //person, street, additionalinfo, zipcode}</td>
 
             </tr>
@@ -204,7 +204,7 @@ and open the template in the editor.
             <tr>
                 <td>api/company/address</td>
                 <td>PUT</td>
-                <td>Changes an address for a company with given id</td>
+                <td>Changes an address for a company with given id and attempts to delete former address</td>
                 <td>{id, street, additionalinfo, zipcode}</td>
                 
             </tr>
