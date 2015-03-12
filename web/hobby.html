@@ -39,6 +39,28 @@ and open the template in the editor.
                     alert("Request failed: " + textStatus);
                 });
             }
+            
+            function getHobbies() {
+
+                var request = $.ajax({
+                    url: "api/person/hobby/",
+                    dataType: "json"
+                });
+                request.done(function (hobby) {
+                    $("#list").text("");
+                    for (var i = 0; i < hobby.length; i++) {
+                        var text = "<option ";
+                        text += "value=\""+ hobby[i].id;
+                        text += "\">";
+                        text += "Name: " + hobby[i].name;
+                        text += "</option>";
+                        $("#list").append(text);
+                    }
+                });
+                request.fail(function (jqXHR, textStatus) {
+                    alert("Request failed: " + textStatus);
+                });
+            }
 
         </script>
     </head>

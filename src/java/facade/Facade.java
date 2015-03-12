@@ -17,6 +17,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
+import rest.exception.EntityNotFoundException;
 
 /**
  *
@@ -34,11 +35,12 @@ public class Facade {
         return emf.createEntityManager();
     }
 
-    public Person getPersonFromPhone(int phoneNumber) {//Finnish
+    public Person getPersonFromPhone(int phoneNumber) throws EntityNotFoundException {//Finnish
         EntityManager em = null;
         try {
             em = getEntityManager();
             Phone phone = em.find(Phone.class, phoneNumber);
+            if(phone == null) throw new EntityNotFoundException("Try to find Phone number "+phoneNumber+" it dosnt exicst");
             Person p = phone.getPerson();
             return p;
         } finally {

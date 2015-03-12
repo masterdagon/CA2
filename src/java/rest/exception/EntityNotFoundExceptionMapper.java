@@ -12,29 +12,26 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
-import javax.ws.rs.ext.Provider;
-
-
 
 /**
  *
  * @author Dennnis
  */
-@Provider
-public class PersonNotFoundExceptionMapper implements ExceptionMapper<PersonNotFoundException> {
-
+public class EntityNotFoundExceptionMapper implements ExceptionMapper<EntityNotFoundException> {
+    
     static Gson gson = new GsonBuilder().setPrettyPrinting().create();
     @Context
-    ServletContext context;
-
+    ServletContext context;  
+    
     @Override
-    public Response toResponse(PersonNotFoundException ex) {
+    public Response toResponse(EntityNotFoundException e) {
         boolean isDebug = context.getInitParameter("debug").equals("true");
-        ErrorMessage err = new ErrorMessage(ex, 404, isDebug);
+        ErrorMessage err = new ErrorMessage(e, 404, isDebug);
         err.setDescription("You tried to call ...");
         return Response.status(404)
                 .entity(gson.toJson(err))
                 .type(MediaType.APPLICATION_JSON).
                 build();
     }
+    
 }

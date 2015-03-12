@@ -9,6 +9,12 @@ package rest.exception;
  *
  * @author Dennnis
  */
-class PersonNotFoundException extends Throwable {
+public class EntityNotFoundException extends Exception{
+
+    
+    public EntityNotFoundException(String message) {
+        super(message);
+
+    }
     
 }

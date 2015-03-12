@@ -23,6 +23,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
+import rest.exception.EntityNotFoundException;
 import test.CreateTables;
 
 /**
@@ -91,7 +92,7 @@ public class JUnitTest {
     }
 
     @Test
-    public void getPersonFromPhone() {
+    public void getPersonFromPhone() throws EntityNotFoundException {
         Person p = f.createPerson("getPersonFromPhone", "Test", "Test");
         f.addPhonePerson(p, "getPersonFromPhone", 555);
         Person pp = f.getPersonFromPhone(555);
