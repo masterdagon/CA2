@@ -12,34 +12,97 @@ and open the template in the editor.
         <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
         <script>
             $(document).ready(function () {
+                $("#all").click(findAllPersons);
+                $("#findphone").click(findPersonPhone);
+            });
+
+            function findAllPersons() {
                 var request = $.ajax({
                     url: "api/person",
                     dataType: "json"
                 });
                 request.done(function (persons) {
-                    $("#plist").text("");
+                    $("#table").text("");
                     for (var i = 0; i < persons.length; i++) {
-                        var text = "<option> ";
-                        text += "Name: " + persons[i].firstname + " " + persons[i].lastname
-                                + " - Email: " + persons[i].email
-                                + " - Street: " + persons[i].address.street + " " + persons[i].address.additionalinfo
-                                + " - City: " + persons[i].address.cityinfo.city + " " + persons[i].address.cityinfo.zipcode
-                                + " - Phone: ";
+                        $("#table").append("<tr>");
+                        $("#table").append("<td>" + persons[i].firstname + " " + persons[i].lastname + "</td>");
+                        $("#table").append("<td>" + persons[i].email + "</td>");
+                        $("#table").append("<td>" + persons[i].address.street + " " + persons[i].address.additionalinfo + " " + persons[i].address.cityinfo.city + " " + persons[i].address.cityinfo.zipcode + "</td>");
+                        $("#table").append("<td>");
                         for (var x = 0; x < persons[i].phones.length; x++) {
-                            text += persons[i].phones[x].number + " " + persons[i].phones[x].description + " ";
+                            $("#table").append(persons[i].phones[x].number + " " + persons[i].phones[x].description + " ");
                         }
-                        text += "- Hobby: ";
+                        $("#table").append("</td>");
+                        $("#table").append("<td>");
                         for (var j = 0; j < persons[i].hobbies.length; j++) {
-                            text += persons[i].hobbies[j].name + " " + persons[i].phones[j].description + " ";
+                            $("#table").append(persons[i].hobbies[j].name + " " + persons[i].phones[j].description + " ");
                         }
-                        text += "</option>";
-                        $("#plist").append(text);
+                        $("#table").append("</td>");
+                        $("#table").append("</tr>");
+                    }
+                });
+//                request.done(function (persons) {
+//                    $("#plist").text("");
+//                    for (var i = 0; i < persons.length; i++) {
+//                        var text = "<option> ";
+//                        text += "Name: " + persons[i].firstname + " " + persons[i].lastname
+//                                + " - Email: " + persons[i].email
+//                                + " - Street: " + persons[i].address.street + " " + persons[i].address.additionalinfo
+//                                + " - City: " + persons[i].address.cityinfo.city + " " + persons[i].address.cityinfo.zipcode
+//                                + " - Phone: ";
+//                        for (var x = 0; x < persons[i].phones.length; x++) {
+//                            text += persons[i].phones[x].number + " " + persons[i].phones[x].description + " ";
+//                        }
+//                        text += "- Hobby: ";
+//                        for (var j = 0; j < persons[i].hobbies.length; j++) {
+//                            text += persons[i].hobbies[j].name + " " + persons[i].phones[j].description + " ";
+//                        }
+//                        text += "</option>";
+//                        $("#plist").append(text);
+//                    }
+//                });
+                request.fail(function (jqXHR, textStatus) {
+                    alert("Request failed: " + textStatus);
+                });
+            }
+
+
+            function findPersonPhone() {
+                var request = $.ajax({
+                    url: "api/person/phone/{id}",
+                    dataType: "json"
+                });
+                request.done(function (persons) {
+                    $("#table").text("");
+                    for (var i = 0; i < persons.length; i++) {
+                        $("#table").append("<tr>");
+                        $("#table").append("<td>" + persons[i].firstname + " " + persons[i].lastname + "</td>");
+                        $("#table").append("<td>" + persons[i].email + "</td>");
+                        $("#table").append("<td>" + persons[i].address.street + " " + persons[i].address.additionalinfo + " " + persons[i].address.cityinfo.city + " " + persons[i].address.cityinfo.zipcode + "</td>");
+                        $("#table").append("<td>");
+                        for (var x = 0; x < persons[i].phones.length; x++) {
+                            $("#table").append(persons[i].phones[x].number + " " + persons[i].phones[x].description + " ");
+                        }
+                        $("#table").append("</td>");
+                        $("#table").append("<td>");
+                        for (var j = 0; j < persons[i].hobbies.length; j++) {
+                            $("#table").append(persons[i].hobbies[j].name + " " + persons[i].phones[j].description + " ");
+                        }
+                        $("#table").append("</td>");
+                        $("#table").append("</tr>");
                     }
                 });
                 request.fail(function (jqXHR, textStatus) {
                     alert("Request failed: " + textStatus);
+                    $("#playerid").text("ID: Not found");
+                    $("#name").text("Name: Not found");
+                    $("#country").text("Country: Not found");
                 });
-            });
+            }
+            ;
+
+
+
 
 
 
@@ -50,8 +113,23 @@ and open the template in the editor.
         <div><h1 id="test"></h1></div>
         <div>
             <select name="listbox" id="plist" size="10" style="width: 100%">
-                <option>test</option>
             </select>
         </div>
-    </body>
+        <button id ="all">All persons</button>
+        <button id ="findphone">Find person by phone</button>
+        <input id="number" type="number">
+        <table style="width:100%" border="1" >
+            <thead>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Phone</th>
+            <th>Hobby</th>
+        </thead>
+        <tbody id="table">
+
+        </tbody>
+    </table>
+
+</body>
 </html>
