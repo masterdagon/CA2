@@ -62,11 +62,11 @@ public class Facade {
         }
     }
 
-    public Company getCompanyFromcvr(int CVR) {//not ready teacher
+    public Company getCompanyFromcvr(int CVR) {//ready
         EntityManager em = null;
         try {
             em = getEntityManager();
-            Company c = em.find(Company.class, CVR);
+            Company c = (Company)em.createQuery("select c From Company c where c.cvr=:cvr").setParameter("cvr", CVR).getSingleResult();
             return c;
         } finally {
             if (em != null) {
@@ -142,12 +142,12 @@ public class Facade {
         }
     }
 
-    public List<Company> getListOfCompaniesWithXEmployes(int empCount) {//not ready WHERE
+    public List<Company> getListOfCompaniesWithXEmployes(int empCount) {//ready
         EntityManager em = null;
         try {
             em = getEntityManager();
-            TypedQuery<Company> q = em.createQuery("select c from Company c where c.numemployees = :p", Company.class);
-            q.setParameter("p", empCount);
+            TypedQuery<Company> q = em.createQuery("select c from Company c where c.NumEmployees>:NumEmployees", Company.class);
+            q.setParameter("NumEmployees", empCount);
             return q.getResultList();
         } finally {
             if (em != null) {
