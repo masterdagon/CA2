@@ -17,15 +17,16 @@ and open the template in the editor.
 
             function createCompany() {
                 var request = $.ajax({
-                    url: 'api/Company/create',
+                    url: 'api/company/create',
                     dataType: 'json',
                     type: 'post',
                     contentType: 'application/json',
-                    data: JSON.stringify({"firstname": $("#fname").val(), "lastname": $("#lname").val(), "email": $("#email").val(), "street": $("#street").val(), "additionalinfo": $("#info").val(), "zipcode": $("#zip").val(), "phone": $("#phone").val(), "phoneinfo": $("#phoneinfo").val()}),
+                    data: JSON.stringify({"name": $("#name").val(), "description": $("#description").val(), "cvr": $("#cvr").val(), "numemployees": $("#noe").val(), "marketvalue": $("#mv").val(), "email": $("#email").val(), "street": $("#street").val(),"additionalinfo": $("#info").val(),"zipcode": $("#zip").val(), "number": $("#number").val(), "phonedescript": $("#phoneinfo").val()}),
                     processData: false
                 });
                 request.done(function (jqXHR, textStatus) {
-                    alert("Person created!");
+                    alert("Company created!");
+                    window.location.href = "company.html";
 
                 });
                 request.fail(function (jqXHR, textStatus) {
@@ -47,6 +48,8 @@ and open the template in the editor.
             <p>Street Name</p><input type="text" id="street"><br>
             <p>additional info</p><input type="text" id="info"><br>
             <p>zipcode</p><input type="text" id="zip"><br>
+            <p>Phone Number</p><input type="text" id="number"><br>
+            <p>Phone Description</p><input type="text" id="phoneinfo"><br>
             <button id="save">Save Company</button>
         </div>
     </body>
