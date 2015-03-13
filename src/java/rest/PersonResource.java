@@ -282,7 +282,7 @@ public class PersonResource {
 
     }
 
-    @PUT
+    @POST
     @Consumes("application/json")
     @Path("/hobby")
     public void removehobbyFromPerson(String content) throws EntityNotFoundException { //json: personid, hobbyid
