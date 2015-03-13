@@ -16,6 +16,10 @@ and open the template in the editor.
                 $("#findphone").click(findPersonPhone);
                 $("#createperson").click(createPerson);
                 $("#changeAddress").click(changeAddress);
+                $("#deletePerson").click(deletePerson);
+                
+                
+//                $("#addHobby").click(addHobby);
             });
 
             function createPerson() {
@@ -47,7 +51,6 @@ and open the template in the editor.
                 request1.done(function (persons) {
                     personid = persons.id;
                     var json = JSON.stringify({"id": personid, "street": $("#changeaddressstreet").val(), "additionalinfo": $("#changeaddressinfo").val(), "zipcode": $("#changeaddresszip").val()});
-                    alert("json: " + json);
                     var request2 = $.ajax({
                         url: 'api/person/address',
                         dataType: 'json',
@@ -73,6 +76,81 @@ and open the template in the editor.
 
 
             }
+
+            function deletePerson() {
+                var number = $("#deletePersonPhone").val();
+                var personid = "";
+                var request1 = $.ajax({
+                    url: "api/person/phone/" + number,
+                    dataType: "json"
+                });
+                request1.done(function (persons) {
+                    personid = persons.id;
+                    var json = JSON.stringify({"id": personid});
+                    var request2 = $.ajax({
+                        url: 'api/person/delete',
+                        dataType: 'json',
+                        type: 'delete',
+                        contentType: 'application/json',
+                        data: json,
+                        processData: false
+                    });
+                    request2.done(function (jqXHR, textStatus) {
+                        alert("Person deleted!");
+
+                    });
+                    request2.fail(function (jqXHR, textStatus) {
+                        var jsonValue = jQuery.parseJSON(jqXHR.responseText);
+                        alert("Request failed: " + jsonValue.message);
+                    });
+
+                });
+                request1.fail(function (jqXHR, textStatus) {
+                    var jsonValue = jQuery.parseJSON(jqXHR.responseText);
+                    alert("Request failed: " + jsonValue.message);
+                });
+
+
+            }
+
+
+
+//            function addHobby() {
+//                var number = $("#addHobbyphone").val();
+//                var personid = "";
+//                var request1 = $.ajax({
+//                    url: "api/person/phone/" + number,
+//                    dataType: "json"
+//                });
+//                request1.done(function (persons) {
+//                    personid = persons.id;
+//                    var json = JSON.stringify({"id": personid, "street": $("#changeaddressstreet").val(), "additionalinfo": $("#changeaddressinfo").val(), "zipcode": $("#changeaddresszip").val()});
+//                    alert("json: " + json);
+//                    var request2 = $.ajax({
+//                        url: 'api/person/address',
+//                        dataType: 'json',
+//                        type: 'post',
+//                        contentType: 'application/json',
+//                        data: json,
+//                        processData: false
+//                    });
+//                    request2.done(function (jqXHR, textStatus) {
+//                        alert("Address changed!");
+//
+//                    });
+//                    request2.fail(function (jqXHR, textStatus) {
+//                        var jsonValue = jQuery.parseJSON(jqXHR.responseText);
+//                        alert("Request failed: " + jsonValue.message);
+//                    });
+//
+//                });
+//                request1.fail(function (jqXHR, textStatus) {
+//                    var jsonValue = jQuery.parseJSON(jqXHR.responseText);
+//                    alert("Request failed: " + jsonValue.message);
+//                });
+//
+//
+//            }
 
             function findAllPersons() {
 
@@ -172,6 +250,18 @@ and open the template in the editor.
             New street:<input id="changeaddressstreet" type="text">
             New additional info:<input id="changeaddressinfo" type="text">
             New zipcode:<input id="changeaddresszip" type="number">
+        </div>
+        <br>
+        <!--        <div>
+                    <button id ="addHobby">Add a hobby to a person with phone:</button>
+                    <input id="addHobbyphone" type="number">
+                    <input id="addHobbyName" type="text">
+                    <input id="addHobbyInfo" type="text">
+                </div>
+                <br>-->
+        <div>
+            <button id ="deletePerson">Deletes a person with phone:</button>
+            <input id="deletePersonPhone" type="number">
         </div>
         <br>
         <div>

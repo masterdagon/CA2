@@ -97,14 +97,26 @@ public class PersonResource {
     @DELETE
     @Consumes("application/json")
     @Path("delete")
-    public void deletePerson(String content) throws EntityNotFoundException {
-        Type type = new TypeToken<List<Integer>>() {
-        }.getType();
-        List<Integer> iList = gson.fromJson(content, type);
-        Integer[] intArray = iList.toArray(new Integer[0]);
-        int id = intArray[0];
-        f.deletePerson(id);
+    public void deletePerson(String content) throws EntityNotFoundException, NotNumericException {
+//        Type type = new TypeToken<List<Integer>>() {
+//        }.getType();
+//        List<Integer> iList = gson.fromJson(content, type);
+//        Integer[] intArray = iList.toArray(new Integer[0]);
+//        int id = intArray[0];
+        JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
+        int id;
+        boolean isNumeric = true;
+        try {
+            String personid = jo.get("id").getAsString();
+            id = Integer.parseInt(personid);
+        } catch (NumberFormatException nfe) {
+            isNumeric = false;
+            throw new NotNumericException("Person ID not an integer.");
+        }
 
+        if (isNumeric) {
+            f.deletePerson(id);
+        }
     }
 
     @GET
