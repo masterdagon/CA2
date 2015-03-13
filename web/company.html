@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+        <script>
+            $(document).ready(function () {
+
+                $("#btn1").click(getall);
+
+            });
+
+            function getall() {
+
+                var request = $.ajax({
+                    url: "api/company",
+                    dataType: "json"
+                });
+
+                request.done(function (comp) {
+                    $("#table").text("");
+                    for (var i = 0; i < comp.length; i++) {
+                        var text = "<tr>";
+                        text += "<td>" + comp[i].name + "</td>";
+                        text += "<td>" + comp[i].description + "</td>";
+                        text += "<td>" + comp[i].cvr + "</td>";
+                        text += "<td>" + comp[i].email + "</td>";
+                        text += "<td>" + comp[i].street + "</td>";
+                        text += "<td>" + comp[i].city + "</td>";
+                        text += "<td>";
+                        for (var x = 0; x < comp[i].phones.length; x++) {
+                            text += comp[i].phones[x].number+" "
+                            text += comp[i].phones[x].description + "<br>";
+                        }
+                        text += "</td>";
+                        text += "</tr>";
+                        $("#table").append(text);
+                    }
+                });
+
+                request.fail(function (jqXHR, textStatus) {
+                    alert("Request failed: " + textStatus);
+            }
+            );
+    }
+        </script>   
+    </head>
+    <body>
+        <div><h1>Companies</h1></div>
+        <div>
+            <button id="btn1">Get all Companies</button><br>
+            <input type="number" value="22112211" id="phone"/>
+            <button id="btn2">Find Company</button><br>
+            <input type="number" value="11111111" id="cvr"/>
+            <button id="btn3">Find Company</button><br>
+        </div>
+        <div>
+            <table style="width:100%" border="1" >
+                <thead>
+                <th>Name</th>
+                <th>Description</th>              
+                <th>CVR</th>
+                <th>Email</th>              
+                <th>StreetCode</th>
+                <th>City</th>              
+                <th>Phones</th>              
+                </thead>
+                <tbody id="table">
+                    <tr>
+                        <td>name</td>
+                        <td>description</td>
+                        <td>cvr"</td>
+                        <td>email</td>
+                        <td>street</td>
+                        <td>city</td>
+                        <td>phone</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
