@@ -67,10 +67,11 @@ public class PersonResource {
     @POST
     @Consumes("application/json")
     @Path("create")
-    public void createPersonAndAddress(String content) throws EntityNotFoundException, NotNumericException { //json: firstname, lastname, email, street, additional info, zipcode
+    public void createPersonAndAddressPhone(String content) throws EntityNotFoundException, NotNumericException { //json: firstname, lastname, email, street, additional info, zipcode
         JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
         boolean isNumeric = true;
         int z;
+        int ph;
         try {
             String zip = jo.get("zipcode").getAsString();
             z = Integer.parseInt(zip);
@@ -78,10 +79,18 @@ public class PersonResource {
             isNumeric = false;
             throw new NotNumericException("Zipcode must be a number");
         }
-        
-        if(isNumeric && f.getCityInfo(z) != null){
-        Person p = f.createPerson(jo.get("firstname").getAsString(), jo.get("lastname").getAsString(), jo.get("email").getAsString());
-        p = f.createAddressForPerson(p, jo.get("street").getAsString(), jo.get("additionalinfo").getAsString(), jo.get("zipcode").getAsInt());
+        try {
+            String phone = jo.get("phone").getAsString();
+            ph = Integer.parseInt(phone);
+        } catch (NumberFormatException nfe) {
+            isNumeric = false;
+            throw new NotNumericException("Phonenumber must be a number");
+        }
+
+        if (isNumeric && f.getCityInfo(z) != null) {
+            Person p = f.createPerson(jo.get("firstname").getAsString(), jo.get("lastname").getAsString(), jo.get("email").getAsString());
+            p = f.createAddressForPerson(p, jo.get("street").getAsString(), jo.get("additionalinfo").getAsString(), jo.get("zipcode").getAsInt());
+            f.addPhonePerson(p, jo.get("phoneinfo").getAsString(), jo.get("phone").getAsInt());
         }
     }
 
@@ -108,12 +117,32 @@ public class PersonResource {
         return jsonString;
     }
 
-    @PUT
+    @POST
     @Consumes("application/json")
     @Path("address")
-    public void changeAddress(String content) throws EntityNotFoundException { //json: id, street, additionalinfo, zipcode
+    public void changeAddress(String content) throws EntityNotFoundException, NotNumericException { //json: id, street, additionalinfo, zipcode
         JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
-        Person p = f.changeAddressFromPerson(jo.get("id").getAsInt(), jo.get("street").getAsString(), jo.get("additionalinfo").getAsString(), jo.get("zipcode").getAsInt());
+        int z;
+        int ph;
+        boolean isNumeric = true;
+        try {
+            String phone = jo.get("phone").getAsString();
+            ph = Integer.parseInt(phone);
+        } catch (NumberFormatException nfe) {
+            isNumeric = false;
+            throw new NotNumericException("Phonenumber must be a number");
+        }
+        try {
+            String zip = jo.get("zipcode").getAsString();
+            z = Integer.parseInt(zip);
+        } catch (NumberFormatException nfe) {
+            isNumeric = false;
+            throw new NotNumericException("Zipcode must be a number");
+        }
+
+        if (isNumeric && f.getCityInfo(z) != null) {
+            Person p = f.changeAddressFromPerson(jo.get("id").getAsInt(), jo.get("street").getAsString(), jo.get("additionalinfo").getAsString(), jo.get("zipcode").getAsInt());
+        }
     }
 
     @POST

@@ -44,8 +44,8 @@ and open the template in the editor.
             <tr>
                 <td>api/person/create</td>
                 <td>POST</td>
-                <td>Creates person and address in DB and assigns address to person</td>
-                <td>{firstname, lastname, email, street, additionalinfo, zipcode}</td>
+                <td>Creates person and address in DB and assigns address and phone to person</td>
+                <td>{firstname, lastname, email, street, additionalinfo, zipcode,phone,phoneinfo}</td>
 
             </tr>
             <tr>
@@ -57,7 +57,7 @@ and open the template in the editor.
             </tr>
             <tr>
                 <td>api/person/address</td>
-                <td>PUT</td>
+                <td>POST</td>
                 <td>Updates address for person and attempts to delete former address</td>
                 <td>{id //person, street, additionalinfo, zipcode}</td>
 
