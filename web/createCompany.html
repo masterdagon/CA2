@@ -9,11 +9,35 @@ and open the template in the editor.
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $("#save").click(createCompany);
+            });
+
+            function createCompany() {
+                var request = $.ajax({
+                    url: 'api/Company/create',
+                    dataType: 'json',
+                    type: 'post',
+                    contentType: 'application/json',
+                    data: JSON.stringify({"firstname": $("#fname").val(), "lastname": $("#lname").val(), "email": $("#email").val(), "street": $("#street").val(), "additionalinfo": $("#info").val(), "zipcode": $("#zip").val(), "phone": $("#phone").val(), "phoneinfo": $("#phoneinfo").val()}),
+                    processData: false
+                });
+                request.done(function (jqXHR, textStatus) {
+                    alert("Person created!");
+
+                });
+                request.fail(function (jqXHR, textStatus) {
+                    var jsonValue = jQuery.parseJSON(jqXHR.responseText);
+                    alert("Request failed: " + jsonValue.message);
+                });
+            }
+                </script> 
     </head>
     <body>
         <h1>Create Company</h1>
-        <div>
-            String name, String description, int cvr, int NumEmployees, int marketValue, String email
+        <div style="width:15em ;border: black solid thin">
             <p>Company Name</p><input type="text" id="name"><br>
             <p>Description</p><input type="text" id="description"><br>
             <p>CVR</p><input type="text" id="cvr"><br>
@@ -22,7 +46,8 @@ and open the template in the editor.
             <p>Email</p><input type="text" id="email"><br>
             <p>Street Name</p><input type="text" id="street"><br>
             <p>additional info</p><input type="text" id="info"><br>
-            <p>zipcode</p><input type="text" id="zip"><br>          
+            <p>zipcode</p><input type="text" id="zip"><br>
+            <button id="save">Save Company</button>
         </div>
     </body>
 </html>
