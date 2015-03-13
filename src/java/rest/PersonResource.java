@@ -7,17 +7,16 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import entity.Address;
-import entity.Company;
 import entity.Hobby;
 import entity.Person;
 import entity.Phone;
 import facade.Facade;
 import java.lang.reflect.Type;
+import java.text.NumberFormat;
+import java.text.ParsePosition;
 import java.util.List;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -30,6 +29,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
 import rest.exception.EntityNotFoundException;
+import rest.exception.NotNumericException;
 
 /**
  * REST Web Service
@@ -67,10 +67,22 @@ public class PersonResource {
     @POST
     @Consumes("application/json")
     @Path("create")
-    public void createPersonAndAddress(String content) throws EntityNotFoundException { //json: firstname, lastname, email, street, additional info, zipcode
+    public void createPersonAndAddress(String content) throws EntityNotFoundException, NotNumericException { //json: firstname, lastname, email, street, additional info, zipcode
         JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
+        boolean isNumeric = true;
+        int z;
+        try {
+            String zip = jo.get("zipcode").getAsString();
+            z = Integer.parseInt(zip);
+        } catch (NumberFormatException nfe) {
+            isNumeric = false;
+            throw new NotNumericException("Zipcode must be a number");
+        }
+        
+        if(isNumeric && f.getCityInfo(z) != null){
         Person p = f.createPerson(jo.get("firstname").getAsString(), jo.get("lastname").getAsString(), jo.get("email").getAsString());
         p = f.createAddressForPerson(p, jo.get("street").getAsString(), jo.get("additionalinfo").getAsString(), jo.get("zipcode").getAsInt());
+        }
     }
 
     @DELETE
@@ -205,16 +217,16 @@ public class PersonResource {
         Hobby h = f.getHobbiesFromID(jo.get("hobbyid").getAsInt());
         f.addHobbyToPerson(p, h);
     }
-    
+
     @DELETE
     @Consumes("application/json")
     @Path("hobby/delete")
     public void deleteHobbyFromDB(String content) throws EntityNotFoundException { // json: id
         JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
         f.deleteHobbyFromDB(jo.get("id").getAsInt());
-        
+
     }
-    
+
     @GET
     @Produces("application/json")
     @Path("hobby/person/{id}")

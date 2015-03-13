@@ -34,6 +34,7 @@ public class ApplicationConfig extends Application {
         resources.add(rest.PersonResource.class);
         resources.add(rest.exception.EntityNotFoundExceptionMapper.class);
         resources.add(rest.exception.GenericExceptionMapper.class);
+        resources.add(rest.exception.NotNumericExceptionMapper.class);
      
     }
     
