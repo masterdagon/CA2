@@ -169,7 +169,7 @@ public class CompanyResource {
         f.deleteCompany(iList.get(0).intValue());
     }
     
-    @PUT
+    @POST
     @Consumes("application/json")
     @Path("address")
     public void changeAddressForCompany(String content) throws EntityNotFoundException { //json: id, street, additionalinfo, zipcode
