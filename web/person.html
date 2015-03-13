@@ -14,7 +14,27 @@ and open the template in the editor.
             $(document).ready(function () {
                 $("#all").click(findAllPersons);
                 $("#findphone").click(findPersonPhone);
+                $("#createperson").click(createPerson);
             });
+
+            function createPerson() {
+                var request = $.ajax({
+                    url: 'api/person/create',
+                    dataType: 'json',
+                    type: 'post',
+                    contentType: 'application/json',
+                    data: JSON.stringify({"firstname": $("#fname").val(), "lastname": $("#lname").val(), "email": $("#email").val(), "street": $("#street").val(), "additionalinfo": $("#info").val(), "zipcode": $("#zip").val()}),
+                    processData: false,
+                });
+                request.done(function (jqXHR,textStatus) {
+                    alert("Person created!");
+
+                });
+                request.fail(function (jqXHR, textStatus) {
+                    var jsonValue = jQuery.parseJSON(jqXHR.responseText);
+                    alert("Request failed: " + jsonValue.message);
+                });
+            }
 
             function findAllPersons() {
 
@@ -34,19 +54,19 @@ and open the template in the editor.
                         for (var x = 0; x < persons[i].phones.length; x++) {
                             text += persons[i].phones[x].number + " " + persons[i].phones[x].description + " ";
                         }
-                        text +=" </td>";
+                        text += " </td>";
                         $("#table").append(text);
                         var text2 = "<td>";
                         for (var j = 0; j < persons[i].hobbies.length; j++) {
                             text2 += persons[i].hobbies[j].name + " " + persons[i].phones[j].description + " ";
                         }
-                        text2 +=" </td>";
+                        text2 += " </td>";
                         $("#table").append(text2);
                         $("#table").append("</tr>");
                     }
                 });
                 request.fail(function (jqXHR, textStatus) {
-                    jsonValue = jQuery.parseJSON( jqXHR.responseText );
+                    jsonValue = jQuery.parseJSON(jqXHR.responseText);
                     alert("Request failed: " + jsonValue.message);
                 });
             }
@@ -81,7 +101,7 @@ and open the template in the editor.
 
                 });
                 request.fail(function (jqXHR, textStatus) {
-                    jsonValue = jQuery.parseJSON( jqXHR.responseText );
+                    var jsonValue = jQuery.parseJSON(jqXHR.responseText);
                     alert("Request failed: " + jsonValue.message);
                 });
             }
@@ -96,21 +116,33 @@ and open the template in the editor.
     </head>
     <body>
         <div>Person:</div>
-        <button id ="all">All persons</button>
-        <button id ="findphone">Find person by phone</button>
-        <input id="number" type="number">
-        <table style="width:100%" border="1" >
-            <thead>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Address</th>
-            <th>Phone</th>
-            <th>Hobby</th>
-        </thead>
-        <tbody id="table">
+        <div>
+            <button id ="createperson">Create Person</button> 
+            First name:<input id="fname" type="text">
+            Last name:<input id="lname" type="text">
+            Email:<input id="email" type="text">
+            Street:<input id="street" type="text">
+            Additional info:<input id="info" type="text">
+            Zip code:<input id="zip" type="number">
+        </div>
+        <br>
+        <div>
+            <button id ="all">All persons</button>
+            <button id ="findphone">Find person by phone</button>
+            <input id="number" type="number">
+            <table style="width:100%" border="1" >
+                <thead>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>Phone</th>
+                <th>Hobby</th>
+                </thead>
+                <tbody id="table">
 
-        </tbody>
-    </table>
+                </tbody>
+            </table>
+        </div>
 
-</body>
+    </body>
 </html>
