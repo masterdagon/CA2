@@ -15,6 +15,7 @@ and open the template in the editor.
                 $("#all").click(findAllPersons);
                 $("#findphone").click(findPersonPhone);
                 $("#createperson").click(createPerson);
+                $("#changeAddress").click(changeAddress);
             });
 
             function createPerson() {
@@ -23,10 +24,10 @@ and open the template in the editor.
                     dataType: 'json',
                     type: 'post',
                     contentType: 'application/json',
-                    data: JSON.stringify({"firstname": $("#fname").val(), "lastname": $("#lname").val(), "email": $("#email").val(), "street": $("#street").val(), "additionalinfo": $("#info").val(), "zipcode": $("#zip").val()}),
-                    processData: false,
+                    data: JSON.stringify({"firstname": $("#fname").val(), "lastname": $("#lname").val(), "email": $("#email").val(), "street": $("#street").val(), "additionalinfo": $("#info").val(), "zipcode": $("#zip").val(), "phone": $("#phone").val(), "phoneinfo": $("#phoneinfo").val()}),
+                    processData: false
                 });
-                request.done(function (jqXHR,textStatus) {
+                request.done(function (jqXHR, textStatus) {
                     alert("Person created!");
 
                 });
@@ -34,6 +35,43 @@ and open the template in the editor.
                     var jsonValue = jQuery.parseJSON(jqXHR.responseText);
                     alert("Request failed: " + jsonValue.message);
                 });
+            }
+
+            function changeAddress() {
+                var number = $("#changeaddressphone").val();
+                var personid = "";
+                var request1 = $.ajax({
+                    url: "api/person/phone/" + number,
+                    dataType: "json"
+                });
+                request1.done(function (persons) {
+                    personid = persons.id;
+                    var json = JSON.stringify({"id": personid, "street": $("#changeaddressstreet").val(), "additionalinfo": $("#changeaddressinfo").val(), "zipcode": $("#changeaddresszip").val()});
+                    alert("json: " + json);
+                    var request2 = $.ajax({
+                        url: 'api/person/address',
+                        dataType: 'json',
+                        type: 'post',
+                        contentType: 'application/json',
+                        data: json,
+                        processData: false
+                    });
+                    request2.done(function (jqXHR, textStatus) {
+                        alert("Address changed!");
+
+                    });
+                    request2.fail(function (jqXHR, textStatus) {
+                        var jsonValue = jQuery.parseJSON(jqXHR.responseText);
+                        alert("Request failed: " + jsonValue.message);
+                    });
+
+                });
+                request1.fail(function (jqXHR, textStatus) {
+                    var jsonValue = jQuery.parseJSON(jqXHR.responseText);
+                    alert("Request failed: " + jsonValue.message);
+                });
+
+
             }
 
             function findAllPersons() {
@@ -58,7 +96,7 @@ and open the template in the editor.
                         $("#table").append(text);
                         var text2 = "<td>";
                         for (var j = 0; j < persons[i].hobbies.length; j++) {
-                            text2 += persons[i].hobbies[j].name + " " + persons[i].phones[j].description + " ";
+                            text2 += persons[i].hobbies[j].name + " " + persons[i].hobbies[j].description + " ";
                         }
                         text2 += " </td>";
                         $("#table").append(text2);
@@ -123,7 +161,17 @@ and open the template in the editor.
             Email:<input id="email" type="text">
             Street:<input id="street" type="text">
             Additional info:<input id="info" type="text">
-            Zip code:<input id="zip" type="number">
+            Zipcode:<input id="zip" type="number">
+            Phone:<input id="phone" type="number">
+            Phone info:<input id="phoneinfo" type="text">
+        </div>
+        <br>
+        <div>
+            <button id ="changeAddress">Change address for person with phone:</button>
+            <input id="changeaddressphone" type="number">
+            New street:<input id="changeaddressstreet" type="text">
+            New additional info:<input id="changeaddressinfo" type="text">
+            New zipcode:<input id="changeaddresszip" type="number">
         </div>
         <br>
         <div>

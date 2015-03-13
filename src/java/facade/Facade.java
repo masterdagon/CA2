@@ -634,5 +634,19 @@ public class Facade {
             }
         }
     }
+    
+    public CityInfo getCityInfo(int zip) throws EntityNotFoundException{
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            CityInfo ci = em.find(CityInfo.class, zip);
+            if(ci == null) throw new EntityNotFoundException("The zipcode does not exist in database");
+            return ci;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
 
 }
