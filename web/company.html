@@ -14,6 +14,9 @@ and open the template in the editor.
             $(document).ready(function () {
 
                 $("#btn1").click(getall);
+                $("#btn2").click(getFromPhone);
+                $("#btn3").click(getFromCVR);
+                $("#btn4").click(function(){window.location.href = "createCompany.html"});
 
             });
 
@@ -33,6 +36,8 @@ and open the template in the editor.
                         text += "<td>" + comp[i].cvr + "</td>";
                         text += "<td>" + comp[i].email + "</td>";
                         text += "<td>" + comp[i].street + "</td>";
+                        text += "<td>" + comp[i].additionalinfo + "</td>";
+                        text += "<td>" + comp[i].zipcode + "</td>";
                         text += "<td>" + comp[i].city + "</td>";
                         text += "<td>";
                         for (var x = 0; x < comp[i].phones.length; x++) {
@@ -49,13 +54,83 @@ and open the template in the editor.
                     alert("Request failed: " + textStatus);
             }
             );
+            }
+    
+    function getFromPhone() {
+
+                var request = $.ajax({
+                    url: "api/company/phone/"+$("#phone").val(),
+                    dataType: "json"
+                });
+
+                request.done(function (comp) {
+                    $("#table").text("");
+                        var text = "<tr>";
+                        text += "<td>" + comp.name + "</td>";
+                        text += "<td>" + comp.description + "</td>";
+                        text += "<td>" + comp.cvr + "</td>";
+                        text += "<td>" + comp.email + "</td>";
+                        text += "<td>" + comp.street + "</td>";
+                        text += "<td>" + comp.additionalinfo + "</td>";
+                        text += "<td>" + comp.zipcode + "</td>";
+                        text += "<td>" + comp.city + "</td>";
+                        text += "<td>";
+                        for (var x = 0; x < comp.phones.length; x++) {
+                            text += comp.phones[x].number+" "
+                            text += comp.phones[x].description + "<br>";
+                        }
+                        text += "</td>";
+                        text += "</tr>";
+                        $("#table").append(text);
+                    
+                });
+
+                request.fail(function (jqXHR, textStatus) {
+                    alert("Request failed: " + textStatus);
+            }
+            );
+}
+    
+    function getFromCVR() {
+
+                var request = $.ajax({
+                    url: "api/company/cvr/"+$("#cvr").val(),
+                    dataType: "json"
+                });
+
+                request.done(function (comp) {
+                    $("#table").text("");
+                        var text = "<tr>";
+                        text += "<td>" + comp.name + "</td>";
+                        text += "<td>" + comp.description + "</td>";
+                        text += "<td>" + comp.cvr + "</td>";
+                        text += "<td>" + comp.email + "</td>";
+                        text += "<td>" + comp.street + "</td>";
+                        text += "<td>" + comp.additionalinfo + "</td>";
+                        text += "<td>" + comp.zipcode + "</td>";
+                        text += "<td>" + comp.city + "</td>";
+                        text += "<td>";
+                        for (var x = 0; x < comp.phones.length; x++) {
+                            text += comp.phones[x].number+" "
+                            text += comp.phones[x].description + "<br>";
+                        }
+                        text += "</td>";
+                        text += "</tr>";
+                        $("#table").append(text);
+                });
+
+                request.fail(function (jqXHR, textStatus) {
+                    alert("Request failed: " + textStatus);
+            }
+            );
     }
         </script>   
     </head>
     <body>
         <div><h1>Companies</h1></div>
         <div>
-            <button id="btn1">Get all Companies</button><br>
+            <button id="btn1">Get all Companies</button>
+            <button id="btn4" style="right:100px">Get all Companies</button><br>
             <input type="number" value="22112211" id="phone"/>
             <button id="btn2">Find Company</button><br>
             <input type="number" value="11111111" id="cvr"/>
@@ -69,6 +144,8 @@ and open the template in the editor.
                 <th>CVR</th>
                 <th>Email</th>              
                 <th>StreetCode</th>
+                <th>Additional Info</th>
+                <th>Zipcode</th>
                 <th>City</th>              
                 <th>Phones</th>              
                 </thead>
