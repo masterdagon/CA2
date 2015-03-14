@@ -7,8 +7,6 @@ package entity;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -22,7 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Phone implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    private int number;
+    private int phoneNumber;
     private String description;
     @ManyToOne
     private Person person;
@@ -34,13 +32,13 @@ public class Phone implements Serializable {
 
     public Phone(Person person, int number, String description) {
         this.person = person;
-        this.number = number;
+        this.phoneNumber = number;
         this.description = description;
     }
     
     public Phone(Company company, int number, String description) {
         this.company = company;
-        this.number = number;
+        this.phoneNumber = number;
         this.description = description;
     }
 
@@ -61,11 +59,11 @@ public class Phone implements Serializable {
     }
    
     public int getNumber() {
-        return number;
+        return phoneNumber;
     }
 
     public void setNumber(int number) {
-        this.number = number;
+        this.phoneNumber = number;
     }
 
     public String getDescription() {
