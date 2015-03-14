@@ -508,10 +508,7 @@ public class Facade {
             if (address == null) {
                 throw new EntityNotFoundException("The address does not exist in database");
             }
-            System.out.println("list size ="+address.getPersons().size());
-            System.out.println("list size ="+address.getCompanies().size());
-            if (address.getPersons().size() == 0 && address.getCompanies().size() == 0) {
-                System.out.println("try to delete");
+            if (address.getPersons().isEmpty() && address.getCompanies().isEmpty()) {
                 em.getTransaction().begin();
                 em.remove(address);
                 em.getTransaction().commit();
