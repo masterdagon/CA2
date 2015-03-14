@@ -261,12 +261,23 @@ public class JUnitTest {
 
     @Test
     public void deleteAddress() throws EntityNotFoundException {
-        Person p = f.createPerson("deleteAddress", "test", "test");
-        p = f.createAddressForPerson(p, "street", "a", 2900);
-        f.deleteAddress(p.getAddress().getId());
+        Person p = f.createPerson("deleteAddress", "deleteAddress", "deleteAddress");
+        p = f.createAddressForPerson(p, "deleteAddress", "deleteAddress", 2900);
+        p = em.find(Person.class, p.getId());
+        int id = p.getAddress().getId();
+        Address a = em.find(Address.class, id);
+        
+        em.getTransaction().begin();
+        a.removePerson(p);
+        p.setAddress(null);
+        em.merge(p);
+        em.merge(a);
+        em.getTransaction().commit();
+        
+        f.deleteAddress(id);
         Address h1 = null;
         try {
-            h1 = em.find(Address.class, p.getAddress().getId());
+            h1 = em.find(Address.class, id);
         } finally {
             assertEquals(null, h1);
         }
