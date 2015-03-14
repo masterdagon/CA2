@@ -93,30 +93,30 @@ and open the template in the editor.
 
             </tr>
             <tr>
-                <td>api/person/hobby/count/{id}</td>
+                <td>api/person/hobby/count/{name}</td>
                 <td>GET</td>
-                <td>Returns count of people with hobby with given id</td>
+                <td>Returns count of people with hobby with given name</td>
                 <td>"count"</td>
 
             </tr>
             <tr>
                 <td>api/person/hobby/add</td>
                 <td>POST</td>
-                <td>Add hobby with given hobbyid to person with given personid</td>
-                <td>{personid,hobbyid}</td>
+                <td>Add hobby with given hobbyName to person with given personid</td>
+                <td>{hobbyName,personid}</td>
 
             </tr>
             <tr>
                 <td>api/person/hobby/delete</td>
                 <td>DELETE</td>
-                <td>Delete hobby with given id from DB</td>
+                <td>Delete hobby with given name from DB</td>
                 <td>{id}</td>
 
             </tr>
             <tr>
-                <td>api/person/hobby/person/{id}</td>
+                <td>api/person/hobby/person/{name}</td>
                 <td>GET</td>
-                <td>Returns array of persons with hobby that contains given id</td>
+                <td>Returns array of persons with hobby that contains given name</td>
                 <td>[{id,firstname,lastname,email,address{id,street,additionalinfo,cityinfo{zipcode,city}},phones[{number,description}],hobbies[{id,name,description}]}]</td>
 
             </tr>
@@ -124,21 +124,21 @@ and open the template in the editor.
                 <td>api/person/hobby</td>
                 <td>POST</td>
                 <td>Removes a hobby with given id from person with given id</td>
-                <td>{personid, hobbyid}</td>
+                <td>{hobbyName, personid}</td>
 
             </tr>
             <tr>
                 <td>api/person/hobby</td>
                 <td>GET</td>
                 <td>Returns array with all hobbies</td>
-                <td>[{id,name,description}]</td>
+                <td>[{name,description}]</td>
 
             </tr>
             <tr>
-                <td>api/person/hobby/{id}</td>
+                <td>api/person/hobby/{name}</td>
                 <td>GET</td>
-                <td>Returns hobby with given id</td>
-                <td>{id //hobby,name,description,persons[{id //person,firstname,lastname,email,address{id //address,street,additionalinfo,cityinfo{zipcode,city}},phones[{number,description}]}]}</td>
+                <td>Returns hobby with given name</td>
+                <td>{name,description,persons[{id //person,firstname,lastname,email,address{id //address,street,additionalinfo,cityinfo{zipcode,city}},phones[{number,description}]}]}</td>
 
             </tr>
             <tr>
