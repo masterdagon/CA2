@@ -12,9 +12,9 @@ and open the template in the editor.
         <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
         <script>
             $(document).ready(function () {
+                
                 $(getCompanies);
                 $("#btn2").click(deleteCompany);
-                $("#btn2").click(editCompany);
             });
 
             function getCompanies() {
@@ -73,8 +73,10 @@ and open the template in the editor.
                 <option value="3">test</option>
                 <option value="4">test1</option>
             </select>
-            <button id="btn2">delete Company</button><br>
-            <button id="btn3">edit Company</button><br>
+            <div>
+                <button id="btn2">delete Company</button><br>
+                <button id="btn3">edit Company</button><br>
+            </div>
         </div>
     </body>
 </html>

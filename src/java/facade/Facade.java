@@ -358,14 +358,16 @@ public class Facade {
 
     public void deleteCompany(int companyId) throws EntityNotFoundException {//finnish
         EntityManager em = null;
+        int aId = 0;
         try {
             em = getEntityManager();
             Company c = em.find(Company.class, companyId);
             if (c == null) {
                 throw new EntityNotFoundException("The company does not exist in database");
             }
-            int aId = c.getAddress().getId();
-            System.out.println(c.getPhones().isEmpty());
+            if(c.getAddress()!=null){
+            aId = c.getAddress().getId();
+            }
             List<Phone> phones = c.getPhones();
             if (c.getAddress() != null) {
                 if (c.getAddress().getCompanies().isEmpty()) {
@@ -387,7 +389,9 @@ public class Facade {
             em.merge(c);
             em.remove(c);
             em.getTransaction().commit();
+            if(c.getAddress()!=null){
             deleteAddress(aId);
+            }
         } finally {
             if (em != null) {
                 em.close();
