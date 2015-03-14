@@ -165,7 +165,7 @@ public class JUnitTest {
     public void getListOfCompaniesWithHXEmployes() {
         Company c = f.createCompany("getListOfCompaniesWithXEmployes", "test", 25, 105, 105, "Test");
         List<Company> clist = f.getListOfCompaniesWithXEmployes(100);
-        int exp =1;
+        int exp = 1;
         assertEquals(1, clist.size());
     }
 
@@ -181,7 +181,7 @@ public class JUnitTest {
         Person p = f.createPerson("createAddressForPerson", "test", "test");
         p = f.createAddressForPerson(p, "street", "a", 3300);
         Person p1 = em.find(Person.class, p.getId());
-        assertEquals(p.getAddress().getId(),p1.getAddress().getId());
+        assertEquals(p.getAddress().getId(), p1.getAddress().getId());
     }
 
     @Test
@@ -189,7 +189,7 @@ public class JUnitTest {
         Company c = f.createCompany("createAddressForCompany", "test", 0, 0, 0, "test");
         c = f.createAddressForCompany(c, "street", "a", 3300);
         Company c1 = em.find(Company.class, c.getId());
-        assertEquals(c.getAddress().getId(),c1.getAddress().getId());
+        assertEquals(c.getAddress().getId(), c1.getAddress().getId());
     }
 
     @Test
@@ -229,7 +229,7 @@ public class JUnitTest {
         p = f.addPhonePerson(p, "Test", 9999);
         p = f.deletePersonPhone(9999);
         Person p1 = em.find(Person.class, p.getId());
-        assertEquals(p1.getPhones().size(),0);
+        assertEquals(p1.getPhones().size(), 0);
     }
 
     @Test
@@ -238,7 +238,7 @@ public class JUnitTest {
         c = f.addPhoneCompany(c, "Test", 123456789);
         c = f.deleteCompanyPhone(123456789);
         Company c1 = em.find(Company.class, c.getId());
-        assertEquals(c1.getPhones().size(),0);
+        assertEquals(c1.getPhones().size(), 0);
     }
 
     @Test
@@ -252,7 +252,7 @@ public class JUnitTest {
 
     @Test
     public void changeAddressFromCompany() throws EntityNotFoundException {
-        Company c = f.createCompany("changeAddressFromPerson", "test",0,0,0, "test");
+        Company c = f.createCompany("changeAddressFromPerson", "test", 0, 0, 0, "test");
         c = f.createAddressForCompany(c, "street1", "no", 3000);
         Company c1 = c;
         c1 = f.changeAddressFromCompany(c1.getId(), "Street2", "no", 3000);
@@ -260,23 +260,25 @@ public class JUnitTest {
     }
 
     @Test
-    public void deleteAddress() throws EntityNotFoundException {
+    public void deleteAddress() throws EntityNotFoundException, InterruptedException {
         Person p = f.createPerson("deleteAddress", "deleteAddress", "deleteAddress");
         p = f.createAddressForPerson(p, "deleteAddress", "deleteAddress", 2900);
         p = em.find(Person.class, p.getId());
         int id = p.getAddress().getId();
         Address a = em.find(Address.class, id);
-        
-        em.getTransaction().begin();
+        System.out.println("Address id: " + id);
         a.removePerson(p);
         p.setAddress(null);
+        em.getTransaction().begin();
+
         em.merge(p);
         em.merge(a);
         em.getTransaction().commit();
-        
+
         f.deleteAddress(id);
         Address h1 = null;
         try {
+            em.clear();
             h1 = em.find(Address.class, id);
         } finally {
             assertEquals(null, h1);
@@ -289,7 +291,7 @@ public class JUnitTest {
         Hobby h = f.createHobbies("removeHobbyFromPerson", "test");
         f.removeHobbyFromPerson(h.getId(), p.getId());
         p = em.find(Person.class, p.getId());
-        assertEquals(0,p.getHobbies().size());
+        assertEquals(0, p.getHobbies().size());
     }
 
     @Test
@@ -308,42 +310,42 @@ public class JUnitTest {
     public void getAllPersons() {
         Person p = f.createPerson("getAllPersons", "test", "test");
         List<Person> listp = f.getAllPersons();
-        assertTrue(listp.size()>0);
+        assertTrue(listp.size() > 0);
     }
 
     @Test
     public void getAllCompanies() {
         Company c = f.createCompany("getAllCompanies", "test", 0, 0, 0, "test");
         int size = f.getAllCompanies().size();
-        assertTrue(size>0);
+        assertTrue(size > 0);
     }
-    
+
     @Test
-    public void getPerson() throws EntityNotFoundException{
-        Person p = f.createPerson("getPerson", "test","test");
+    public void getPerson() throws EntityNotFoundException {
+        Person p = f.createPerson("getPerson", "test", "test");
         Person p1 = f.getPerson(p.getId());
-        assertEquals(p.getId(),p1.getId());
+        assertEquals(p.getId(), p1.getId());
     }
 
     @Test
     public void getCompany() throws EntityNotFoundException {
-        Company c = f.createCompany("getCompany", "test",0,0,0, "test");
+        Company c = f.createCompany("getCompany", "test", 0, 0, 0, "test");
         Company c1 = f.getCompany(c.getId());
-        assertEquals(c.getId(),c1.getId());
+        assertEquals(c.getId(), c1.getId());
     }
-    
+
     @Test
-    public void getHobbiesFromID() throws EntityNotFoundException{
+    public void getHobbiesFromID() throws EntityNotFoundException {
         Hobby h = f.createHobbies("getHobbiesFromID", "getHobbiesFromID");
         Hobby h1 = f.getHobbiesFromID(h.getId());
-        assertEquals(h.getId(),h1.getId());
+        assertEquals(h.getId(), h1.getId());
     }
-    
+
     @Test
-    public void getAllHobbies(){
+    public void getAllHobbies() {
         Hobby h = f.createHobbies("getAllHobbies", "getAllHobbies");
         List<Hobby> hobbies = f.getAllHobbies();
-        assertTrue(hobbies.size()>0);
+        assertTrue(hobbies.size() > 0);
     }
 
 }
