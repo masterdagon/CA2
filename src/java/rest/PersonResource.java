@@ -10,6 +10,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import entity.CityInfo;
 import entity.Hobby;
 import entity.Person;
 import entity.Phone;
@@ -64,6 +65,20 @@ public class PersonResource {
 
     }
 
+     @GET
+    @Produces("application/json")
+    @Path("/zip/{zip}")
+    public String getAllPersonsFromZip(@PathParam("zip")int zip) throws EntityNotFoundException {
+        List<Person> listP = f.getAllPersonsInCity(zip);
+        JsonArray ja = new JsonArray();
+        for (Person p : listP) {
+            JsonObject jo = createJsonObjectfromPerson(p);
+            ja.add(jo);
+        }
+        String jsonString = gson.toJson(ja);
+        return jsonString;
+    }
+    
     @POST
     @Consumes("application/json")
     @Path("create")
@@ -210,7 +225,6 @@ public class PersonResource {
         JsonArray hobbies = new JsonArray();
         for (Hobby h : p.getHobbies()) {
             JsonObject hobby = new JsonObject();
-            hobby.addProperty("id", h.getId());
             hobby.addProperty("name", h.getName());
             hobby.addProperty("description", h.getDescription());
             hobbies.add(hobby);
@@ -232,17 +246,16 @@ public class PersonResource {
     @POST
     @Consumes("application/json")
     @Path("hobby/create")
-    public void createHobby(String content) { //json: name, description
+    public void createHobby(String content) throws EntityNotFoundException { //json: name, description
         JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
         f.createHobbies(jo.get("name").getAsString(), jo.get("description").getAsString());
-
-    }
+        }
 
     @GET
     @Produces("application/json")
-    @Path("hobby/count/{id}")
-    public String getCountOfPeopleWithHobby(@PathParam("id") int id) throws EntityNotFoundException {
-        Hobby h = f.getHobbiesFromID(id);
+    @Path("hobby/count/{name}")
+    public String getCountOfPeopleWithHobby(@PathParam("name") String name) throws EntityNotFoundException {
+        Hobby h = f.getHobbiesFromID(name);
         int count = f.getCountOfPeopleWithHobby(h);
         String json = String.valueOf(count);
         return gson.toJson(json);
@@ -255,7 +268,10 @@ public class PersonResource {
     public void addHobbyToPerson(String content) throws EntityNotFoundException { // json: personid, hobbyid
         JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
         Person p = f.getPerson(jo.get("personid").getAsInt());
-        Hobby h = f.getHobbiesFromID(jo.get("hobbyid").getAsInt());
+        Hobby h = f.getHobbiesFromID(jo.get("hobbyName").getAsString());
+        if (h == null){
+        h = f.createHobbies(jo.get("hobbyName").getAsString(), "not set");
+        }
         f.addHobbyToPerson(p, h);
     }
 
@@ -264,15 +280,15 @@ public class PersonResource {
     @Path("hobby/delete")
     public void deleteHobbyFromDB(String content) throws EntityNotFoundException { // json: id
         JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
-        f.deleteHobbyFromDB(jo.get("id").getAsInt());
+        f.deleteHobbyFromDB(jo.get("name").getAsString());
 
     }
 
     @GET
     @Produces("application/json")
-    @Path("hobby/person/{id}")
-    public String getAllPersonfromhobby(@PathParam("id") int id) throws EntityNotFoundException {
-        List<Person> plist = f.getAllPersonsWithHobby(id);
+    @Path("hobby/person/{name}")
+    public String getAllPersonfromhobby(@PathParam("name") String name) throws EntityNotFoundException {
+        List<Person> plist = f.getAllPersonsWithHobby(name);
         JsonArray persons = new JsonArray();
         for (Person person : plist) {
             JsonObject po = createJsonObjectfromPerson(person);
@@ -287,7 +303,7 @@ public class PersonResource {
     @Path("/hobby")
     public void removehobbyFromPerson(String content) throws EntityNotFoundException { //json: personid, hobbyid
         JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
-        f.removeHobbyFromPerson(jo.get("personid").getAsInt(), jo.get("hobbyid").getAsInt());
+        f.removeHobbyFromPerson(jo.get("hobbyName").getAsString(),jo.get("personid").getAsInt());
     }
 
     @GET
@@ -298,7 +314,6 @@ public class PersonResource {
         JsonArray hobbies = new JsonArray();
         for (Hobby hobby : hlist) {
             JsonObject ho = new JsonObject();
-            ho.addProperty("id", hobby.getId());
             ho.addProperty("name", hobby.getName());
             ho.addProperty("description", hobby.getDescription());
             hobbies.add(ho);
@@ -308,11 +323,10 @@ public class PersonResource {
 
     @GET
     @Produces("application/json")
-    @Path("hobby/{id}")
-    public String getHobbyFromId(@PathParam("id") int id) throws EntityNotFoundException {
-        Hobby hobby = f.getHobbiesFromID(id);
+    @Path("hobby/{name}")
+    public String getHobbyFromId(@PathParam("name") String name) throws EntityNotFoundException {
+        Hobby hobby = f.getHobbiesFromID(name);
         JsonObject ho = new JsonObject();
-        ho.addProperty("id", hobby.getId());
         ho.addProperty("name", hobby.getName());
         ho.addProperty("description", hobby.getDescription());
         JsonArray persons = new JsonArray();

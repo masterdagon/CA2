@@ -16,6 +16,7 @@ and open the template in the editor.
             $(document).ready(function () {
                 $("#all").click(findAllPersons);
                 $("#findphone").click(findPersonPhone);
+                $("#findfromzip").click(FindFromZip);
                 $("#createperson").click(createPerson);
                 $("#changeAddress").click(changeAddress);
                 $("#deletePerson").click(deletePerson);
@@ -188,7 +189,42 @@ and open the template in the editor.
                     alert("Request failed: " + jsonValue.message);
                 });
             }
+            
+            function FindFromZip() {
+                var zip = $("#zipcode").val();
+                var request = $.ajax({
+                    url: "api/person/zip/"+zip,
+                    dataType: "json"
+                });
+                request.done(function (persons) {
+                    $("#table").text("");
 
+                    for (var i = 0; i < persons.length; i++) {
+                        $("#table").append("<tr>");
+                        $("#table").append("<td>" + persons[i].firstname + " " + persons[i].lastname + "</td>");
+                        $("#table").append("<td>" + persons[i].email + "</td>");
+                        $("#table").append("<td>" + persons[i].address.street + " " + persons[i].address.additionalinfo + " " + persons[i].address.cityinfo.city + " " + persons[i].address.cityinfo.zipcode + "</td>");
+                        var text = "<td> ";
+                        for (var x = 0; x < persons[i].phones.length; x++) {
+                            text += persons[i].phones[x].number + " " + persons[i].phones[x].description + " ";
+                        }
+                        text += " </td>";
+                        $("#table").append(text);
+                        var text2 = "<td>";
+                        for (var j = 0; j < persons[i].hobbies.length; j++) {
+                            text2 += persons[i].hobbies[j].name + " " + persons[i].hobbies[j].description + " ";
+                        }
+                        text2 += " </td>";
+                        $("#table").append(text2);
+                        $("#table").append("</tr>");
+                    }
+                });
+                request.fail(function (jqXHR, textStatus) {
+                    jsonValue = jQuery.parseJSON(jqXHR.responseText);
+                    alert("Request failed: " + jsonValue.message);
+                    alert("Request failed: " + zip);
+                });
+            }
 
             function findPersonPhone() {
                 var number = $("#number").val();
@@ -270,6 +306,8 @@ and open the template in the editor.
             <button id ="all">All persons</button>
             <button id ="findphone">Find person by phone</button>
             <input id="number" type="number">
+            <button id ="findfromzip">Find person living in zipcode</button>
+            <input id="zipcode" type="number">
             <table style="width:100%" border="1" >
                 <thead>
                 <th>Name</th>

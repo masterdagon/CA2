@@ -15,10 +15,55 @@ and open the template in the editor.
         <script>
             $(document).ready(function () {
 
-                $("#btn1").click(getHobbies);
+                $(getHobbies);
+                $("#createhobby").click(createHobby);
+                $("#deletehobby").click(deleteHobby);
                 
             });
 
+                function deleteHobby(){
+                    var e = document.getElementById("list");
+                    var hobname = e.options[e.selectedIndex].value;
+                    
+                    var request = $.ajax({
+                    url: 'api/person/hobby/delete',
+                    dataType: 'json',
+                    type: 'delete',
+                    contentType: 'application/json',
+                    data: JSON.stringify({"name": hobname}),
+                    processData: false
+                });
+                request.done(function (jqXHR, textStatus) {
+                    alert("Hobby deleted!");
+                    $(getHobbies);
+
+                });
+                request.fail(function (jqXHR, textStatus) {
+                    var jsonValue = jQuery.parseJSON(jqXHR.responseText);
+                    alert("Request failed: " + jsonValue.message);
+                });
+                }
+                
+                function createHobby(){
+                    var request = $.ajax({
+                    url: 'api/person/hobby/create',
+                    dataType: 'json',
+                    type: 'post',
+                    contentType: 'application/json',
+                    data: JSON.stringify({"name": $("#hobby").val(), "description": $("#description").val()}),
+                    processData: false
+                });
+                request.done(function (jqXHR, textStatus) {
+                    alert("Hobby created!");
+                    $(getHobbies);
+
+                });
+                request.fail(function (jqXHR, textStatus) {
+                    var jsonValue = jQuery.parseJSON(jqXHR.responseText);
+                    alert("Request failed: " + jsonValue.message);
+                });
+                }
+                
                 function getHobbies() {
 
                 var request = $.ajax({
@@ -29,7 +74,7 @@ and open the template in the editor.
                     $("#list").text("");
                     for (var i = 0; i < hobby.length; i++) {
                         var text = "<option ";
-                        text += "value=\""+ hobby[i].id;
+                        text += "value=\""+ hobby[i].name;
                         text += "\">";
                         text += "Name: " + hobby[i].name;
                         text += "</option>";
@@ -54,6 +99,7 @@ and open the template in the editor.
                 });
                 request.done(function (persons) {
                     $("#plist").text("");
+                    $("#antal").text (persons.length);
                     for (var i = 0; i < persons.length; i++) {
                         var text = "<option> ";
                         text += persons[i].firstname +" "+persons[i].lastname;
@@ -71,17 +117,25 @@ and open the template in the editor.
     <body>
         <div>TODO write content</div>
         <div>
-        <button id="btn1">Get Hobbies</button><br>
-        <select name="listbox" id="list" size="5" onchange="getselected()">
+        <p>All Hobbies</p><br>
+        <div style="padding-bottom: 2em">
+            <button id="createhobby">Create Hobby</button>
+            Hobby name:<input id="hobby" type="text">
+            Description:<input id="description" type="text">
+        </div>
+        <select name="listbox" id="list" style="width: 20em" size="5" onchange="getselected()">
             <option value="3">test</option>
             <option value="4">test1</option>
-        </select>
+        </select><br>
+        <button id="deletehobby">Delete Hobby</button>
         </div>
         <div><h1 id="test"></h1></div>
         <div>
-            <select name="listbox" id="plist" size="5">
+            <select name="listbox" style="width: 20em" id="plist" size="5">
             <option>test</option>
         </select>
+            <p> Number of persons in chosen hobby ></p>
+            <p id="antal"></p>
         </div>
     </body>
 </html>

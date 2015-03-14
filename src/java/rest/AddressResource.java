@@ -64,6 +64,7 @@ public class AddressResource {
         return projectasJason;
     }
     
+    
     @DELETE
     @Produces("application/json")
     public void deleteAddress(String content) throws EntityNotFoundException {

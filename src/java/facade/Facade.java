@@ -86,11 +86,11 @@ public class Facade {
         }
     }
 
-    public List<Person> getAllPersonsWithHobby(int hobbyId) throws EntityNotFoundException {//kind of strange, since the hobby parameter should already contain the list of persons. oh well :P
+    public List<Person> getAllPersonsWithHobby(String hobbyName) throws EntityNotFoundException {//kind of strange, since the hobby parameter should already contain the list of persons. oh well :P
         EntityManager em = null;
         try {
             em = getEntityManager();
-            TypedQuery<Hobby> q = em.createQuery("select p from Hobby p where p.id=:id", Hobby.class).setParameter("id", hobbyId);
+            TypedQuery<Hobby> q = em.createQuery("select p from Hobby p where p.name=:name", Hobby.class).setParameter("name", hobbyName);
             Hobby hobby = q.getSingleResult();
             if (hobby == null) {
                 throw new EntityNotFoundException("The hobby does not exist");
@@ -131,7 +131,7 @@ public class Facade {
         EntityManager em = null;
         try {
             em = getEntityManager();
-            Hobby h = em.find(Hobby.class, hobby.getId());
+            Hobby h = em.find(Hobby.class, hobby.getName());
             if (h == null) {
                 throw new EntityNotFoundException("The hobby does not exist");
             }
@@ -295,10 +295,14 @@ public class Facade {
         EntityManager em = null;
         try {
             em = getEntityManager();
-            Hobby hobby = new Hobby(name, description);
+            Hobby hobby = em.find(Hobby.class, name);
+            if(hobby ==null){
+            hobby = new Hobby(name, description);
             em.getTransaction().begin();
             em.persist(hobby);
             em.getTransaction().commit();
+            return hobby;
+            }
             return hobby;
         } finally {
             if (em != null) {
@@ -520,7 +524,7 @@ public class Facade {
         }
     }
 
-    public void removeHobbyFromPerson(int hobbyId, int personId) throws EntityNotFoundException {
+    public void removeHobbyFromPerson(String hobbyName, int personId) throws EntityNotFoundException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -528,7 +532,7 @@ public class Facade {
             if (person == null) {
                 throw new EntityNotFoundException("The person does not exist in database");
             }
-            Hobby hobby = em.find(Hobby.class, hobbyId);
+            Hobby hobby = em.find(Hobby.class, hobbyName);
             if (hobby == null) {
                 throw new EntityNotFoundException("The hobby does not exist in database");
             }
@@ -543,11 +547,11 @@ public class Facade {
         }
     }
 
-    public void deleteHobbyFromDB(int hobbyId) throws EntityNotFoundException { //finished, not tested with postedman
+    public void deleteHobbyFromDB(String hobbyName) throws EntityNotFoundException { //finished, not tested with postedman
         EntityManager em = null;
         try {
             em = getEntityManager();
-            Hobby hobby = em.find(Hobby.class, hobbyId);
+            Hobby hobby = em.find(Hobby.class, hobbyName);
             if (hobby == null) {
                 throw new EntityNotFoundException("The hobby does not exist in database");
             }
@@ -575,7 +579,7 @@ public class Facade {
             if (p == null) {
                 throw new EntityNotFoundException("The person does not exist in database");
             }
-            Hobby h = em.find(Hobby.class, hobby.getId());
+            Hobby h = em.find(Hobby.class, hobby.getName());
             if (h == null) {
                 throw new EntityNotFoundException("The hobby does not exist in database");
             }
@@ -606,11 +610,11 @@ public class Facade {
         }
     }
 
-    public Hobby getHobbiesFromID(int id) throws EntityNotFoundException { //finished
+    public Hobby getHobbiesFromID(String hobbyName) throws EntityNotFoundException { //finished
         EntityManager em = null;
         try {
             em = getEntityManager();
-            Hobby h = em.find(Hobby.class, id);
+            Hobby h = em.find(Hobby.class, hobbyName);
             if (h == null) {
                 throw new EntityNotFoundException("The hobby does not exist in database");
             }

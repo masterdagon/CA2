@@ -119,7 +119,7 @@ public class JUnitTest {
         Person p = f.createPerson("getAllPersonsWithHobby", "test", "test");
         Hobby h = f.createHobbies("getAllPersonsWithHobby", "test");
         p = f.addHobbyToPerson(p, h);
-        List<Person> listp = f.getAllPersonsWithHobby(h.getId());
+        List<Person> listp = f.getAllPersonsWithHobby(h.getName());
         p = em.find(Person.class, p.getId());
         assertEquals(p.getId(), listp.get(0).getId());
     }
@@ -129,7 +129,7 @@ public class JUnitTest {
         Person p = f.createPerson("addHobbyToPerson", "test", "test");
         Hobby h = f.createHobbies("addHobbyToPerson", "test");
         p = f.addHobbyToPerson(p, h);
-        assertEquals(p.getHobbies().get(0).getId(), h.getId());
+        assertEquals(p.getHobbies().get(0).getName(), h.getName());
     }
 
     @Test
@@ -195,8 +195,8 @@ public class JUnitTest {
     @Test
     public void createHobbies() {
         Hobby h = f.createHobbies("createHobbies", "test");
-        Hobby h1 = em.find(Hobby.class, h.getId());
-        assertEquals(h.getId(), h1.getId());
+        Hobby h1 = em.find(Hobby.class, h.getName());
+        assertEquals(h.getName(), h1.getName());
     }
 
     @Test
@@ -295,7 +295,7 @@ public class JUnitTest {
     public void removeHobbyFromPerson() throws EntityNotFoundException {
         Person p = f.createPerson("removeHobbyFromPerson", "test", "test");
         Hobby h = f.createHobbies("removeHobbyFromPerson", "test");
-        f.removeHobbyFromPerson(h.getId(), p.getId());
+        f.removeHobbyFromPerson(h.getName(), p.getId());
         p = em.find(Person.class, p.getId());
         assertEquals(0, p.getHobbies().size());
     }
@@ -303,10 +303,10 @@ public class JUnitTest {
     @Test
     public void deleteHobbyFromDB() throws EntityNotFoundException {
         Hobby h = f.createHobbies("deleteHobbyFromDB", "test");
-        f.deleteHobbyFromDB(h.getId());
+        f.deleteHobbyFromDB(h.getName());
         Hobby h1 = null;
         try {
-            h1 = em.find(Hobby.class, h.getId());
+            h1 = em.find(Hobby.class, h.getName());
         } finally {
             assertEquals(null, h1);
         }
@@ -343,8 +343,8 @@ public class JUnitTest {
     @Test
     public void getHobbiesFromID() throws EntityNotFoundException {
         Hobby h = f.createHobbies("getHobbiesFromID", "getHobbiesFromID");
-        Hobby h1 = f.getHobbiesFromID(h.getId());
-        assertEquals(h.getId(), h1.getId());
+        Hobby h1 = f.getHobbiesFromID(h.getName());
+        assertEquals(h.getName(), h1.getName());
     }
 
     @Test
