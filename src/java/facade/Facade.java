@@ -244,7 +244,9 @@ public class Facade {
         try {
             em = getEntityManager();
             CityInfo cityInfo = em.find(CityInfo.class, zip);
-            if(cityInfo == null) throw new EntityNotFoundException("The zipcode does not exist in database");
+            if (cityInfo == null) {
+                throw new EntityNotFoundException("The zipcode does not exist in database");
+            }
             Address address = new Address(street, info, cityInfo);
             em.getTransaction().begin();
             em.persist(address);
@@ -268,7 +270,9 @@ public class Facade {
         try {
             em = getEntityManager();
             CityInfo cityInfo = em.find(CityInfo.class, zip);
-            if(cityInfo == null) throw new EntityNotFoundException("The zipcode does not exist in database");
+            if (cityInfo == null) {
+                throw new EntityNotFoundException("The zipcode does not exist in database");
+            }
             Address address = new Address(street, info, em.find(CityInfo.class, zip));
             em.getTransaction().begin();
             em.persist(address);
@@ -308,7 +312,9 @@ public class Facade {
         try {
             em = getEntityManager();
             Person p = em.find(Person.class, personId);
-            if(p == null) throw new EntityNotFoundException("The person does not exist in database");
+            if (p == null) {
+                throw new EntityNotFoundException("The person does not exist in database");
+            }
             int aId = p.getAddress().getId();
             List<Phone> phones = p.getPhones();
             List<Hobby> hobbies = p.getHobbies();
@@ -324,7 +330,9 @@ public class Facade {
 
             em.getTransaction().begin();
             for (Hobby hb : hobbies) {
+
                 hb.removePerson(p);
+
                 em.merge(hb);
             }
             System.out.println(phones.size());
@@ -336,7 +344,11 @@ public class Facade {
             em.merge(p);
             em.remove(p);
             em.getTransaction().commit();
-            deleteAddress(aId);
+            try {
+                deleteAddress(aId);
+            } catch (Exception e) {
+
+            }
         } finally {
             if (em != null) {
                 em.close();
@@ -349,7 +361,9 @@ public class Facade {
         try {
             em = getEntityManager();
             Company c = em.find(Company.class, companyId);
-            if(c == null) throw new EntityNotFoundException("The company does not exist in database");
+            if (c == null) {
+                throw new EntityNotFoundException("The company does not exist in database");
+            }
             int aId = c.getAddress().getId();
             System.out.println(c.getPhones().isEmpty());
             List<Phone> phones = c.getPhones();
@@ -387,7 +401,9 @@ public class Facade {
         try {
             em = getEntityManager();
             Phone phone = em.find(Phone.class, phoneNumber);
-            if(phone == null) throw new EntityNotFoundException("The phonenumber: "+phoneNumber+" does not exist in database");
+            if (phone == null) {
+                throw new EntityNotFoundException("The phonenumber: " + phoneNumber + " does not exist in database");
+            }
             if (phone.getPerson() != null) {
                 if (phone.getPerson().getPhones().contains(phone)) {
                     p = phone.getPerson();
@@ -412,7 +428,9 @@ public class Facade {
         try {
             em = getEntityManager();
             Phone phone = em.find(Phone.class, phoneNumber);
-            if(phone == null) throw new EntityNotFoundException("The phonenumber: "+phoneNumber+" does not exist in database");
+            if (phone == null) {
+                throw new EntityNotFoundException("The phonenumber: " + phoneNumber + " does not exist in database");
+            }
             if (phone.getCompany() != null) {
                 if (phone.getCompany().getPhones().contains(phone)) {
                     c = phone.getCompany();
@@ -437,7 +455,9 @@ public class Facade {
             em = getEntityManager();
             Person p = em.find(Person.class, personID);
             int adID = p.getAddress().getId();
-            if(p == null) throw new EntityNotFoundException("The person does not exist in database");
+            if (p == null) {
+                throw new EntityNotFoundException("The person does not exist in database");
+            }
             p.getAddress().getPersons().remove(p);
             p = createAddressForPerson(p, street, info, zip);
             em.getTransaction().begin();
@@ -457,7 +477,9 @@ public class Facade {
         try {
             em = getEntityManager();
             Company c = em.find(Company.class, companyID);
-            if(c == null) throw new EntityNotFoundException("The Company does not exist in database");
+            if (c == null) {
+                throw new EntityNotFoundException("The Company does not exist in database");
+            }
             int aId = c.getAddress().getId();
             c.getAddress().getPersons().remove(c);
             c = createAddressForCompany(c, street, info, zip);
@@ -478,13 +500,15 @@ public class Facade {
         try {
             em = getEntityManager();
             Address address = em.find(Address.class, addressId);
-            if(address == null) throw new EntityNotFoundException("The address does not exist in database");
+            if (address == null) {
+                throw new EntityNotFoundException("The address does not exist in database");
+            }
             if (address.getPersons().size() == 0 && address.getCompanies().size() == 0) {
                 em.getTransaction().begin();
                 em.remove(address);
                 em.getTransaction().commit();
             }
-        }finally {
+        } finally {
             if (em != null) {
                 em.close();
             }
@@ -496,10 +520,15 @@ public class Facade {
         try {
             em = getEntityManager();
             Person person = em.find(Person.class, personId);
-            if(person == null) throw new EntityNotFoundException("The person does not exist in database");
+            if (person == null) {
+                throw new EntityNotFoundException("The person does not exist in database");
+            }
             Hobby hobby = em.find(Hobby.class, hobbyId);
-            if(hobby == null) throw new EntityNotFoundException("The hobby does not exist in database");
+            if (hobby == null) {
+                throw new EntityNotFoundException("The hobby does not exist in database");
+            }
             person.removeHobby(hobby);
+            em.getTransaction().begin();
             em.merge(person);
             em.getTransaction().commit();
         } finally {
@@ -514,7 +543,9 @@ public class Facade {
         try {
             em = getEntityManager();
             Hobby hobby = em.find(Hobby.class, hobbyId);
-            if(hobby == null) throw new EntityNotFoundException("The hobby does not exist in database");
+            if (hobby == null) {
+                throw new EntityNotFoundException("The hobby does not exist in database");
+            }
             em.getTransaction().begin();
             for (Person p : hobby.getPersons()) {
                 p.removeHobby(hobby);
@@ -536,9 +567,13 @@ public class Facade {
         try {
             em = getEntityManager();
             Person p = em.find(Person.class, person.getId());
-            if(p == null) throw new EntityNotFoundException("The person does not exist in database");
+            if (p == null) {
+                throw new EntityNotFoundException("The person does not exist in database");
+            }
             Hobby h = em.find(Hobby.class, hobby.getId());
-            if(h == null) throw new EntityNotFoundException("The hobby does not exist in database");
+            if (h == null) {
+                throw new EntityNotFoundException("The hobby does not exist in database");
+            }
             em.getTransaction().begin();
             p.addHobby(hobby);
             h.addPerson(person);
@@ -571,7 +606,9 @@ public class Facade {
         try {
             em = getEntityManager();
             Hobby h = em.find(Hobby.class, id);
-            if(h == null) throw new EntityNotFoundException("The hobby does not exist in database");
+            if (h == null) {
+                throw new EntityNotFoundException("The hobby does not exist in database");
+            }
             return h;
         } finally {
             if (em != null) {
@@ -612,7 +649,9 @@ public class Facade {
         try {
             em = getEntityManager();
             Company c = em.find(Company.class, id);
-            if(c == null) throw new EntityNotFoundException("The company does not exist in database");
+            if (c == null) {
+                throw new EntityNotFoundException("The company does not exist in database");
+            }
             return c;
         } finally {
             if (em != null) {
@@ -626,7 +665,9 @@ public class Facade {
         try {
             em = getEntityManager();
             Person p = em.find(Person.class, id);
-            if(p == null) throw new EntityNotFoundException("The person does not exist in database");
+            if (p == null) {
+                throw new EntityNotFoundException("The person does not exist in database");
+            }
             return p;
         } finally {
             if (em != null) {
@@ -634,13 +675,15 @@ public class Facade {
             }
         }
     }
-    
-    public CityInfo getCityInfo(int zip) throws EntityNotFoundException{
+
+    public CityInfo getCityInfo(int zip) throws EntityNotFoundException {
         EntityManager em = null;
         try {
             em = getEntityManager();
             CityInfo ci = em.find(CityInfo.class, zip);
-            if(ci == null) throw new EntityNotFoundException("The zipcode does not exist in database");
+            if (ci == null) {
+                throw new EntityNotFoundException("The zipcode does not exist in database");
+            }
             return ci;
         } finally {
             if (em != null) {
