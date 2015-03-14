@@ -124,10 +124,11 @@ public class CompanyResource {
     @POST
     @Consumes("application/json")
     @Path("/create")
-    public void createCompanyAndAddress(String content) throws EntityNotFoundException{//json: name, description, cvr, numemployees, marketvalue, email, street, additionalinfo, zipcode
+    public void createCompanyAndAddress(String content) throws EntityNotFoundException{//json: name, description, cvr, numemployees, marketvalue, email, street, additionalinfo, zipcode, number, phonedescript
         JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
         Company c = f.createCompany(jo.get("name").getAsString(), jo.get("description").getAsString(),jo.get("cvr").getAsInt(),jo.get("numemployees").getAsInt(),jo.get("marketvalue").getAsInt(), jo.get("email").getAsString());
         c = f.createAddressForCompany(c, jo.get("street").getAsString(), jo.get("additionalinfo").getAsString(),jo.get("zipcode").getAsInt());
+        c = f.addPhoneCompany(c, jo.get("phonedescript").getAsString(), jo.get("number").getAsInt());
     }
     
      @GET
