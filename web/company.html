@@ -17,6 +17,7 @@ and open the template in the editor.
                 $("#btn2").click(getFromPhone);
                 $("#btn3").click(getFromCVR);
                 $("#btn4").click(function(){window.location.href = "createCompany.html"});
+                $("#btn5").click(function(){window.location.href = "editdelcomp.html"});
 
             });
 
@@ -130,7 +131,8 @@ and open the template in the editor.
         <div><h1>Companies</h1></div>
         <div>
             <button id="btn1">Get all Companies</button>
-            <button id="btn4" style="right:100%">Create Company</button><br>
+            <button id="btn5" style="left:0%">delete or edit Company</button>
+            <button id="btn4" style="right:0%">Create Company</button><br>
             <input type="number" value="22112211" id="phone"/>
             <button id="btn2">Find Company from phone</button><br>
             <input type="number" value="11111111" id="cvr"/>

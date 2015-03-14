@@ -27,6 +27,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import rest.exception.EntityNotFoundException;
+import rest.exception.NotNumericException;
 
 /**
  * REST Web Service
@@ -153,21 +154,41 @@ public class CompanyResource {
     @DELETE
     @Consumes("application/json")
     @Path("phone")
-    public void deletePhone(String content) throws EntityNotFoundException {
-         Type type = new TypeToken<List<Integer>>() {
-        }.getType();
-        List<Integer> iList = gson.fromJson(content, type);
-        f.deleteCompanyPhone(iList.get(0).intValue());
+    public void deletePhone(String content) throws EntityNotFoundException, NotNumericException {
+        JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
+        int phoneNumber;
+        boolean isNumeric = true;
+        try {
+            String number = jo.get("id").getAsString();
+            phoneNumber = Integer.parseInt(number);
+        } catch (NumberFormatException nfe) {
+            isNumeric = false;
+            throw new NotNumericException("Phonenumber not an integer.");
+        }
+
+        if (isNumeric) {
+            f.deleteCompanyPhone(phoneNumber);
+        }
     }
     
     @DELETE
     @Consumes("application/json")
     @Path("/delete")
-    public void deleteCompany(String content) throws EntityNotFoundException {
-         Type type = new TypeToken<List<Integer>>() {
-        }.getType();
-        List<Integer> iList = gson.fromJson(content, type);
-        f.deleteCompany(iList.get(0).intValue());
+    public void deleteCompany(String content) throws EntityNotFoundException, NotNumericException {
+        JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
+        int id;
+        boolean isNumeric = true;
+        try {
+            String companyId = jo.get("id").getAsString();
+            id = Integer.parseInt(companyId);
+        } catch (NumberFormatException nfe) {
+            isNumeric = false;
+            throw new NotNumericException("Phonenumber not an integer.");
+        }
+
+        if (isNumeric) {
+            f.deleteCompany(id);
+        }
     }
     
     @POST
