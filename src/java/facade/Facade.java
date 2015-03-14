@@ -315,7 +315,12 @@ public class Facade {
             if (p == null) {
                 throw new EntityNotFoundException("The person does not exist in database");
             }
-            int aId = p.getAddress().getId();
+            int aId = 0;
+            try{
+            aId = p.getAddress().getId();
+            }catch(Exception e){
+                
+            }
             List<Phone> phones = p.getPhones();
             List<Hobby> hobbies = p.getHobbies();
             if (p.getAddress() != null) {
