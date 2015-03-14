@@ -9,7 +9,6 @@ import entity.Address;
 import entity.CityInfo;
 import entity.Company;
 import entity.Hobby;
-import static entity.InfoEntity_.address;
 import entity.Person;
 import entity.Phone;
 import java.util.ArrayList;
@@ -331,7 +330,6 @@ public class Facade {
                         p.getAddress().removePerson(p);
                     }
                 } else {
-                    System.out.println("addres emty");
                 }
             }
 
@@ -342,7 +340,6 @@ public class Facade {
 
                 em.merge(hb);
             }
-            System.out.println(phones.size());
             for (Phone ph : phones) {
                 em.remove(ph);
             }
@@ -376,7 +373,6 @@ public class Facade {
             List<Phone> phones = c.getPhones();
             if (c.getAddress() != null) {
                 if (c.getAddress().getCompanies().isEmpty()) {
-                    System.out.println("addres empty");
                 } else {
                     if (c.getAddress().getCompanies().contains(c)) {
                         c.getAddress().removeCompany(c);
@@ -385,7 +381,6 @@ public class Facade {
             }
             em.getTransaction().begin();
 
-            System.out.println(phones.size());
             for (Phone ph : phones) {
                 em.remove(ph);
             }

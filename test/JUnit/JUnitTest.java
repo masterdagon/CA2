@@ -17,7 +17,6 @@ import javax.persistence.Persistence;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import org.junit.After;
-import org.junit.Assert;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -51,7 +50,7 @@ public class JUnitTest {
     public void setup() {
         try {
             f = new Facade();
-            emf = Persistence.createEntityManagerFactory("CA2PU");
+            emf = Persistence.createEntityManagerFactory("CA2UNITPU");
             em = getEntityManager();
             System.out.println("setup running");
         } catch (Exception e) {
@@ -265,12 +264,9 @@ public class JUnitTest {
         p = f.createAddressForPerson(p, "deleteAddress", "deleteAddress", 2900);
         p = em.find(Person.class, p.getId());
         int id = p.getAddress().getId();
-        System.out.println(id);
         Address a = em.find(Address.class, id);
         a.removePerson(p);
         p.setAddress(null);
-
-        em.getTransaction().begin(); 
 
         em.getTransaction().begin();
 

@@ -10,14 +10,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import entity.CityInfo;
 import entity.Hobby;
 import entity.Person;
 import entity.Phone;
 import facade.Facade;
 import java.lang.reflect.Type;
-import java.text.NumberFormat;
-import java.text.ParsePosition;
 import java.util.List;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -27,7 +24,6 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
 import rest.exception.EntityNotFoundException;
 import rest.exception.NotNumericException;
@@ -265,7 +261,7 @@ public class PersonResource {
     @POST
     @Consumes("application/json")
     @Path("hobby/add")
-    public void addHobbyToPerson(String content) throws EntityNotFoundException { // json: personid, hobbyid
+    public void addHobbyToPerson(String content) throws EntityNotFoundException { // json: personid, hobbyName
         JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
         Person p = f.getPerson(jo.get("personid").getAsInt());
         Hobby h = f.getHobbiesFromID(jo.get("hobbyName").getAsString());
@@ -278,7 +274,7 @@ public class PersonResource {
     @DELETE
     @Consumes("application/json")
     @Path("hobby/delete")
-    public void deleteHobbyFromDB(String content) throws EntityNotFoundException { // json: id
+    public void deleteHobbyFromDB(String content) throws EntityNotFoundException { // json: name
         JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
         f.deleteHobbyFromDB(jo.get("name").getAsString());
 
@@ -301,7 +297,7 @@ public class PersonResource {
     @POST
     @Consumes("application/json")
     @Path("/hobby")
-    public void removehobbyFromPerson(String content) throws EntityNotFoundException { //json: personid, hobbyid
+    public void removehobbyFromPerson(String content) throws EntityNotFoundException { //json: personid, hobbyName
         JsonObject jo = new JsonParser().parse(content).getAsJsonObject();
         f.removeHobbyFromPerson(jo.get("hobbyName").getAsString(),jo.get("personid").getAsInt());
     }
