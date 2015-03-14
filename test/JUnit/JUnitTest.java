@@ -260,23 +260,25 @@ public class JUnitTest {
     }
 
     @Test
-    public void deleteAddress() throws EntityNotFoundException {
+    public void deleteAddress() throws EntityNotFoundException, InterruptedException {
         Person p = f.createPerson("deleteAddress", "deleteAddress", "deleteAddress");
         p = f.createAddressForPerson(p, "deleteAddress", "deleteAddress", 2900);
         p = em.find(Person.class, p.getId());
         int id = p.getAddress().getId();
+        System.out.println(id);
         Address a = em.find(Address.class, id);
-        
-        em.getTransaction().begin();
         a.removePerson(p);
         p.setAddress(null);
-        em.merge(p);
+        em.getTransaction().begin(); 
         em.merge(a);
+        em.merge(p);
         em.getTransaction().commit();
-        
+        System.out.println(id);
         f.deleteAddress(id);
+        a =null;
         Address h1 = null;
         try {
+            em.clear();
             h1 = em.find(Address.class, id);
         } finally {
             assertEquals(null, h1);

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <script src ="js/respond.js"></script>
+        <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                
+                $(getCompanies);
+                $("#btn2").click(deleteCompany);
+            });
+
+            function getCompanies() {
+
+                var request = $.ajax({
+                    url: "api/company",
+                    dataType: "json"
+                });
+                request.done(function (comp) {
+                    $("#list").text("");
+                    for (var i = 0; i < comp.length; i++) {
+                        var text = "<option ";
+                        text += "value=\""+ comp[i].id;
+                        text += "\">";
+                        text += comp[i].name;
+                        text += "</option>";
+                        $("#list").append(text);
+                    }
+                });
+                request.fail(function (jqXHR, textStatus) {
+                    alert("Request failed: " + textStatus);
+                });
+            }
+
+            function deleteCompany() {
+                var e = document.getElementById("list");
+                var personid = e.options[e.selectedIndex].value;
+                var json = JSON.stringify({"id": personid});
+                
+                var request = $.ajax({
+                    url: 'api/company/delete',
+                        dataType: 'json',
+                        type: 'delete',
+                        contentType: 'application/json',
+                        data: json,
+                        processData: false
+                });
+                
+                    request.done(function () {
+                        alert("Person deleted!");
+                        $(getCompanies)
+
+                    });
+                    request.fail(function (jqXHR, textStatus) {
+                        var jsonValue = jQuery.parseJSON(jqXHR.responseText);
+                        alert("Request failed: " + jsonValue.message);
+                    });
+            }
+        </script>
+    </head>
+    <body>
+        <h1>Delete or edit Company</h1>
+        <div>
+            <button id="btn1">Get all Companies</button><br>
+            <select name="listbox" id="list" size="5" style="width: 10em">
+                <option value="3">test</option>
+                <option value="4">test1</option>
+            </select>
+            <div>
+                <button id="btn2">delete Company</button><br>
+                <button id="btn3">edit Company</button><br>
+            </div>
+        </div>
+        <div>
+            
+            
+        </div>
+    </body>
+</html>
