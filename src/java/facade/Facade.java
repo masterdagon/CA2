@@ -315,7 +315,12 @@ public class Facade {
             if (p == null) {
                 throw new EntityNotFoundException("The person does not exist in database");
             }
-            int aId = p.getAddress().getId();
+            int aId = 0;
+            try{
+            aId = p.getAddress().getId();
+            }catch(Exception e){
+                
+            }
             List<Phone> phones = p.getPhones();
             List<Hobby> hobbies = p.getHobbies();
             if (p.getAddress() != null) {
@@ -364,7 +369,12 @@ public class Facade {
             if (c == null) {
                 throw new EntityNotFoundException("The company does not exist in database");
             }
-            int aId = c.getAddress().getId();
+            int aId = 0;
+            try{
+            aId = c.getAddress().getId();
+            }catch(Exception e){
+                
+            }
             System.out.println(c.getPhones().isEmpty());
             List<Phone> phones = c.getPhones();
             if (c.getAddress() != null) {
@@ -387,7 +397,11 @@ public class Facade {
             em.merge(c);
             em.remove(c);
             em.getTransaction().commit();
+            try{
             deleteAddress(aId);
+            }catch(Exception e){
+                
+            }
         } finally {
             if (em != null) {
                 em.close();
