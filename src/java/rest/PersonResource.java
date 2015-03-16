@@ -149,11 +149,11 @@ public class PersonResource {
         int ph;
         boolean isNumeric = true;
         try {
-            String phone = jo.get("phone").getAsString();
+            String phone = jo.get("id").getAsString();
             ph = Integer.parseInt(phone);
         } catch (NumberFormatException nfe) {
             isNumeric = false;
-            throw new NotNumericException("Phonenumber must be a number");
+            throw new NotNumericException("PersonID must be a number");
         }
         try {
             String zip = jo.get("zipcode").getAsString();
@@ -164,6 +164,7 @@ public class PersonResource {
         }
 
         if (isNumeric && f.getCityInfo(z) != null) {
+            
             Person p = f.changeAddressFromPerson(jo.get("id").getAsInt(), jo.get("street").getAsString(), jo.get("additionalinfo").getAsString(), jo.get("zipcode").getAsInt());
         }
     }

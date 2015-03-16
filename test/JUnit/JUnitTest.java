@@ -246,6 +246,7 @@ public class JUnitTest {
         p = f.createAddressForPerson(p, "street1", "no", 3000);
         Person p1 = p;
         p1 = f.changeAddressFromPerson(p1.getId(), "Street2", "no", 3000);
+        System.out.println(p1.getAddress().getStreet());
         assertThat(p.getAddress(), is(not(p1.getAddress())));
     }
 
