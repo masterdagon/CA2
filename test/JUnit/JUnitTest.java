@@ -50,7 +50,7 @@ public class JUnitTest {
     public void setup() {
         try {
             f = new Facade();
-            emf = Persistence.createEntityManagerFactory("CA2UNITPU");
+            emf = Persistence.createEntityManagerFactory("CA2PU");
             em = getEntityManager();
             System.out.println("setup running");
         } catch (Exception e) {

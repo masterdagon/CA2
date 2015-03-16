@@ -15,6 +15,7 @@
       <property name="javax.persistence.jdbc.user" value="cphdj85"/>
       <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
       <property name="javax.persistence.jdbc.password" value="cphdj85"/>
+      <property name="javax.persistence.sql-load-script-source" value="scripts/populateZip.sql"/>
     </properties>
   </persistence-unit>
 </persistence>
