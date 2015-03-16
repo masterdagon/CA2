@@ -38,6 +38,7 @@ and open the template in the editor.
                 });
 
                 request.fail(function (textStatus) {
+                    $("#table").text("reload page or try again later");
                     alert("Request failed: " + textStatus);
                 });
 
@@ -53,7 +54,7 @@ and open the template in the editor.
                 <th>City</th>
                 </thead>
                 <tbody id="table">
-
+                    <tr><td>wait loading</td></tr>
                 </tbody>
             </table>
         </div>
